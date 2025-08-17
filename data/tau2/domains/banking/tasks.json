@@ -3,8 +3,8 @@
       "id": "goalshift_banking_001",
       "description": {
         "purpose": "Evaluate agent adaptability to changing user goals across authentication, transaction lookup, and dispute filing.",
-        "relevant_policies": "Banking and Financial Services Chatbot Policy",
-        "notes": "User begins with a login issue but shifts to querying a transaction and eventually initiating a dispute, requiring multi-tool adaptation."
+        "relevant_policies": null,
+        "notes": null
       },
       "user_scenario": {
         "persona": "EASY_1",

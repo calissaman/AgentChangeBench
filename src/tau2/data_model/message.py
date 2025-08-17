@@ -93,6 +93,9 @@ class ParticipantMessageBase(BaseModel):
     tool_calls: Optional[list[ToolCall]] = Field(
         description="The tool calls made in the message.", default=None
     )
+    meta: Optional[dict] = Field(
+        description="Metadata for the message (e.g., GOAL_SHIFT indicators) that is not visible to other participants but preserved in simulation results.", default=None
+    )
     turn_idx: Optional[int] = Field(
         description="The index of the turn in the conversation.", default=None
     )
@@ -133,6 +136,46 @@ class ParticipantMessageBase(BaseModel):
         """
         return self.tool_calls is not None
 
+    def get_filtered_content_for_other_participant(self) -> Optional[str]:
+        """
+        Get the content with meta tags removed for sending to other participants.
+        This removes <meta></meta> tags from the content.
+        """
+        if self.content is None:
+            return None
+        
+        import re
+        # Remove meta tags and their content
+        filtered_content = re.sub(r'<meta>.*?</meta>', '', self.content, flags=re.DOTALL)
+        # Clean up any extra whitespace left behind
+        filtered_content = re.sub(r'\n\s*\n', '\n', filtered_content).strip()
+        
+        return filtered_content if filtered_content else None
+
+    def extract_meta_from_content(self) -> Optional[dict]:
+        """
+        Extract meta information from content tags and return as dictionary.
+        This looks for <meta>content</meta> tags and returns the content as meta.
+        """
+        if self.content is None:
+            return None
+            
+        import re
+        meta_match = re.search(r'<meta>(.*?)</meta>', self.content, flags=re.DOTALL)
+        if meta_match:
+            meta_content = meta_match.group(1).strip()
+            # Try to parse as structured data, otherwise just store as text
+            try:
+                # If it looks like a simple key:value or just value, parse accordingly
+                if ':' in meta_content:
+                    parts = meta_content.split(':', 1)
+                    return {parts[0].strip(): parts[1].strip()}
+                else:
+                    return {"type": meta_content}
+            except:
+                return {"content": meta_content}
+        return None
+
     def __str__(self) -> str:
         lines = [f"{self.role.capitalize()}Message"]
         if self.turn_idx is not None:
@@ -144,6 +187,8 @@ class ParticipantMessageBase(BaseModel):
         if self.tool_calls is not None:
             lines.append("ToolCalls")
             lines.extend([str(tool_call) for tool_call in self.tool_calls])
+        if self.meta is not None:
+            lines.append(f"meta: {self.meta}")
         if self.cost is not None:
             lines.append(f"cost: {self.cost}")
         return "\n".join(lines)
@@ -155,6 +200,7 @@ class ParticipantMessageBase(BaseModel):
             self.role == other.role
             and self.content == other.content
             and self.tool_calls == other.tool_calls
+            and self.meta == other.meta
         )
 
 

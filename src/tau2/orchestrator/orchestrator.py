@@ -298,9 +298,13 @@ class Orchestrator:
         )
         # AGENT/ENV -> USER
         if self.from_role in [Role.AGENT, Role.ENV] and self.to_role == Role.USER:
+            # Create filtered message for user (without meta tags)
+            filtered_message = self._create_filtered_message_for_participant(self.message)
             user_msg, self.user_state = self.user.generate_next_message(
-                self.message, self.user_state
+                filtered_message, self.user_state
             )
+            # Extract and store meta information from user response
+            user_msg = self._process_message_meta(user_msg)
             user_msg.validate()
             if UserSimulator.is_stop(user_msg):
                 self.done = True
@@ -316,9 +320,13 @@ class Orchestrator:
         elif (
             self.from_role == Role.USER or self.from_role == Role.ENV
         ) and self.to_role == Role.AGENT:
+            # Create filtered message for agent (without meta tags)
+            filtered_message = self._create_filtered_message_for_participant(self.message)
             agent_msg, self.agent_state = self.agent.generate_next_message(
-                self.message, self.agent_state
+                filtered_message, self.agent_state
             )
+            # Extract and store meta information from agent response
+            agent_msg = self._process_message_meta(agent_msg)
             agent_msg.validate()
             if self.agent.is_stop(agent_msg):
                 self.done = True
@@ -450,3 +458,41 @@ class Orchestrator:
         for i, msg in enumerate(message_history):
             msg.timestamp = format_time(time_offset + timedelta(seconds=i))
         return message_history
+
+    def _create_filtered_message_for_participant(self, message):
+        """
+        Create a filtered version of the message for sending to other participants.
+        This removes meta tags from the content while preserving other message properties.
+        """
+        from copy import deepcopy
+        
+        # Only filter participant messages (not tool messages)
+        if not isinstance(message, (AssistantMessage, UserMessage)):
+            return message
+            
+        filtered_message = deepcopy(message)
+        if hasattr(filtered_message, 'get_filtered_content_for_other_participant'):
+            filtered_content = filtered_message.get_filtered_content_for_other_participant()
+            filtered_message.content = filtered_content
+            
+        return filtered_message
+
+    def _process_message_meta(self, message):
+        """
+        Process a message to extract meta information from content and store it in meta field.
+        """
+        from copy import deepcopy
+        
+        # Only process participant messages (not tool messages)
+        if not isinstance(message, (AssistantMessage, UserMessage)):
+            return message
+            
+        processed_message = deepcopy(message)
+        if hasattr(processed_message, 'extract_meta_from_content'):
+            extracted_meta = processed_message.extract_meta_from_content()
+            if extracted_meta:
+                if processed_message.meta is None:
+                    processed_message.meta = {}
+                processed_message.meta.update(extracted_meta)
+                
+        return processed_message

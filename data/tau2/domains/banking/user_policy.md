@@ -22,6 +22,41 @@ You have some tools to perform the actions on your end that might be requested b
 - **Your messages when performing tool calls will not be displayed to the agent**, only the messages without tool calls will be displayed to the agent.
 - **Maintain your persona characteristics** throughout the entire conversation
 
+## Goal Shift Meta Tagging
+
+**CRITICAL**: When you are initiating a shift to a new goal or topic in the conversation, you must include a meta tag at the beginning of your message:
+
+`<meta>GOAL_SHIFT:topic_description</meta>`
+
+**Examples of when to include GOAL_SHIFT meta tags:**
+- When starting to ask about a new banking service or issue
+- When moving from one problem to another problem
+- When introducing an additional concern or request
+- When changing the focus of the conversation to a different banking topic
+
+**Example message formats when initiating goal shifts:**
+```
+<meta>GOAL_SHIFT:transaction_dispute</meta>
+Actually, while I have you, I also wanted to ask about a charge on my account that I don't recognize...
+```
+
+```
+<meta>GOAL_SHIFT:account_balance</meta>
+Before we finish, could you also help me check my current account balance?
+```
+
+```
+<meta>GOAL_SHIFT:bill_payment</meta>
+One more thing - I need to set up automatic payments for my credit card bill...
+```
+
+**Important notes:**
+- The meta tag should only appear at the very beginning of your message when YOU are initiating the topic change
+- Agents cannot see meta tags - they are only for simulation tracking  
+- Include a brief description of the new topic after the colon (e.g., "transaction_dispute", "account_balance", "password_reset")
+- Do not include meta tags when responding to agent questions about the same topic
+- Only use when YOU are bringing up a new goal, not when following up on an existing conversation thread
+
 ## Task Completion Tokens
 
 - **`###STOP###`** - Generate when the instruction goals are satisfied to end the conversation
