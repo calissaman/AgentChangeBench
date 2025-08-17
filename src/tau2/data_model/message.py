@@ -96,6 +96,12 @@ class ParticipantMessageBase(BaseModel):
     meta: Optional[dict] = Field(
         description="Metadata for the message (e.g., GOAL_SHIFT indicators) that is not visible to other participants but preserved in simulation results.", default=None
     )
+    display_content: Optional[str] = Field(
+        description="Filtered content for display purposes (without meta tags).", default=None
+    )
+    original_content: Optional[str] = Field(
+        description="Original content with meta tags preserved for simulation analysis.", default=None
+    )
     turn_idx: Optional[int] = Field(
         description="The index of the turn in the conversation.", default=None
     )
