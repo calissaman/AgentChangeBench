@@ -1,0 +1,16 @@
+:8080 {
+    handle /qwen/* {
+        uri strip_prefix /qwen
+        reverse_proxy 127.0.0.1:{env.QWEN_PORT}
+    }
+    handle /mistral/* {
+        uri strip_prefix /mistral
+        reverse_proxy 127.0.0.1:{env.MISTRAL_PORT}
+    }
+    handle /gptoss/* {
+        uri strip_prefix /gptoss
+        reverse_proxy 127.0.0.1:{env.GPTOSS_PORT}
+    }
+
+    respond /health "ok" 200
+}
