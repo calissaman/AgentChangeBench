@@ -40,8 +40,8 @@ All the information that an agent developer needs to build an agent for a domain
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/sierra-research/tau2-bench
-cd tau2-bench
+git clone https://github.com/Maniktherana/AgentChangeBench
+cd AgentChangeBench
 ```
 
 2. Create a new environment (optional)
@@ -93,6 +93,8 @@ tau2 run \
 --domain airline \
 --agent-llm gpt-4.1 \
 --user-llm gpt-4.1 \
+--agent llm_agent \ 
+--user banking_user_simulator \
 --num-trials 1 \
 --num-tasks 5
 ```
