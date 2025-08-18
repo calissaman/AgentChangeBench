@@ -46,10 +46,10 @@ dependencies = [
 [project.scripts]
 tau2 = "tau2.cli:main"
 
-tau2-qwen    = "vllm.entrypoints:run_qwen"
-tau2-mistral = "vllm.entrypoints:run_mistral"
-tau2-gptoss  = "vllm.entrypoints:run_gptoss"
-tau2-all     = "vllm.entrypoints:run_all"
+vllms-qwen    = "vllms.entrypoints:run_qwen"
+vllms-mistral = "vllms.entrypoints:run_mistral"
+vllms-gptoss  = "vllms.entrypoints:run_gptoss"
+vllms-all     = "vllms.entrypoints:run_all"
 
 [tool.pdm.build]
 package-dir = "src"
