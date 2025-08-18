@@ -48,7 +48,6 @@ tau2 = "tau2.cli:main"
 
 vllms-qwen    = "vllms.entrypoints:run_qwen"
 vllms-mistral = "vllms.entrypoints:run_mistral"
-vllms-gptoss  = "vllms.entrypoints:run_gptoss"
 vllms-all     = "vllms.entrypoints:run_all"
 
 [tool.pdm.build]

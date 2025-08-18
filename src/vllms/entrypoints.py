@@ -31,19 +31,6 @@ def run_mistral():
     )
 
 
-def run_gptoss():
-    mprocs_bin = os.getenv("MPROCS_BIN", "mprocs")
-    return subprocess.call(
-        [
-            mprocs_bin,
-            "--names",
-            "vllm-gptoss,caddy",
-            f"python -m vllm.entrypoints.openai.api_server --model {os.getenv('GPTOSS_MODEL')} --served-model-name gpt-oss-20b --host 0.0.0.0 --port {os.getenv('GPTOSS_PORT')} --enable-auto-tool-choice --tool-call-parser hermes",
-            f"caddy run --config src/vllms/Caddyfile --adapter caddyfile",
-        ]
-    )
-
-
 def run_all():
     mprocs_bin = os.getenv("MPROCS_BIN", "mprocs")
     return subprocess.call(
@@ -53,7 +40,6 @@ def run_all():
             "vllm-qwen,vllm-mistral,vllm-gptoss,caddy",
             f"python -m vllm.entrypoints.openai.api_server --model {os.getenv('QWEN_MODEL')} --served-model-name qwen2.5-7b-instruct --dtype {os.getenv('DTYPE_QWEN', 'bfloat16')} --host 0.0.0.0 --port {os.getenv('QWEN_PORT')} --enable-auto-tool-choice --tool-call-parser hermes",
             f"python -m vllm.entrypoints.openai.api_server --model {os.getenv('MISTRAL_MODEL')} --served-model-name mistral-7b-instruct --dtype {os.getenv('DTYPE_MISTRAL', 'bfloat16')} --host 0.0.0.0 --port {os.getenv('MISTRAL_PORT')} --enable-auto-tool-choice --tool-call-parser mistral",
-            f"python -m vllm.entrypoints.openai.api_server --model {os.getenv('GPTOSS_MODEL')} --served-model-name gpt-oss-20b --host 0.0.0.0 --port {os.getenv('GPTOSS_PORT')} --enable-auto-tool-choice --tool-call-parser hermes",
             f"caddy run --config src/vllms/Caddyfile --adapter caddyfile",
         ]
     )
