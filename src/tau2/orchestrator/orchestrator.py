@@ -466,7 +466,6 @@ class Orchestrator:
         """
         from copy import deepcopy
         
-        # Only filter participant messages (not tool messages)
         if not isinstance(message, (AssistantMessage, UserMessage)):
             return message
             
@@ -483,16 +482,25 @@ class Orchestrator:
         """
         from copy import deepcopy
         
-        # Only process participant messages (not tool messages)
         if not isinstance(message, (AssistantMessage, UserMessage)):
             return message
             
         processed_message = deepcopy(message)
-        if hasattr(processed_message, 'extract_meta_from_content'):
+        
+        if hasattr(processed_message, 'extract_meta_from_content') and processed_message.content:
+            if processed_message.original_content is None:
+                processed_message.original_content = processed_message.content
+            
             extracted_meta = processed_message.extract_meta_from_content()
             if extracted_meta:
                 if processed_message.meta is None:
                     processed_message.meta = {}
                 processed_message.meta.update(extracted_meta)
                 
+                if hasattr(processed_message, 'get_filtered_content_for_other_participant'):
+                    filtered_content = processed_message.get_filtered_content_for_other_participant()
+                    if filtered_content:
+                        processed_message.display_content = filtered_content
+                        processed_message.content = filtered_content
+                        
         return processed_message
