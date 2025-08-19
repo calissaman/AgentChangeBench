@@ -350,6 +350,28 @@ class ConsoleDisplay:
         content.append("\n\n💰 Average Cost per Conversation: ", style="bold cyan")
         content.append(f"${metrics.avg_agent_cost:.4f}\n\n")
 
+        # Add AgentChangeBench metrics section
+        content.append("🎯 AgentChangeBench Metrics:", style="bold cyan")
+        content.append(f"\n📊 TSR (Task Success Rate): ", style="bold white")
+        content.append(f"{metrics.tsr:.2%}")
+        content.append(f"\n⚙️  TUE (Tool Usage Efficiency): ", style="bold white")
+        content.append(f"{metrics.tue:.2%}")
+        content.append(f"\n🔄 TCRR (Tool-Call Redundancy Ratio): ", style="bold white")
+        content.append(f"{metrics.tcrr:.2%}")
+        content.append(f"\n🛠️  Total Tool Calls: ", style="bold white")
+        content.append(f"{metrics.num_tool_calls}")
+        
+        # Add GSRT metrics
+        content.append(f"\n🔀 GSRT (Goal Shift Recovery Time): ", style="bold white")
+        if hasattr(metrics, 'gsrt_num_shifts') and metrics.gsrt_num_shifts > 0:
+            content.append(f"\n  📊 Goal Shifts: {metrics.gsrt_num_shifts}")
+            if hasattr(metrics, 'gsrt_median') and metrics.gsrt_median is not None:
+                content.append(f"\n  📈 Median Recovery: {metrics.gsrt_median:.1f} turns")
+            if hasattr(metrics, 'gsrt_worst_case') and metrics.gsrt_worst_case is not None:
+                content.append(f"\n  📉 Worst Case: {metrics.gsrt_worst_case} turns")
+        else:
+            content.append("\n  ❌ No goal shifts detected")
+
         # Create and display panel
         metrics_panel = Panel(
             content,

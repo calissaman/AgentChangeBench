@@ -470,6 +470,42 @@ class BankingTools(ToolKitBase):
         logger.warning(f"Transfer to human requested: {summary}")
         return "Transfer successful"
 
+    # Assertion methods for task evaluation
+    def assert_any_payment_request_with_status(
+        self, 
+        customer_id: str, 
+        expected_status: str, 
+        min_amount: Optional[float] = None,
+        from_account_id: Optional[str] = None
+    ) -> bool:
+        """Assert that a payment request exists with the given status and criteria."""
+        for pr in self.db.payment_requests:
+            if pr.customer_id == customer_id and pr.status == expected_status:
+                if min_amount is not None and pr.amount < min_amount:
+                    continue
+                if from_account_id is not None and pr.from_account_id != from_account_id:
+                    continue
+                return True
+        return False
+
+    def assert_card_status(self, card_id: str, expected: str) -> bool:
+        """Assert that a card has the expected status."""
+        try:
+            card = self._get_card(card_id)
+            return card.status == expected
+        except ValueError:
+            return False
+
+    def assert_shift_event_count_at_least(self, n: int) -> bool:
+        """Assert that at least n shift events have been logged."""
+        return len(self._shift_events) >= n
+
+    def assert_parked_task_exists(self, parked_task_id: str) -> bool:
+        """Assert that a parked task exists (use '*' to check if any exists)."""
+        if parked_task_id == "*":
+            return len(self._parked_tasks) > 0
+        return parked_task_id in self._parked_tasks
+
 
 if __name__ == "__main__":
     banking = BankingTools(BankingDB.load(BANKING_DB_PATH))

@@ -7,10 +7,28 @@ from tau2.domains.banking.data_model import BankingDB
 from tau2.domains.banking.tools import BankingTools
 
 from tau2.domains.banking.user_data_model import BankingUserDB
-from tau2.domains.banking.user_tools import BankingUserTools
 from tau2.domains.banking.utilts import BANKING_DB_PATH, BANKING_POLICY_PATH, BANKING_USER_POLICY_PATH, BANKING_TASK_SET_PATH, BANKING_DATA_DIR
 from tau2.environment.environment import Environment
+from tau2.environment.toolkit import ToolKitBase
 from tau2.utils import load_file
+
+
+class BankingUserTools(ToolKitBase):
+    """
+    Minimal user tools for banking domain.
+    Users no longer have tools - information is provided through known_info instead.
+    """
+
+    db: BankingUserDB
+
+    def __init__(self, db: BankingUserDB):
+        super().__init__(db)
+
+    def update_user(self, **kwargs):
+        """Update user data with the provided key-value pairs."""
+        for key, value in kwargs.items():
+            if hasattr(self.db, key):
+                setattr(self.db, key, value)
 
 
 class BankingEnvironment(Environment):
@@ -28,8 +46,8 @@ class BankingEnvironment(Environment):
 
     def sync_tools(self):
         """
-        Sync environment state with current user status. Useful for dynamic assertions,
-        e.g., checking payment requests, card status, dispute tracking, etc.
+        Sync environment state with current user status. 
+        Since users no longer have tools, this mainly updates user data model state.
         """
         phone = self.user_tools.db.phone_number
         if not phone:

@@ -73,6 +73,10 @@ class Orchestrator:
         self.from_role: Optional[Role] = None
         self.to_role: Optional[Role] = None
         self.message: Optional[Message] = None
+        
+        # Meta-tags v2 system additions
+        self.run_id: str = str(uuid.uuid4())
+        self.meta_events: list = []  # Store meta events for simulation record
 
     def initialize(self):
         """
@@ -478,29 +482,84 @@ class Orchestrator:
 
     def _process_message_meta(self, message):
         """
-        Process a message to extract meta information from content and store it in meta field.
+        Process a message to extract meta information using meta-tags v2 system.
+        
+        This method:
+        1. Uses the new deterministic meta parsing
+        2. Logs meta events to simulation record
+        3. Handles errors gracefully with warnings
         """
         from copy import deepcopy
+        from tau2.meta.logging import emit_meta_event, log_meta_error
         
         if not isinstance(message, (AssistantMessage, UserMessage)):
             return message
             
         processed_message = deepcopy(message)
         
+        # Extract meta using new system
         if hasattr(processed_message, 'extract_meta_from_content') and processed_message.content:
+            # Store original content if not already stored
             if processed_message.original_content is None:
                 processed_message.original_content = processed_message.content
             
-            extracted_meta = processed_message.extract_meta_from_content()
-            if extracted_meta:
-                if processed_message.meta is None:
-                    processed_message.meta = {}
-                processed_message.meta.update(extracted_meta)
-                
-                if hasattr(processed_message, 'get_filtered_content_for_other_participant'):
-                    filtered_content = processed_message.get_filtered_content_for_other_participant()
-                    if filtered_content:
-                        processed_message.display_content = filtered_content
-                        processed_message.content = filtered_content
+            # Extract meta information
+            processed_message.extract_meta_from_content()
+            
+            # Log meta events for simulation record
+            if processed_message.meta_event:
+                try:
+                    participant = "user" if isinstance(processed_message, UserMessage) else "assistant"
+                    ts = datetime.now()
+                    if processed_message.timestamp:
+                        # Try to parse existing timestamp
+                        try:
+                            ts = datetime.fromisoformat(processed_message.timestamp.replace('Z', '+00:00'))
+                        except (ValueError, AttributeError):
+                            pass  # Use current time as fallback
+                    
+                    meta_event_log = emit_meta_event(
+                        run_id=self.run_id,
+                        turn_idx=processed_message.turn_idx or len(self.trajectory),
+                        participant=participant,
+                        meta=processed_message.meta_event,
+                        ts=ts
+                    )
+                    self.meta_events.append(meta_event_log)
+                    
+                    # Log successful meta event parsing
+                    logger.info(f"Meta event detected: {processed_message.meta_event.event} "
+                              f"at turn {processed_message.turn_idx}")
+                    
+                except Exception as e:
+                    logger.warning(f"Failed to log meta event: {e}")
+            
+            # Log meta errors with warnings
+            if processed_message.meta_error:
+                try:
+                    participant = "user" if isinstance(processed_message, UserMessage) else "assistant"
+                    ts = datetime.now()
+                    if processed_message.timestamp:
+                        try:
+                            ts = datetime.fromisoformat(processed_message.timestamp.replace('Z', '+00:00'))
+                        except (ValueError, AttributeError):
+                            pass
+                    
+                    error_log = log_meta_error(
+                        run_id=self.run_id,
+                        turn_idx=processed_message.turn_idx or len(self.trajectory),
+                        participant=participant,
+                        error=processed_message.meta_error,
+                        raw_line=processed_message.meta_event.raw if processed_message.meta_event else None,
+                        ts=ts
+                    )
+                    self.meta_events.append(error_log)
+                    
+                    # Log warning for malformed meta tags
+                    logger.warning(f"Malformed meta tag detected: {processed_message.meta_error} "
+                                 f"at turn {processed_message.turn_idx}")
+                    
+                except Exception as e:
+                    logger.warning(f"Failed to log meta error: {e}")
                         
         return processed_message

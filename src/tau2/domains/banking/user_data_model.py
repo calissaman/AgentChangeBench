@@ -14,6 +14,7 @@ class BankingUserDB(DB):
     
     # Account info
     primary_account_id: Optional[str] = None
+    secondary_account_id: Optional[str] = None  # Added for business accounts
     primary_account_active: Optional[bool] = None
     account_balance: Optional[float] = None
     
@@ -31,6 +32,7 @@ class BankingUserDB(DB):
     network_accessible: bool = True
     authenticated: bool = True
     has_2fa_enabled: bool = True
+    recognized_device: Optional[bool] = None  # Added for device recognition
 
     @classmethod
     def load(cls, path: Optional[str] = None) -> 'BankingUserDB':

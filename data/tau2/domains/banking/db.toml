@@ -18,6 +18,106 @@ payee_ids = ["payee_001"]
   state = "CA"
   postal_code = "90001"
 
+[[customers]]
+customer_id = "cust_101"
+full_name = "Maria Santos"
+date_of_birth = "1986-02-11"
+email = "user.001@example.com"
+phone_number = "+15551234567"
+created_at = "2025-01-01T00:00:00"
+account_ids = ["acc_101"]
+card_ids = ["card_101"]
+statement_ids = ["stmt_101"]
+payment_request_ids = []
+dispute_ids = []
+payee_ids = []
+
+  [customers.address]
+  street = "456 Oak Avenue"
+  city = "Madrid"
+  state = "CA"
+  postal_code = "90002"
+
+[[customers]]
+customer_id = "cust_202"
+full_name = "Jordan Smith"
+date_of_birth = "1994-09-02"
+email = "user.002@example.com"
+phone_number = "+15558675309"
+created_at = "2025-01-01T00:00:00"
+account_ids = ["acc_202"]
+card_ids = ["card_202"]
+statement_ids = []
+payment_request_ids = []
+dispute_ids = []
+payee_ids = []
+
+  [customers.address]
+  street = "789 Pine Street"
+  city = "Los Angeles"
+  state = "CA"
+  postal_code = "90003"
+
+[[customers]]
+customer_id = "cust_303"
+full_name = "Taylor Johnson"
+date_of_birth = "1991-05-06"
+email = "user.003@example.com"
+phone_number = "+15551230987"
+created_at = "2025-01-01T00:00:00"
+account_ids = ["acc_303"]
+card_ids = ["card_303"]
+statement_ids = []
+payment_request_ids = []
+dispute_ids = []
+payee_ids = []
+
+  [customers.address]
+  street = "321 Maple Drive"
+  city = "San Diego"
+  state = "CA"
+  postal_code = "90004"
+
+[[customers]]
+customer_id = "cust_401"
+full_name = "Casey Williams"
+date_of_birth = "1982-03-09"
+email = "user.004@example.com"
+phone_number = "+15551234590"
+created_at = "2025-01-01T00:00:00"
+account_ids = ["acc_401", "acc_biz_401"]
+card_ids = ["card_401"]
+statement_ids = []
+payment_request_ids = []
+dispute_ids = []
+payee_ids = []
+
+  [customers.address]
+  street = "654 Cedar Lane"
+  city = "San Francisco"
+  state = "CA"
+  postal_code = "90005"
+
+[[customers]]
+customer_id = "cust_505"
+full_name = "Riley Brown"
+date_of_birth = "1989-10-21"
+email = "user.005@example.com"
+phone_number = "+15559876543"
+created_at = "2025-01-01T00:00:00"
+account_ids = ["acc_505"]
+card_ids = ["card_505"]
+statement_ids = []
+payment_request_ids = []
+dispute_ids = []
+payee_ids = []
+
+  [customers.address]
+  street = "987 Birch Court"
+  city = "Seattle"
+  state = "WA"
+  postal_code = "98001"
+
 [[accounts]]
 account_id = "acc_001"
 customer_id = "cust_001"
@@ -27,11 +127,100 @@ status = "Active"
 current_balance = 1423.75
 available_balance = 1400.00
 
+[[accounts]]
+account_id = "acc_101"
+customer_id = "cust_101"
+type = "checking"
+masked_number = "••••5678"
+status = "Active"
+current_balance = 45230.18
+available_balance = 45230.18
+
+[[accounts]]
+account_id = "acc_202"
+customer_id = "cust_202"
+type = "checking"
+masked_number = "••••4567"
+status = "Active"
+current_balance = 3250.50
+available_balance = 3200.00
+
+[[accounts]]
+account_id = "acc_303"
+customer_id = "cust_303"
+type = "checking"
+masked_number = "••••3456"
+status = "Active"
+current_balance = 1850.25
+available_balance = 1800.00
+
+[[accounts]]
+account_id = "acc_401"
+customer_id = "cust_401"
+type = "checking"
+masked_number = "••••2345"
+status = "Active"
+current_balance = 5420.75
+available_balance = 5400.00
+
+[[accounts]]
+account_id = "acc_biz_401"
+customer_id = "cust_401"
+type = "checking"
+masked_number = "••••1234"
+status = "Active"
+current_balance = 25000.00
+available_balance = 25000.00
+
+[[accounts]]
+account_id = "acc_505"
+customer_id = "cust_505"
+type = "checking"
+masked_number = "••••9876"
+status = "Active"
+current_balance = 15750.40
+available_balance = 15750.40
+
 [[cards]]
 card_id = "card_001"
 account_id = "acc_001"
 type = "debit"
 last4 = "6789"
+status = "Active"
+
+[[cards]]
+card_id = "card_101"
+account_id = "acc_101"
+type = "debit"
+last4 = "5678"
+status = "Active"
+
+[[cards]]
+card_id = "card_202"
+account_id = "acc_202"
+type = "credit"
+last4 = "4567"
+status = "Active"
+
+[[cards]]
+card_id = "card_303"
+account_id = "acc_303"
+type = "debit"
+last4 = "3456"
+status = "Locked"
+
+[[cards]]
+card_id = "card_401"
+account_id = "acc_401"
+type = "debit"
+last4 = "2345"
+status = "Active"
+
+[[cards]]
+card_id = "card_505"
+account_id = "acc_505"
+type = "debit"
+last4 = "9876"
 status = "Active"
 
 [[statements]]
@@ -45,6 +234,17 @@ minimum_due = 25.00
 due_date = "2025-06-15"
 status = "Issued"
 
+[[statements]]
+statement_id = "stmt_101"
+account_id = "acc_101"
+period_start = "2025-05-01"
+period_end = "2025-05-31"
+issue_date = "2025-06-01"
+total_due = 0.00
+minimum_due = 0.00
+due_date = "2025-06-15"
+status = "Issued"
+
 [[transactions]]
 tx_id = "tx_001"
 account_id = "acc_001"
@@ -54,6 +254,16 @@ amount = -75.20
 merchant_or_payee = "Online Store XYZ"
 status = "Posted"
 reference = "ORDER123XYZ"
+
+[[transactions]]
+tx_id = "tx_101"
+account_id = "acc_001"
+timestamp = "2025-06-15T14:30:00"
+type = "card_purchase"
+amount = -89.99
+merchant_or_payee = "UNKNOWN MERCHANT XYZ"
+status = "Posted"
+reference = "SUSPICIOUS_CHARGE"
 
 [[payees]]
 payee_id = "payee_001"
