@@ -46,6 +46,7 @@ dependencies = [
 [project.scripts]
 tau2 = "tau2.cli:main"
 
+setup-vllms   = "vllms.entrypoints:setup_vllms"
 vllms-qwen    = "vllms.entrypoints:run_qwen"
 vllms-mistral = "vllms.entrypoints:run_mistral"
 vllms-all     = "vllms.entrypoints:run_all"
