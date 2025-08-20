@@ -7,9 +7,9 @@
         uri strip_prefix /mistral
         reverse_proxy 127.0.0.1:{env.MISTRAL_PORT}
     }
-    handle /gptoss/* {
-        uri strip_prefix /gptoss
-        reverse_proxy 127.0.0.1:{env.GPTOSS_PORT}
+    handle /deepseek/* {
+        uri strip_prefix /deepseek
+        reverse_proxy 127.0.0.1:{env.DEEPSEEK_PORT}
     }
 
     respond /health "ok" 200
