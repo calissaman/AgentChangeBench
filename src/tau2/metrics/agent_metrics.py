@@ -1,5 +1,6 @@
 import math
 import re
+import statistics
 from typing import Optional
 
 import numpy as np
@@ -348,27 +349,46 @@ def compute_metrics_simple(results: Results) -> AgentMetrics:
         tcrr = 0.0
         tue = 0.0
     
-    # Compute GSRT
+    # Compute GSRT using v2 judge unconditionally
     try:
-        from tau2.metrics.gsrt_calculator import compute_gsrt_for_simulation, aggregate_gsrt_results
-        from tau2.data_model.gsrt_models import GSRTConfig
-        
-        gsrt_config = GSRTConfig()
-        gsrt_results = []
-        
+        from tau2.metrics.gsrt_v2 import detect_gsrt_v2
+        gsrt_counts = 0
+        recovery_turns: list[int] = []
+        judge_model = getattr(results.info, "gsrt_judge_llm", None) or "gpt-5"
+        judge_args = getattr(results.info, "gsrt_judge_llm_args", None) or {"temperature": 0.0}
         for sim in results.simulations:
-            # Find corresponding task
             task = None
             for t in results.tasks:
                 if t.id == sim.task_id:
                     task = t
                     break
-            
-            if task:
-                gsrt_result = compute_gsrt_for_simulation(sim, task, gsrt_config)
-                gsrt_results.append(gsrt_result)
-        
-        gsrt_median, gsrt_worst_case, gsrt_num_shifts = aggregate_gsrt_results(gsrt_results)
+            if not task:
+                continue
+            # Try to reuse cached judge output if present
+            res = None
+            if sim.reward_info and sim.reward_info.info and isinstance(sim.reward_info.info, dict):
+                res = sim.reward_info.info.get("gsrt_v2")
+            if not res:
+                res = detect_gsrt_v2(task, sim, model=judge_model, llm_args=judge_args)
+                # persist back into reward_info.info
+                try:
+                    if sim.reward_info is not None:
+                        if sim.reward_info.info is None:
+                            sim.reward_info.info = {}
+                        if isinstance(sim.reward_info.info, dict):
+                            sim.reward_info.info["gsrt_v2"] = res
+                except Exception:
+                    pass
+            shifts = res.get("user_goal_shifts", [])
+            gsrt_counts += len(shifts)
+            for s in shifts:
+                agent_turn = s.get("agent_turn")
+                if isinstance(agent_turn, int):
+                    dt = max(0, agent_turn - int(s.get("turn", 0)))
+                    recovery_turns.append(dt)
+        gsrt_median = (statistics.median(recovery_turns) if recovery_turns else None)
+        gsrt_worst_case = (max(recovery_turns) if recovery_turns else None)
+        gsrt_num_shifts = gsrt_counts
     except Exception as e:
         logger.warning(f"GSRT computation failed: {e}")
         gsrt_median, gsrt_worst_case, gsrt_num_shifts = None, None, 0
@@ -395,12 +415,13 @@ def compute_metrics(results: Results) -> AgentMetrics:
     - TSR (Task Success Rate)
     - TUE (Tool Usage Efficiency)
     - TCRR (Tool-Call Redundancy Ratio)
+    - GSRT (Goal Shift Recovery Time via LLM-judged v2)
     
     Falls back to simpler computation if task evaluation criteria are missing.
     """
     try:
         # Try the full computation first
-        df, df_pass_hat_k = prepare_dfs(results)
+        df, df_pass_hat_k = get_metrics_df(results)
         avg_reward = df.reward.mean()
         pass_hat_ks = {}
         for column in df_pass_hat_k.columns:
@@ -436,27 +457,42 @@ def compute_metrics(results: Results) -> AgentMetrics:
             tcrr = 0.0
             tue = 0.0
         
-        # Compute GSRT
+        # Compute GSRT using v2 judge unconditionally
         try:
-            from tau2.metrics.gsrt_calculator import compute_gsrt_for_simulation, aggregate_gsrt_results
-            from tau2.data_model.gsrt_models import GSRTConfig
-            
-            gsrt_config = GSRTConfig()
-            gsrt_results = []
-            
+            from tau2.metrics.gsrt_v2 import detect_gsrt_v2
+            gsrt_counts = 0
+            recovery_turns: list[int] = []
+            judge_model = getattr(results.info, "gsrt_judge_llm", None) or "gpt-5"
+            judge_args = getattr(results.info, "gsrt_judge_llm_args", None) or {"temperature": 0.0}
             for sim in results.simulations:
-                # Find corresponding task
-                task = None
-                for t in results.tasks:
-                    if t.id == sim.task_id:
-                        task = t
-                        break
-                
-                if task:
-                    gsrt_result = compute_gsrt_for_simulation(sim, task, gsrt_config)
-                    gsrt_results.append(gsrt_result)
-            
-            gsrt_median, gsrt_worst_case, gsrt_num_shifts = aggregate_gsrt_results(gsrt_results)
+                task = next((t for t in results.tasks if t.id == sim.task_id), None)
+                if not task:
+                    continue
+                # Try to reuse cached judge output if present
+                res = None
+                if sim.reward_info and sim.reward_info.info and isinstance(sim.reward_info.info, dict):
+                    res = sim.reward_info.info.get("gsrt_v2")
+                if not res:
+                    res = detect_gsrt_v2(task, sim, model=judge_model, llm_args=judge_args)
+                    # persist back into reward_info.info
+                    try:
+                        if sim.reward_info is not None:
+                            if sim.reward_info.info is None:
+                                sim.reward_info.info = {}
+                            if isinstance(sim.reward_info.info, dict):
+                                sim.reward_info.info["gsrt_v2"] = res
+                    except Exception:
+                        pass
+                shifts = res.get("user_goal_shifts", [])
+                gsrt_counts += len(shifts)
+                for s in shifts:
+                    agent_turn = s.get("agent_turn")
+                    if isinstance(agent_turn, int):
+                        dt = max(0, agent_turn - int(s.get("turn", 0)))
+                        recovery_turns.append(dt)
+            gsrt_median = (statistics.median(recovery_turns) if recovery_turns else None)
+            gsrt_worst_case = (max(recovery_turns) if recovery_turns else None)
+            gsrt_num_shifts = gsrt_counts
         except Exception as e:
             logger.warning(f"GSRT computation failed: {e}")
             gsrt_median, gsrt_worst_case, gsrt_num_shifts = None, None, 0
@@ -473,7 +509,6 @@ def compute_metrics(results: Results) -> AgentMetrics:
             gsrt_worst_case=gsrt_worst_case,
             gsrt_num_shifts=gsrt_num_shifts,
         )
-        
     except Exception as e:
         logger.warning(f"Full metrics computation failed: {e}. Falling back to simple computation.")
         return compute_metrics_simple(results)
@@ -484,21 +519,9 @@ def get_tasks_pass_hat_k(results: Results) -> pd.DataFrame:
     Compute the pass^k for each k from 1 to the maximum number of trials.
     """
     df, max_k = get_metrics_df(results)
-    dfs = []
-    for k in range(1, max_k + 1):
-        res = df.groupby("task_id")["success"].apply(
-            lambda df: pass_hat_k(len(df), df.sum(), k)
-        )
-        res.name = f"pass^{k}"
-        dfs.append(res)
-    df_pass_hat_k = pd.concat(dfs, axis=1)
-    task_columns = [
-        "task_num_agent_actions",
-        "task_num_user_actions",
-        "task_num_actions",
-    ]
-    df_task_infos = df.groupby("task_id").first()[task_columns]
-    df_pass_hat_k = df_task_infos.join(df_pass_hat_k)
+    df_pass_hat_k = get_tasks_pass_hat_k(results)
+    df_pass_hat_k["num_actions"] = df.groupby("task_id").first()["task_num_actions"]
+    df_pass_hat_k = df_pass_hat_k.sort_values(by="num_actions")
     return df_pass_hat_k
 
 

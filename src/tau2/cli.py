@@ -73,17 +73,20 @@ def add_run_args(parser):
         help=f"The arguments to pass to the LLM for the user. Default is temperature={DEFAULT_LLM_TEMPERATURE_USER}.",
     )
     parser.add_argument(
-        "--task-set-name",
-        type=str,
-        default=None,
-        choices=get_options().task_sets,
-        help="The task set to run the simulation on. If not provided, will load default task set for the domain.",
-    )
-    parser.add_argument(
         "--task-ids",
         type=str,
-        nargs="+",
-        help="(Optional) run only the tasks with the given IDs. If not provided, will run all tasks.",
+        nargs="*",
+        help="List of task IDs to run.",
+    )
+    parser.add_argument(
+        "--task-id",
+        type=str,
+        help="Single task ID to run (alias for --task-ids with one value).",
+    )
+    parser.add_argument(
+        "--task-set-name",
+        type=str,
+        help="Name of the task set to run. If not provided, will load default task set for the domain.",
     )
     parser.add_argument(
         "--num-tasks",
@@ -125,7 +128,19 @@ def add_run_args(parser):
         "--log-level",
         type=str,
         default=DEFAULT_LOG_LEVEL,
-        help=f"The log level to use for the simulation. Default is {DEFAULT_LOG_LEVEL}.",
+        help=f"Log level. Default is {DEFAULT_LOG_LEVEL}.",
+    )
+    parser.add_argument(
+        "--gsrt-judge-llm",
+        type=str,
+        default="gpt-5",
+        help="LLM to use for GSRT v2 judge (default: gpt-5)",
+    )
+    parser.add_argument(
+        "--gsrt-judge-llm-args",
+        type=dict,
+        default={"temperature": 0.0},
+        help="LLM args for GSRT v2 judge (default: {temperature: 0.0})",
     )
 
 
@@ -141,7 +156,7 @@ def main():
             RunConfig(
                 domain=args.domain,
                 task_set_name=args.task_set_name,
-                task_ids=args.task_ids,
+                task_ids=(args.task_ids or ([args.task_id] if args.task_id else None)),
                 num_tasks=args.num_tasks,
                 agent=args.agent,
                 llm_agent=args.agent_llm,
@@ -156,6 +171,8 @@ def main():
                 max_concurrency=args.max_concurrency,
                 seed=args.seed,
                 log_level=args.log_level,
+                gsrt_judge_llm=args.gsrt_judge_llm,
+                gsrt_judge_llm_args=args.gsrt_judge_llm_args,
             )
         )
     )
@@ -208,7 +225,7 @@ def main():
 
 def run_view_simulations(args):
     from tau2.scripts.view_simulations import main as view_main
-
+    
     view_main(
         sim_file=args.file,
         only_show_failed=args.only_show_failed,
