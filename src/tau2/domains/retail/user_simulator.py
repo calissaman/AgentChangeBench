@@ -71,35 +71,10 @@ class RetailUserSimulator(BaseUser):
             retail_user_policy=self.retail_user_policy,
             instructions=self.instructions,
         )
-        return system_prompt
-
-    def get_init_state(
-        self, message_history: Optional[list[Message]] = None
-    ) -> UserState:
-        """
-        Get the initial state of the retail user simulator.
         
-        Args:
-            message_history: Optional message history to initialize with
-            
-        Returns:
-            UserState with system prompt and message history
-        """
-        # Initialize message history with system prompt
-        if message_history is None:
-            message_history = []
 
-        # Add system message if not already present
-        if not message_history or not isinstance(message_history[0], SystemMessage):
-            system_message = SystemMessage(content=self.system_prompt)
-            message_history = [system_message] + message_history
-
-        return UserState(
-            message_history=message_history,
-            active=True,
-            should_stop=False,
-            tools=self.tools or [],
-        )
+        
+        return system_prompt
 
     def get_init_state(
         self, message_history: Optional[list[Message]] = None
@@ -162,7 +137,7 @@ class RetailUserSimulator(BaseUser):
             # Handle different response types
             if isinstance(response, str):
                 # Simple text response
-                user_message = UserMessage(content=response)
+                user_message = UserMessage(role="user", content=response)
                 
             elif hasattr(response, 'tool_calls') and response.tool_calls:
                 # Response with tool calls
@@ -180,7 +155,7 @@ class RetailUserSimulator(BaseUser):
                 
             else:
                 # Standard message response
-                user_message = UserMessage(content=response.content or "")
+                user_message = UserMessage(role="user", content=response.content or "")
 
             # Create updated state
             updated_state = UserState(
@@ -193,7 +168,7 @@ class RetailUserSimulator(BaseUser):
         except Exception as e:
             logger.error(f"Error generating user response: {e}")
             # Fallback response
-            user_message = UserMessage(content="I'm having trouble responding. Could you please repeat that?")
+            user_message = UserMessage(role="user", content="I'm having trouble responding. Could you please repeat that?")
             updated_state = UserState(
                 system_messages=state.system_messages,
                 messages=state.messages + [message, user_message],
