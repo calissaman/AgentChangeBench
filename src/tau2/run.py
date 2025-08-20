@@ -132,6 +132,8 @@ def run_domain(config: RunConfig) -> Results:
         max_concurrency=config.max_concurrency,
         seed=config.seed,
         log_level=config.log_level,
+        gsrt_judge_llm=config.gsrt_judge_llm,
+        gsrt_judge_llm_args=config.gsrt_judge_llm_args,
     )
     metrics = compute_metrics(simulation_results)
     ConsoleDisplay.display_agent_metrics(metrics)
@@ -157,6 +159,8 @@ def run_tasks(
     max_concurrency: int = 1,
     seed: Optional[int] = 300,
     log_level: Optional[str] = "INFO",
+    gsrt_judge_llm: Optional[str] = None,
+    gsrt_judge_llm_args: Optional[dict] = None,
 ) -> Results:
     """
     Runs tasks for a given domain.
@@ -219,6 +223,8 @@ def run_tasks(
         max_errors=max_errors,
         seed=seed,
     )
+    info.gsrt_judge_llm = gsrt_judge_llm
+    info.gsrt_judge_llm_args = gsrt_judge_llm_args
     simulation_results = Results(
         info=info,
         tasks=tasks,
@@ -326,6 +332,19 @@ def run_tasks(
                 seed=seed,
             )
             simulation.trial = trial
+            # Compute and persist GSRT v2 judge output so it's saved in JSON
+            try:
+                from tau2.metrics.gsrt_v2 import detect_gsrt_v2
+                judge_model = gsrt_judge_llm or "gpt-5"
+                judge_args = gsrt_judge_llm_args or {"temperature": 0.0}
+                res = detect_gsrt_v2(task, simulation, model=judge_model, llm_args=judge_args)
+                if simulation.reward_info is not None:
+                    if simulation.reward_info.info is None:
+                        simulation.reward_info.info = {}
+                    if isinstance(simulation.reward_info.info, dict):
+                        simulation.reward_info.info["gsrt_v2"] = res
+            except Exception as e:
+                logger.warning(f"GSRT v2 judge failed for task {task.id}: {e}")
             if console_display:
                 ConsoleDisplay.display_simulation(simulation, show_details=False)
             _save(simulation)

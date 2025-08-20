@@ -278,6 +278,27 @@ class ConsoleDisplay:
             table.add_column("Details", style="yellow")
             table.add_column("Turn", style="yellow", no_wrap=True)
 
+            # Build GSRT v2 markers if cached
+            gsrt_markers = {}
+            if simulation.reward_info and simulation.reward_info.info:
+                info = simulation.reward_info.info
+                if isinstance(info, dict) and "gsrt_v2" in info:
+                    try:
+                        data = info["gsrt_v2"]
+                        start_goal = data.get("start_goal") or {}
+                        if isinstance(start_goal, dict) and isinstance(start_goal.get("turn"), int):
+                            gsrt_markers.setdefault(start_goal["turn"], []).append(
+                                f"[bold yellow]START_GOAL[/]: {start_goal.get('goal')}"
+                            )
+                        for s in data.get("user_goal_shifts", []) or []:
+                            if isinstance(s, dict) and isinstance(s.get("turn"), int):
+                                label = f"[bold yellow]GOAL_SHIFT[/]: {s.get('from')} → {s.get('to')}"
+                                if s.get("agent_responded") and isinstance(s.get("agent_turn"), int):
+                                    label += f" (agent@{s.get('agent_turn')})"
+                                gsrt_markers.setdefault(int(s["turn"]), []).append(label)
+                    except Exception:
+                        pass
+
             current_turn = None
             for msg in simulation.messages:
                 content = msg.content if msg.content is not None else ""
@@ -316,6 +337,13 @@ class ConsoleDisplay:
                     details = f"[{content_style}]Tool ID: {msg.id}. Requestor: {msg.requestor}[/]"
                     if msg.error:
                         details += " [bold red](Error)[/]"
+
+                # Append GSRT markers for this turn if any
+                if isinstance(msg, UserMessage) and isinstance(msg.turn_idx, int):
+                    for marker in gsrt_markers.get(msg.turn_idx, []) or []:
+                        if details:
+                            details += "\n"
+                        details += marker
 
                 # Add empty row between turns
                 if current_turn is not None and msg.turn_idx != current_turn:

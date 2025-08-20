@@ -16,29 +16,63 @@ from tau2.data_model.tasks import Task
 
 def detect_goal_shifts(messages: List[Message]) -> List[GoalShift]:
     """
-    Parse messages to find <meta>GOAL_SHIFT</meta> tags and extract goal shifts.
-    
-    Args:
-        messages: List of conversation messages
-        
-    Returns:
-        List of detected goal shifts with turn indices
+    Detect user-initiated GOAL_SHIFT events.
+    - Prefer parsed v2 meta from message.meta_event
+    - Fallback: parse first line of original_content/content with v2 grammar
+    - Count only user turns
     """
-    goal_shifts = []
-    
+    goal_shifts: List[GoalShift] = []
+
+    # Lazy import to avoid circulars
+    from tau2.meta.grammar import parse_meta_line
+
     for i, msg in enumerate(messages):
-        if not msg.content:
+        # Only user turns initiate shifts for GSRT
+        if getattr(msg, "role", None) != "user":
             continue
-            
-        # Look for meta tags in message content
-        if "<meta>GOAL_SHIFT</meta>" in msg.content:
-            goal_shift = GoalShift(
-                turn_index=i,
-                shift_type="GOAL_SHIFT",
-                metadata={"message_role": msg.role, "turn_idx": msg.turn_idx}
-            )
-            goal_shifts.append(goal_shift)
-    
+
+        # 1) Prefer parsed meta_event if present
+        meta = getattr(msg, "meta_event", None)
+        if meta is not None:
+            try:
+                # meta may be a dict or a MetaEvent instance
+                event = meta.get("event") if isinstance(meta, dict) else getattr(meta, "event", None)
+                if event == "GOAL_SHIFT":
+                    goal_shifts.append(
+                        GoalShift(
+                            turn_index=i,
+                            shift_type="GOAL_SHIFT",
+                            metadata={
+                                "message_role": msg.role,
+                                "turn_idx": getattr(msg, "turn_idx", i),
+                                "raw": getattr(meta, "raw", None) if not isinstance(meta, dict) else meta.get("raw"),
+                            },
+                        )
+                    )
+                    continue
+            except Exception:
+                # If malformed, fall through to parsing fallback
+                pass
+
+        # 2) Fallback: parse the first line of original_content/content
+        raw_text = getattr(msg, "original_content", None) or getattr(msg, "content", None) or ""
+        first_line = raw_text.splitlines()[0].strip() if raw_text else ""
+        if first_line.startswith("<meta>") and first_line.endswith("</meta>"):
+            parsed, err = parse_meta_line(first_line)
+            if parsed is not None and parsed.get("event") == "GOAL_SHIFT":
+                goal_shifts.append(
+                    GoalShift(
+                        turn_index=i,
+                        shift_type="GOAL_SHIFT",
+                        metadata={
+                            "message_role": msg.role,
+                            "turn_idx": getattr(msg, "turn_idx", i),
+                            "raw": first_line,
+                            "parse_error": err,
+                        },
+                    )
+                )
+
     return goal_shifts
 
 
