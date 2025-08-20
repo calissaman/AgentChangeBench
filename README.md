@@ -50,7 +50,7 @@ $\tau^2$-bench requires Python 3.10 or higher. You may create and activate a new
 Use [`uv`](https://docs.astral.sh/uv/getting-started/installation/) to create a new environment and install the dependencies.
 
 ```bash
-uv sync
+uv sync 
 ```
 
 This will install all dependencies and enable you to run the `tau2` command.
