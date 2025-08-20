@@ -113,7 +113,9 @@ class BankingTools(ToolKitBase):
     def _assert_customer_owns_account(self, customer_id: str, account_id: str) -> None:
         c = self._get_customer_by_id(customer_id)
         if account_id not in c.account_ids:
-            raise ValueError(f"Account {account_id} is not owned by customer {customer_id}")
+            raise ValueError(
+                f"Account {account_id} is not owned by customer {customer_id}"
+            )
 
     def _assert_customer_owns_payee(self, customer_id: str, payee_id: str) -> None:
         c = self._get_customer_by_id(customer_id)
@@ -201,7 +203,9 @@ class BankingTools(ToolKitBase):
     # ----------------------------
 
     @is_tool(ToolType.WRITE)
-    def add_payee(self, customer_id: str, name: str, deliver_type: str = "electronic") -> Dict[str, Any]:
+    def add_payee(
+        self, customer_id: str, name: str, deliver_type: str = "electronic"
+    ) -> Dict[str, Any]:
         """
         Add a bill pay payee for the customer. New payees are considered verified for this simulator.
         """
@@ -250,8 +254,13 @@ class BankingTools(ToolKitBase):
 
         # Enforce single awaiting-request per customer
         for r in self.db.payment_requests:
-            if r.customer_id == customer_id and r.status == PaymentRequestStatus.AWAITING_PAYMENT:
-                raise ValueError("Another payment request is already Awaiting Payment for this customer")
+            if (
+                r.customer_id == customer_id
+                and r.status == PaymentRequestStatus.AWAITING_PAYMENT
+            ):
+                raise ValueError(
+                    "Another payment request is already Awaiting Payment for this customer"
+                )
 
         rid = IDGenerator.random_id("PR")
         pr = PaymentRequest(
@@ -307,7 +316,11 @@ class BankingTools(ToolKitBase):
         if acct.available_balance < pr.amount:
             pr.status = PaymentRequestStatus.FAILED
             logger.warning(f"Payment {request_id} failed: insufficient funds")
-            return {"request_id": request_id, "status": pr.status, "reason": "insufficient_funds"}
+            return {
+                "request_id": request_id,
+                "status": pr.status,
+                "reason": "insufficient_funds",
+            }
 
         # Debit account
         acct.available_balance -= pr.amount
@@ -338,7 +351,11 @@ class BankingTools(ToolKitBase):
         Cancel a payment request if not settled.
         """
         pr = self._get_request(request_id)
-        if pr.status in (PaymentRequestStatus.SETTLED, PaymentRequestStatus.FAILED, PaymentRequestStatus.CANCELED):
+        if pr.status in (
+            PaymentRequestStatus.SETTLED,
+            PaymentRequestStatus.FAILED,
+            PaymentRequestStatus.CANCELED,
+        ):
             # Idempotent cancel; do nothing if already terminal (except Settled)
             if pr.status == PaymentRequestStatus.SETTLED:
                 raise ValueError("Cannot cancel a settled payment")
@@ -346,7 +363,6 @@ class BankingTools(ToolKitBase):
         pr.status = PaymentRequestStatus.CANCELED
         logger.info(f"Payment request {request_id} canceled")
         return {"request_id": request_id, "status": pr.status}
-
 
     @is_tool(ToolType.WRITE)
     def lock_card(self, card_id: str, reason: Optional[str] = None) -> Dict[str, Any]:
@@ -372,9 +388,10 @@ class BankingTools(ToolKitBase):
         logger.info(f"Card {card_id} unlocked")
         return {"card_id": card_id, "status": card.status}
 
-
     @is_tool(ToolType.WRITE)
-    def file_dispute(self, account_id: str, tx_id: str, reason_code: str) -> Dict[str, Any]:
+    def file_dispute(
+        self, account_id: str, tx_id: str, reason_code: str
+    ) -> Dict[str, Any]:
         """
         File a transaction dispute. Transaction is marked as Disputed.
         """
@@ -388,7 +405,11 @@ class BankingTools(ToolKitBase):
         if tx is None:
             raise ValueError(f"Transaction {tx_id} not found for account {account_id}")
 
-        tx.status = TransactionStatus.PENDING if tx.status == TransactionStatus.PENDING else TransactionStatus.POSTED
+        tx.status = (
+            TransactionStatus.PENDING
+            if tx.status == TransactionStatus.PENDING
+            else TransactionStatus.POSTED
+        )
         tx.status = TransactionStatus.DISPUTED
 
         dispute_id = IDGenerator.random_id("DP")
@@ -410,7 +431,6 @@ class BankingTools(ToolKitBase):
         Get dispute details.
         """
         return self._get_dispute(dispute_id)
-
 
     @is_tool(ToolType.GENERIC)
     def log_shift_event(
@@ -437,7 +457,9 @@ class BankingTools(ToolKitBase):
         return {"logged": True, "count": len(self._shift_events)}
 
     @is_tool(ToolType.GENERIC)
-    def park_task(self, current_task_id: str, resume_hint: Optional[str] = None) -> Dict[str, Any]:
+    def park_task(
+        self, current_task_id: str, resume_hint: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Park the current task and return a parked_task_id that can be resumed later.
         """
@@ -461,7 +483,6 @@ class BankingTools(ToolKitBase):
         logger.info(f"Task resumed {parked_task_id}")
         return {"status": "Resumed", "metadata": meta}
 
-
     @is_tool(ToolType.GENERIC)
     def transfer_to_human_agents(self, summary: str) -> str:
         """
@@ -469,6 +490,45 @@ class BankingTools(ToolKitBase):
         """
         logger.warning(f"Transfer to human requested: {summary}")
         return "Transfer successful"
+
+    # Assertion methods for task evaluation
+    def assert_any_payment_request_with_status(
+        self,
+        customer_id: str,
+        expected_status: str,
+        min_amount: Optional[float] = None,
+        from_account_id: Optional[str] = None,
+    ) -> bool:
+        """Assert that a payment request exists with the given status and criteria."""
+        for pr in self.db.payment_requests:
+            if pr.customer_id == customer_id and pr.status == expected_status:
+                if min_amount is not None and pr.amount < min_amount:
+                    continue
+                if (
+                    from_account_id is not None
+                    and pr.from_account_id != from_account_id
+                ):
+                    continue
+                return True
+        return False
+
+    def assert_card_status(self, card_id: str, expected: str) -> bool:
+        """Assert that a card has the expected status."""
+        try:
+            card = self._get_card(card_id)
+            return card.status == expected
+        except ValueError:
+            return False
+
+    def assert_shift_event_count_at_least(self, n: int) -> bool:
+        """Assert that at least n shift events have been logged."""
+        return len(self._shift_events) >= n
+
+    def assert_parked_task_exists(self, parked_task_id: str) -> bool:
+        """Assert that a parked task exists (use '*' to check if any exists)."""
+        if parked_task_id == "*":
+            return len(self._parked_tasks) > 0
+        return parked_task_id in self._parked_tasks
 
 
 if __name__ == "__main__":

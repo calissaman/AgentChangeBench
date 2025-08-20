@@ -1,9 +1,11 @@
 import json
+import re
 from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
 from tau2.utils.utils import get_now
+from tau2.meta.schema import MetaEvent
 
 SystemRole = Literal["system"]
 UserRole = Literal["user"]
@@ -94,13 +96,22 @@ class ParticipantMessageBase(BaseModel):
         description="The tool calls made in the message.", default=None
     )
     meta: Optional[dict] = Field(
-        description="Metadata for the message (e.g., GOAL_SHIFT indicators) that is not visible to other participants but preserved in simulation results.", default=None
+        description="Legacy metadata for the message (deprecated - use meta_event).",
+        default=None,
+    )
+    meta_event: Optional["MetaEvent"] = Field(  # Forward reference
+        description="Structured meta event from meta-tags v2 system.", default=None
+    )
+    meta_error: Optional[str] = Field(
+        description="Error message if meta tag parsing failed.", default=None
     )
     display_content: Optional[str] = Field(
-        description="Filtered content for display purposes (without meta tags).", default=None
+        description="Filtered content for display purposes (without meta tags).",
+        default=None,
     )
     original_content: Optional[str] = Field(
-        description="Original content with meta tags preserved for simulation analysis.", default=None
+        description="Original content with meta tags preserved for simulation analysis.",
+        default=None,
     )
     turn_idx: Optional[int] = Field(
         description="The index of the turn in the conversation.", default=None
@@ -149,36 +160,113 @@ class ParticipantMessageBase(BaseModel):
         """
         if self.content is None:
             return None
-        
-        import re
+
         # Remove meta tags and their content
-        filtered_content = re.sub(r'<meta>.*?</meta>', '', self.content, flags=re.DOTALL)
+        filtered_content = re.sub(
+            r"<meta>.*?</meta>", "", self.content, flags=re.DOTALL
+        )
         # Clean up any extra whitespace left behind
-        filtered_content = re.sub(r'\n\s*\n', '\n', filtered_content).strip()
-        
+        filtered_content = re.sub(r"\n\s*\n", "\n", filtered_content).strip()
+
         return filtered_content if filtered_content else None
 
-    def extract_meta_from_content(self) -> Optional[dict]:
+    def extract_meta_from_content(self) -> None:
         """
-        Extract meta information from content tags and return as dictionary.
-        This looks for <meta>content</meta> tags and returns the content as meta.
+        Extract meta information using the new meta-tags v2 system.
+
+        This method:
+        1. Parses the first line for meta tags using the new grammar
+        2. Falls back to legacy migration if needed
+        3. Sets meta_event, meta_error, and filters content appropriately
+        4. Preserves original_content for analysis
+        """
+        if self.content is None:
+            return
+
+        # Import here to avoid circular imports
+        from tau2.meta.grammar import parse_meta_line
+        from tau2.meta.migrations import migrate_legacy_meta, is_legacy_meta_line
+        from tau2.meta.schema import MetaEvent
+
+        # Store original content
+        if self.original_content is None:
+            self.original_content = self.content
+
+        lines = self.content.splitlines()
+        if not lines:
+            return
+
+        first_line = lines[0].strip()
+
+        # Try parsing with new grammar first
+        meta_dict, error = parse_meta_line(first_line)
+
+        # If new parsing failed but this looks like a legacy meta tag, try migration
+        if meta_dict is None and is_legacy_meta_line(first_line):
+            meta_dict, error = migrate_legacy_meta(first_line)
+
+        if meta_dict is not None:
+            # Create MetaEvent from parsed data
+            try:
+                meta_event = MetaEvent(raw=first_line, **meta_dict)
+                self.meta_event = meta_event
+
+                # Check if valid and set error if not
+                if not meta_event.is_valid():
+                    self.meta_error = error or "INVALID_META_FIELDS"
+
+            except Exception as e:
+                self.meta_error = f"META_VALIDATION_ERROR:{str(e)}"
+                # Create a minimal MetaEvent for analysis with safe values
+                try:
+                    safe_dict = {"event": meta_dict.get("event", "UNKNOWN")}
+                    self.meta_event = MetaEvent(
+                        raw=first_line, error=str(e), **safe_dict
+                    )
+                except Exception:
+                    # If even that fails, just store the error
+                    self.meta_event = None
+
+            # Remove the first line (meta tag) from content
+            body = "\n".join(lines[1:]) if len(lines) > 1 else ""
+        else:
+            # No meta tag on first line
+            body = self.content
+            if error and error != "NO_META_OR_BAD_TAG":
+                self.meta_error = error
+
+        # Remove any stray meta tags elsewhere in the content (legacy behavior)
+        # Use a more precise regex that preserves spacing
+        body = re.sub(r"<meta>.*?</meta>", "", body, flags=re.DOTALL)
+
+        # Clean up excessive whitespace but preserve single line breaks
+        body = re.sub(r"\n\s*\n\s*\n", "\n\n", body)  # Multiple empty lines -> double
+        body = body.strip()
+
+        # Set filtered content
+        self.display_content = body
+        self.content = body
+
+    # Keep legacy method for backward compatibility
+    def extract_meta_from_content_legacy(self) -> Optional[dict]:
+        """
+        Legacy meta extraction method for backward compatibility.
         """
         if self.content is None:
             return None
-            
-        import re
-        meta_match = re.search(r'<meta>(.*?)</meta>', self.content, flags=re.DOTALL)
+
+        meta_match = re.search(r"<meta>(.*?)</meta>", self.content, flags=re.DOTALL)
         if meta_match:
             meta_content = meta_match.group(1).strip()
             # Try to parse as structured data, otherwise just store as text
             try:
                 # If it looks like a simple key:value or just value, parse accordingly
-                if ':' in meta_content:
-                    parts = meta_content.split(':', 1)
+                if ":" in meta_content:
+                    parts = meta_content.split(":", 1)
                     return {parts[0].strip(): parts[1].strip()}
                 else:
                     return {"type": meta_content}
-            except:
+            except:  # noqa: E722
                 return {"content": meta_content}
         return None
 
@@ -195,6 +283,10 @@ class ParticipantMessageBase(BaseModel):
             lines.extend([str(tool_call) for tool_call in self.tool_calls])
         if self.meta is not None:
             lines.append(f"meta: {self.meta}")
+        if self.meta_event is not None:
+            lines.append(f"meta_event: {self.meta_event}")
+        if self.meta_error is not None:
+            lines.append(f"meta_error: {self.meta_error}")
         if self.cost is not None:
             lines.append(f"cost: {self.cost}")
         return "\n".join(lines)
@@ -207,6 +299,7 @@ class ParticipantMessageBase(BaseModel):
             and self.content == other.content
             and self.tool_calls == other.tool_calls
             and self.meta == other.meta
+            and self.meta_event == other.meta_event
         )
 
 
@@ -283,3 +376,7 @@ APICompatibleMessage = SystemMessage | AssistantMessage | UserMessage | ToolMess
 Message = (
     SystemMessage | AssistantMessage | UserMessage | ToolMessage | MultiToolMessage
 )
+
+# Forward reference resolution for MetaEvent
+
+ParticipantMessageBase.model_rebuild()

@@ -173,6 +173,11 @@ class Environment:
             tool_kit = self.tools
         else:
             raise ValueError(f"Invalid environment type: {env_type}")
+        if tool_kit is None:
+            logger.warning(
+                f"Skipping env function call '{func_name}' for '{env_type}' tools: tool kit not available"
+            )
+            return None
         func = getattr(tool_kit, func_name)
         if func is None:
             raise ValueError(f"Function {func_name} not found in {env_type} tools")
@@ -191,6 +196,13 @@ class Environment:
         if not isinstance(assertion, EnvAssertion):
             raise ValueError(f"Assertion must be an EnvAssertion. Got {assertion}")
         res = self.run_env_function_call(assertion)
+        if res is None:
+            # If the tool kit is missing, treat as failed assertion and raise
+            if raise_assertion_error:
+                raise AssertionError(
+                    assertion.message or f"Assertion failed: {assertion}"
+                )
+            return False
         if not isinstance(res, bool):
             raise ValueError(
                 f"Function {assertion.func_name} returned {type(res)} instead of bool"
@@ -221,11 +233,6 @@ class Environment:
             tool_defs=(
                 get_tool_signatures(self.tools)
                 if self.tools is not None and include_tool_info
-                else None
-            ),
-            user_tool_defs=(
-                get_tool_signatures(self.user_tools)
-                if self.user_tools is not None and include_tool_info
                 else None
             ),
         )
@@ -308,10 +315,15 @@ class Environment:
             return actions
 
         if initialization_data is not None:
-            if initialization_data.agent_data is not None:
+            if initialization_data.agent_data is not None and self.tools is not None:
                 self.tools.update_db(initialization_data.agent_data)
             if initialization_data.user_data is not None:
-                self.user_tools.update_db(initialization_data.user_data)
+                if self.user_tools is not None:
+                    self.user_tools.update_db(initialization_data.user_data)
+                else:
+                    logger.warning(
+                        "Initialization provided user_data but no user_tools available; skipping user DB update."
+                    )
 
         if initialization_actions is not None:
             for action in initialization_actions:

@@ -6,6 +6,8 @@ This document explains how to use the declarative goal shift system for banking 
 
 The banking domain supports declarative goal shifts that can be specified per-task using a structured `goal_shifts` field in the user scenario. The banking user simulator executes natural goal transitions based on conversation flow and mandatory progression rules.
 
+**Note**: Banking users do not have tools. All user information (account balances, card status, transaction details, etc.) is provided through the `known_info` section of the user scenario. Users share this information naturally when asked by the agent.
+
 ## Components
 
 ### 1. User Personas (`user_personas.json`)
@@ -15,14 +17,14 @@ The banking domain supports declarative goal shifts that can be specified per-ta
 
 ### 2. Banking User Policy (`user_policy.md`)  
 - Acts as the system prompt for the banking user simulator
-- Combines tool handling instructions with goal shift capabilities
+- Focuses on information sharing rather than tool usage
 - Includes banking-specific context and behavior guidelines
 - Contains "Internal Goal Sequence System" with mandatory progression rules
 
 ### 3. Banking User Simulator (`user_simulator.py`)
 - Domain-specific user simulator that uses the banking user policy
 - Registered as `banking_user_simulator` in the registry
-- Handles both tools and goal shifts naturally without visible markers
+- Handles goal shifts naturally through conversation without tools
 
 ## Creating Goal Shift Tasks
 
@@ -36,7 +38,7 @@ The banking domain supports declarative goal shifts that can be specified per-ta
     "instructions": {
       "domain": "banking",
       "reason_for_call": "Issues logging in, suspicious card activity",
-      "known_info": "You are Alex Morgan with phone number 555-123-7890, date of birth 1980-04-15, and email alex.morgan@email.com. You have a checking account and an active debit card.",
+      "known_info": "You are Alex Morgan with phone number 555-123-7890, date of birth 1980-04-15, and email alex.morgan@email.com. You have a checking account (account #12345678) with a current balance of $2,847.32. You have an active debit card ending in 4567 that expires 12/2025. You remember seeing a recent charge for $89.99 from 'UNKNOWN MERCHANT XYZ' that you don't recognize from 3 days ago. Your account has 2FA enabled and you usually receive codes via SMS.",
       "unknown_info": "Login reason failure, latest transactions, how to dispute",
       "task_instructions": "Assist the user through login issues, then surface recent transactions and resolve a disputed charge."
     },
@@ -45,6 +47,35 @@ The banking domain supports declarative goal shifts that can be specified per-ta
       "goals": ["authentication", "transactions", "dispute"]
     }
   }
+}
+```
+
+### 2. Information Handling
+
+**Known Information**: Include all relevant details in `known_info`:
+- Personal details (name, phone, email, DOB)
+- Account information (numbers, balances, types)
+- Card details (numbers, expiration, status)
+- Recent transaction information
+- Authentication details (2FA status, PIN)
+- Specific details relevant to the task goals
+
+**Unknown Information**: List in `unknown_info` what the user doesn't know or remember
+
+### 3. Evaluation Criteria
+
+Focus on **agent actions** rather than user tool calls:
+```json
+"evaluation_criteria": {
+  "actions": [
+    {
+      "action_id": "act_1",
+      "requestor": "assistant",
+      "name": "get_customer_by_phone", 
+      "arguments": {"phone_number": "555-123-7890"},
+      "info": "Agent authenticates user using phone number lookup"
+    }
+  ]
 }
 ```
 

@@ -1,4 +1,5 @@
-import os, subprocess
+import os
+import subprocess
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -47,6 +48,7 @@ def run_single(model_env, port_env, dtype_env, tool_parser="hermes", extra_flags
             f"caddy run --config src/vllms/Caddyfile --adapter caddyfile",
         ]
     )
+
 
 
 def run_qwen():

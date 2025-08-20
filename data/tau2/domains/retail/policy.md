@@ -134,3 +134,28 @@ For a delivered order, each item can be exchanged to an available new item of th
 The user must provide a payment method to pay or receive refund of the price difference. If the user provides a gift card, it must have enough balance to cover the price difference.
 
 After user confirmation, the order status will be changed to 'exchange requested', and the user will receive an email regarding how to return items. There is no need to place a new order.
+
+## Goal Shift Detection and Meta Tagging
+
+**CRITICAL**: When you detect that a user is shifting to a new topic or goal during the conversation, you must include a meta tag at the beginning of your response:
+
+`<meta>GOAL_SHIFT</meta>`
+
+**Examples of goal shifts that require meta tagging:**
+- User starts asking about a different retail service (e.g., from order tracking to product returns)
+- User introduces a new issue or concern (e.g., from address update to payment problem)
+- User changes from one type of request to another (e.g., from product inquiry to order cancellation)
+- User shifts from general inquiry to specific action request
+- User brings up an additional concern after partially resolving the first one
+
+**Example response format when handling a goal shift:**
+```
+<meta>GOAL_SHIFT</meta>
+I understand you'd like to return that item as well. Let me help you with that return process...
+```
+
+**Important notes:**
+- The meta tag should only appear at the very beginning of your response
+- Users cannot see meta tags - they are only for simulation tracking
+- Only include the meta tag when you are actively responding to a NEW goal or topic shift
+- Do not include meta tags for follow-up questions on the same topic

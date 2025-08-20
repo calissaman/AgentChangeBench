@@ -278,6 +278,33 @@ class ConsoleDisplay:
             table.add_column("Details", style="yellow")
             table.add_column("Turn", style="yellow", no_wrap=True)
 
+            # Build GSRT v2 markers if cached
+            gsrt_markers = {}
+            if simulation.reward_info and simulation.reward_info.info:
+                info = simulation.reward_info.info
+                if isinstance(info, dict) and "gsrt_v2" in info:
+                    try:
+                        data = info["gsrt_v2"]
+                        start_goal = data.get("start_goal") or {}
+                        if isinstance(start_goal, dict) and isinstance(
+                            start_goal.get("turn"), int
+                        ):
+                            gsrt_markers.setdefault(start_goal["turn"], []).append(
+                                f"[bold yellow]START_GOAL[/]: {start_goal.get('goal')}"
+                            )
+                        for s in data.get("user_goal_shifts", []) or []:
+                            if isinstance(s, dict) and isinstance(s.get("turn"), int):
+                                label = f"[bold yellow]GOAL_SHIFT[/]: {s.get('from')} → {s.get('to')}"
+                                if s.get("agent_responded") and isinstance(
+                                    s.get("agent_turn"), int
+                                ):
+                                    label += f" (agent@{s.get('agent_turn')})"
+                                gsrt_markers.setdefault(int(s["turn"]), []).append(
+                                    label
+                                )
+                    except Exception:
+                        pass
+
             current_turn = None
             for msg in simulation.messages:
                 content = msg.content if msg.content is not None else ""
@@ -317,6 +344,13 @@ class ConsoleDisplay:
                     if msg.error:
                         details += " [bold red](Error)[/]"
 
+                # Append GSRT markers for this turn if any
+                if isinstance(msg, UserMessage) and isinstance(msg.turn_idx, int):
+                    for marker in gsrt_markers.get(msg.turn_idx, []) or []:
+                        if details:
+                            details += "\n"
+                        details += marker
+
                 # Add empty row between turns
                 if current_turn is not None and msg.turn_idx != current_turn:
                     table.add_row("", "", "", "")
@@ -349,6 +383,33 @@ class ConsoleDisplay:
         # Add average agent cost section
         content.append("\n\n💰 Average Cost per Conversation: ", style="bold cyan")
         content.append(f"${metrics.avg_agent_cost:.4f}\n\n")
+
+        # Add AgentChangeBench metrics section
+        content.append("🎯 AgentChangeBench Metrics:", style="bold cyan")
+        content.append(f"\n📊 TSR (Task Success Rate): ", style="bold white")
+        content.append(f"{metrics.tsr:.2%}")
+        content.append(f"\n⚙️  TUE (Tool Usage Efficiency): ", style="bold white")
+        content.append(f"{metrics.tue:.2%}")
+        content.append(f"\n🔄 TCRR (Tool-Call Redundancy Ratio): ", style="bold white")
+        content.append(f"{metrics.tcrr:.2%}")
+        content.append(f"\n🛠️  Total Tool Calls: ", style="bold white")
+        content.append(f"{metrics.num_tool_calls}")
+
+        # Add GSRT metrics
+        content.append(f"\n🔀 GSRT (Goal Shift Recovery Time): ", style="bold white")
+        if hasattr(metrics, "gsrt_num_shifts") and metrics.gsrt_num_shifts > 0:
+            content.append(f"\n  📊 Goal Shifts: {metrics.gsrt_num_shifts}")
+            if hasattr(metrics, "gsrt_median") and metrics.gsrt_median is not None:
+                content.append(
+                    f"\n  📈 Median Recovery: {metrics.gsrt_median:.1f} turns"
+                )
+            if (
+                hasattr(metrics, "gsrt_worst_case")
+                and metrics.gsrt_worst_case is not None
+            ):
+                content.append(f"\n  📉 Worst Case: {metrics.gsrt_worst_case} turns")
+        else:
+            content.append("\n  ❌ No goal shifts detected")
 
         # Create and display panel
         metrics_panel = Panel(

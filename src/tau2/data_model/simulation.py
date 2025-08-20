@@ -153,6 +153,17 @@ class RunConfig(BaseModel):
             default=DEFAULT_LOG_LEVEL,
         ),
     ]
+    gsrt_judge_llm: Annotated[
+        Optional[str],
+        Field(description="Judge model for GSRT v2 (default gpt-5)", default="gpt-5"),
+    ]
+    gsrt_judge_llm_args: Annotated[
+        Optional[dict],
+        Field(
+            description="Judge model args for GSRT v2",
+            default_factory=lambda: {"temperature": 0.0},
+        ),
+    ]
 
     def validate(self) -> None:
         """
@@ -298,6 +309,12 @@ class Info(BaseModel):
     seed: Optional[int] = Field(
         description="The seed used for the simulation.", default=None
     )
+    gsrt_judge_llm: Optional[str] = Field(
+        description="Judge model for GSRT v2.", default=None
+    )
+    gsrt_judge_llm_args: Optional[dict] = Field(
+        description="Judge model args for GSRT v2.", default=None
+    )
 
 
 class TerminationReason(str, Enum):
@@ -392,17 +409,17 @@ class Results(BaseModel):
                 if task.evaluation_criteria is not None
                 else {}
             )
-            num_actions = (
-                eval_metrics["num_agent_actions"] + eval_metrics["num_user_actions"]
-            )
-            if transfer_only(task):
-                num_actions = -1
+            # Robust defaults when evaluation criteria are missing
+            num_agent_actions = eval_metrics.get("num_agent_actions", 0)
+            num_user_actions = eval_metrics.get("num_user_actions", 0)
+            num_actions = num_agent_actions + num_user_actions
+            # transfer-only tasks can be handled elsewhere if needed
             info = {
-                "task_num_agent_actions": eval_metrics["num_agent_actions"],
-                "task_num_user_actions": eval_metrics["num_user_actions"],
+                "task_num_agent_actions": num_agent_actions,
+                "task_num_user_actions": num_user_actions,
                 "task_num_actions": num_actions,
-                "task_num_env_assertions": eval_metrics["num_env_assertions"],
-                "task_num_nl_assertions": eval_metrics["num_nl_assertions"],
+                "task_num_env_assertions": eval_metrics.get("num_env_assertions", 0),
+                "task_num_nl_assertions": eval_metrics.get("num_nl_assertions", 0),
             }
             return info
 

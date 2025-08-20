@@ -30,10 +30,16 @@ class Customer(BaseModelNoExtra):
     )
     account_ids: List[str] = Field(default_factory=list, description="Owned accounts")
     card_ids: List[str] = Field(default_factory=list, description="Linked cards")
-    statement_ids: List[str] = Field(default_factory=list, description="Recent statements")
-    payment_request_ids: List[str] = Field(default_factory=list, description="Bill pay requests")
+    statement_ids: List[str] = Field(
+        default_factory=list, description="Recent statements"
+    )
+    payment_request_ids: List[str] = Field(
+        default_factory=list, description="Bill pay requests"
+    )
     dispute_ids: List[str] = Field(default_factory=list, description="Filed disputes")
-    payee_ids: List[str] = Field(default_factory=list, description="Saved bill pay payees")
+    payee_ids: List[str] = Field(
+        default_factory=list, description="Saved bill pay payees"
+    )
 
 
 class AccountType(str, Enum):
@@ -117,8 +123,12 @@ class Transaction(BaseModelNoExtra):
     timestamp: datetime.datetime = Field(description="Event time")
     type: TransactionType = Field(description="Transaction category")
     amount: float = Field(description="Signed amount in USD")
-    merchant_or_payee: Optional[str] = Field(None, description="Merchant or payee label")
-    status: TransactionStatus = Field(TransactionStatus.POSTED, description="Lifecycle status")
+    merchant_or_payee: Optional[str] = Field(
+        None, description="Merchant or payee label"
+    )
+    status: TransactionStatus = Field(
+        TransactionStatus.POSTED, description="Lifecycle status"
+    )
     reference: Optional[str] = Field(None, description="Optional reference")
 
 
@@ -154,7 +164,9 @@ class PaymentRequest(BaseModelNoExtra):
     status: PaymentRequestStatus = Field(
         PaymentRequestStatus.AWAITING_PAYMENT, description="Status"
     )
-    created_at: datetime.datetime = Field(DEFAULT_START_DATE, description="Creation time")
+    created_at: datetime.datetime = Field(
+        DEFAULT_START_DATE, description="Creation time"
+    )
     expires_at: Optional[datetime.datetime] = Field(None, description="Expiry time")
 
 
@@ -183,9 +195,13 @@ class BankingDB(DB):
     accounts: List[Account] = Field(default_factory=list, description="Accounts")
     cards: List[Card] = Field(default_factory=list, description="Cards")
     statements: List[Statement] = Field(default_factory=list, description="Statements")
-    transactions: List[Transaction] = Field(default_factory=list, description="Transactions")
+    transactions: List[Transaction] = Field(
+        default_factory=list, description="Transactions"
+    )
     payees: List[Payee] = Field(default_factory=list, description="Bill pay payees")
-    payment_requests: List[PaymentRequest] = Field(default_factory=list, description="Bill pay requests")
+    payment_requests: List[PaymentRequest] = Field(
+        default_factory=list, description="Bill pay requests"
+    )
     disputes: List[Dispute] = Field(default_factory=list, description="Disputes")
 
     def get_statistics(self) -> Dict[str, Any]:

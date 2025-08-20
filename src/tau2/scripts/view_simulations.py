@@ -12,6 +12,8 @@ from tau2.data_model.simulation import Results
 from tau2.metrics.agent_metrics import compute_metrics, is_successful
 from tau2.utils.display import ConsoleDisplay
 from tau2.utils.utils import DATA_DIR
+from tau2.utils.ias_manager import get_default_ias_manager
+from tau2.utils.ias_interface import IASRatingInterface
 
 
 def get_available_simulations():
@@ -153,6 +155,164 @@ def save_simulation_note(
         writer.writerow(row)
 
 
+def handle_ias_rating(results: Results):
+    """Handle IAS rating workflow."""
+    ias_manager = get_default_ias_manager()
+    ias_interface = IASRatingInterface(ias_manager)
+
+    # Get rater name first
+    rater_name = Prompt.ask("\n[bold cyan]Enter your name/ID for rating[/]")
+    if not rater_name.strip():
+        ConsoleDisplay.console.print("[red]Rater name cannot be empty[/]")
+        return
+
+    # Show list of simulations with IAS status
+    ConsoleDisplay.console.print("\n[bold blue]Simulations Available for Rating:[/]")
+
+    for i, sim in enumerate(results.simulations, 1):
+        # Get IAS rating status
+        summary = ias_manager.get_rating_summary(sim.id)
+        status_text = Text()
+        status_text.append(f"{i}.", style="cyan")
+        status_text.append(f" Task: {sim.task_id}, Trial: {sim.trial}")
+
+        if summary["num_ratings"] == 0:
+            status_text.append(" [red](NOT RATED)[/]", style="red")
+        else:
+            status_text.append(
+                f" [green](Rated by {summary['num_ratings']} raters)[/]", style="green"
+            )
+            if rater_name in summary["raters"]:
+                status_text.append(
+                    " [yellow](You already rated this)[/]", style="yellow"
+                )
+
+        ConsoleDisplay.console.print(status_text)
+
+    # Get simulation selection
+    sim_count = len(results.simulations)
+    sim_index = IntPrompt.ask(f"\nSelect simulation to rate (1-{sim_count})", default=1)
+
+    if not (1 <= sim_index <= sim_count):
+        ConsoleDisplay.console.print("[red]Invalid simulation number[/]")
+        return
+
+    sim = results.simulations[sim_index - 1]
+    task = find_task_by_id(results.tasks, sim.task_id)
+
+    if not task:
+        ConsoleDisplay.console.print(
+            f"[red]Could not find task for simulation {sim.id}[/]"
+        )
+        return
+
+    # Conduct the rating
+    rating = ias_interface.conduct_rating(sim, task, rater_name)
+
+    if rating:
+        try:
+            ias_manager.add_rating(rating)
+            ConsoleDisplay.console.print(
+                "\n[bold green]✅ Rating saved successfully![/]"
+            )
+        except Exception as e:
+            ConsoleDisplay.console.print(f"\n[red]❌ Error saving rating: {e}[/]")
+    else:
+        ConsoleDisplay.console.print("\n[yellow]Rating cancelled[/]")
+
+
+def handle_view_ias_ratings(results: Results):
+    """Handle viewing IAS ratings."""
+    ias_manager = get_default_ias_manager()
+    ias_interface = IASRatingInterface(ias_manager)
+
+    # Show overview of all ratings
+    ConsoleDisplay.console.print("\n[bold blue]IAS Ratings Overview:[/]")
+
+    rated_sims = 0
+    total_ratings = 0
+
+    for i, sim in enumerate(results.simulations, 1):
+        summary = ias_manager.get_rating_summary(sim.id)
+
+        if summary["num_ratings"] > 0:
+            rated_sims += 1
+            total_ratings += summary["num_ratings"]
+
+            status_text = Text()
+            status_text.append(f"{i}.", style="cyan")
+            status_text.append(f" Task: {sim.task_id}, Trial: {sim.trial}")
+            status_text.append(f" - {summary['num_ratings']} ratings")
+            if summary["average_score"]:
+                status_text.append(f" (avg: {summary['average_score']:.2f}/5.0)")
+
+            ConsoleDisplay.console.print(status_text)
+
+    if rated_sims == 0:
+        ConsoleDisplay.console.print("[yellow]No IAS ratings found[/]")
+        return
+
+    ConsoleDisplay.console.print(
+        f"\n[bold white]Summary: {rated_sims}/{len(results.simulations)} simulations rated, {total_ratings} total ratings[/]"
+    )
+
+    # Ask if user wants to see details for a specific simulation
+    if (
+        Prompt.ask(
+            "\nView detailed ratings for a specific simulation? (y/n)", default="n"
+        ).lower()
+        == "y"
+    ):
+        sim_index = IntPrompt.ask(
+            f"Enter simulation number (1-{len(results.simulations)})", default=1
+        )
+
+        if 1 <= sim_index <= len(results.simulations):
+            sim = results.simulations[sim_index - 1]
+            ias_interface.show_rating_summary(sim.id)
+
+            # Show individual ratings
+            ratings = ias_manager.get_ratings_for_simulation(sim.id)
+            for rating in ratings:
+                ConsoleDisplay.console.print(
+                    f"\n[bold cyan]Rating by {rating.rater_name}:[/]"
+                )
+                ConsoleDisplay.console.print(
+                    f"Overall Score: {rating.overall_score:.2f}/5.0"
+                )
+                ConsoleDisplay.console.print(f"Tone Match: {rating.tone_match.score}/5")
+                ConsoleDisplay.console.print(f"Clarity: {rating.clarity.score}/5")
+                ConsoleDisplay.console.print(f"Pacing: {rating.pacing.score}/5")
+                ConsoleDisplay.console.print(f"Adaptivity: {rating.adaptivity.score}/5")
+                if rating.overall_notes:
+                    ConsoleDisplay.console.print(f"Notes: {rating.overall_notes}")
+
+
+def handle_agent_metrics_with_ias(results: Results):
+    """Handle displaying agent metrics with IAS options."""
+    ConsoleDisplay.console.clear()
+    metrics = compute_metrics(results)
+    ConsoleDisplay.display_agent_metrics(metrics)
+
+    # Add IAS options
+    ConsoleDisplay.console.print("\n[bold blue]IAS Options:[/]")
+    ConsoleDisplay.console.print("1. Rate a specific simulation")
+    ConsoleDisplay.console.print("2. View all IAS ratings")
+    ConsoleDisplay.console.print("3. Back to main menu")
+
+    choice = Prompt.ask(
+        "\nWhat would you like to do with IAS ratings?",
+        choices=["1", "2", "3"],
+        default="3",
+    )
+
+    if choice == "1":
+        handle_ias_rating(results)
+    elif choice == "2":
+        handle_view_ias_ratings(results)
+    # No else: Back to main menu
+
+
 def main(
     sim_file: Optional[str] = None,
     only_show_failed: bool = False,
@@ -181,7 +341,9 @@ def main(
         )
         if results:
             ConsoleDisplay.console.print("2. View agent performance metrics")
-            ConsoleDisplay.console.print("   [dim]Display agent performance metrics[/]")
+            ConsoleDisplay.console.print(
+                "   [dim]Display agent performance metrics and IAS ratings[/]"
+            )
             ConsoleDisplay.console.print("3. View simulation")
             ConsoleDisplay.console.print(
                 "   [dim]Examine a specific simulation in detail with all its data[/]"
@@ -233,10 +395,8 @@ def main(
             break
 
         elif results and choice == "2":
-            # Display metrics
-            ConsoleDisplay.console.clear()
-            metrics = compute_metrics(results)
-            ConsoleDisplay.display_agent_metrics(metrics)
+            # Display metrics with IAS options
+            handle_agent_metrics_with_ias(results)
             continue
 
         elif results and choice == "3":
@@ -288,7 +448,7 @@ def main(
                 ConsoleDisplay.console.print("[red]Invalid task number[/]")
                 continue
 
-        else:  # Exit options
+        else:  # Exit options (choice == "5" when results exist, choice == "2" when no results)
             break
 
     ConsoleDisplay.console.print("\n[green]Thanks for using the simulation viewer![/]")

@@ -8,8 +8,14 @@ from typing import Optional
 from loguru import logger
 
 from tau2.agent.llm_agent import LLMAgent, LLMGTAgent, LLMSoloAgent
-from tau2.data_model.simulation import (AgentInfo, Info, Results, RunConfig,
-                                        SimulationRun, UserInfo)
+from tau2.data_model.simulation import (
+    AgentInfo,
+    Info,
+    Results,
+    RunConfig,
+    SimulationRun,
+    UserInfo,
+)
 from tau2.data_model.tasks import Task
 from tau2.environment.environment import Environment, EnvironmentInfo
 from tau2.evaluator.evaluator import EvaluationType, evaluate_simulation
@@ -60,7 +66,9 @@ def get_tasks(
         tasks = load_tasks(task_set_name=task_set_name)
     else:
         tasks = [
-            task for task in load_tasks(task_set_name=task_set_name) if task.id in task_ids
+            task
+            for task in load_tasks(task_set_name=task_set_name)
+            if task.id in task_ids
         ]
     if task_ids is not None and len(tasks) != len(task_ids):
         missing_tasks = set(task_ids) - set([task.id for task in tasks])
@@ -100,13 +108,19 @@ def run_domain(config: RunConfig) -> Results:
         total_num_tasks = len(tasks)
         tasks = [task for task in tasks if LLMGTAgent.check_valid_task(task)]
         num_tasks = len(tasks)
-        console_text = Text(text=f"Running {num_tasks} out of {total_num_tasks} tasks for GT agent.", style="bold green")
+        console_text = Text(
+            text=f"Running {num_tasks} out of {total_num_tasks} tasks for GT agent.",
+            style="bold green",
+        )
         ConsoleDisplay.console.print(console_text)
     if "solo" in config.agent:
         total_num_tasks = len(tasks)
         tasks = [task for task in tasks if LLMSoloAgent.check_valid_task(task)]
         num_tasks = len(tasks)
-        console_text = Text(text=f"Running {num_tasks} out of {total_num_tasks} tasks for solo agent.", style="bold green")
+        console_text = Text(
+            text=f"Running {num_tasks} out of {total_num_tasks} tasks for solo agent.",
+            style="bold green",
+        )
         ConsoleDisplay.console.print(console_text)
 
     num_trials = config.num_trials
@@ -132,6 +146,8 @@ def run_domain(config: RunConfig) -> Results:
         max_concurrency=config.max_concurrency,
         seed=config.seed,
         log_level=config.log_level,
+        gsrt_judge_llm=config.gsrt_judge_llm,
+        gsrt_judge_llm_args=config.gsrt_judge_llm_args,
     )
     metrics = compute_metrics(simulation_results)
     ConsoleDisplay.display_agent_metrics(metrics)
@@ -157,6 +173,8 @@ def run_tasks(
     max_concurrency: int = 1,
     seed: Optional[int] = 300,
     log_level: Optional[str] = "INFO",
+    gsrt_judge_llm: Optional[str] = None,
+    gsrt_judge_llm_args: Optional[dict] = None,
 ) -> Results:
     """
     Runs tasks for a given domain.
@@ -219,6 +237,8 @@ def run_tasks(
         max_errors=max_errors,
         seed=seed,
     )
+    info.gsrt_judge_llm = gsrt_judge_llm
+    info.gsrt_judge_llm_args = gsrt_judge_llm_args
     simulation_results = Results(
         info=info,
         tasks=tasks,
@@ -286,7 +306,10 @@ def run_tasks(
                     ]
                 )
                 simulation_results = prev_simulation_results
-                console_text = Text(text=f"Resuming run from {len(done_runs)} runs. {len(tasks) * num_trials - len(done_runs)} runs remaining.", style="bold yellow")
+                console_text = Text(
+                    text=f"Resuming run from {len(done_runs)} runs. {len(tasks) * num_trials - len(done_runs)} runs remaining.",
+                    style="bold yellow",
+                )
                 ConsoleDisplay.console.print(console_text)
         # Create new save file
         else:
@@ -308,7 +331,10 @@ def run_tasks(
                 json.dump(ckpt, fp, indent=2)
 
     def _run(task: Task, trial: int, seed: int, progress_str: str) -> SimulationRun:
-        console_text = Text(text=f"{progress_str}. Running task {task.id}, trial {trial + 1}", style="bold green")
+        console_text = Text(
+            text=f"{progress_str}. Running task {task.id}, trial {trial + 1}",
+            style="bold green",
+        )
         ConsoleDisplay.console.print(console_text)
         try:
             simulation = run_task(
@@ -326,6 +352,22 @@ def run_tasks(
                 seed=seed,
             )
             simulation.trial = trial
+            # Compute and persist GSRT v2 judge output so it's saved in JSON
+            try:
+                from tau2.metrics.gsrt_v2 import detect_gsrt_v2
+
+                judge_model = gsrt_judge_llm or "gpt-5"
+                judge_args = gsrt_judge_llm_args or {"temperature": 0.0}
+                res = detect_gsrt_v2(
+                    task, simulation, model=judge_model, llm_args=judge_args
+                )
+                if simulation.reward_info is not None:
+                    if simulation.reward_info.info is None:
+                        simulation.reward_info.info = {}
+                    if isinstance(simulation.reward_info.info, dict):
+                        simulation.reward_info.info["gsrt_v2"] = res
+            except Exception as e:
+                logger.warning(f"GSRT v2 judge failed for task {task.id}: {e}")
             if console_display:
                 ConsoleDisplay.display_simulation(simulation, show_details=False)
             _save(simulation)
@@ -338,7 +380,10 @@ def run_tasks(
     for trial in range(num_trials):
         for i, task in enumerate(tasks):
             if (trial, task.id, seeds[trial]) in done_runs:
-                console_text = Text(text=f"Skipping task {task.id}, trial {trial} because it has already been run.", style="bold yellow")
+                console_text = Text(
+                    text=f"Skipping task {task.id}, trial {trial} because it has already been run.",
+                    style="bold yellow",
+                )
                 ConsoleDisplay.console.print(console_text)
                 continue
             progress_str = f"{i}/{len(tasks)} (trial {trial + 1}/{num_trials})"

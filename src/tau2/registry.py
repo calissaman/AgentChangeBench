@@ -8,34 +8,36 @@ from pydantic import BaseModel
 from tau2.agent.base import BaseAgent
 from tau2.agent.llm_agent import LLMAgent, LLMGTAgent, LLMSoloAgent
 from tau2.data_model.tasks import Task
-from tau2.domains.airline.environment import \
-    get_environment as airline_domain_get_environment
-from tau2.domains.airline.environment import \
-    get_tasks as airline_domain_get_tasks
-from tau2.domains.banking.environment import \
-    get_environment as banking_domain_get_environment
-from tau2.domains.banking.environment import \
-    get_tasks as banking_domain_get_tasks
+from tau2.domains.airline.environment import (
+    get_environment as airline_domain_get_environment,
+)
+from tau2.domains.airline.environment import get_tasks as airline_domain_get_tasks
+from tau2.domains.banking.environment import (
+    get_environment as banking_domain_get_environment,
+)
+from tau2.domains.banking.environment import get_tasks as banking_domain_get_tasks
 from tau2.domains.banking.user_simulator import BankingUserSimulator
-from tau2.domains.mock.environment import \
-    get_environment as mock_domain_get_environment
+from tau2.domains.airline.user_simulator import AirlineUserSimulator
+from tau2.domains.retail.user_simulator import RetailUserSimulator
+from tau2.domains.mock.environment import get_environment as mock_domain_get_environment
 from tau2.domains.mock.environment import get_tasks as mock_domain_get_tasks
-from tau2.domains.retail.environment import \
-    get_environment as retail_domain_get_environment
-from tau2.domains.retail.environment import \
-    get_tasks as retail_domain_get_tasks
-from tau2.domains.telecom.environment import \
-    get_environment_manual_policy as \
-    telecom_domain_get_environment_manual_policy
-from tau2.domains.telecom.environment import \
-    get_environment_workflow_policy as \
-    telecom_domain_get_environment_workflow_policy
-from tau2.domains.telecom.environment import \
-    get_tasks as telecom_domain_get_tasks
-from tau2.domains.telecom.environment import \
-    get_tasks_full as telecom_domain_get_tasks_full
-from tau2.domains.telecom.environment import \
-    get_tasks_small as telecom_domain_get_tasks_small
+from tau2.domains.retail.environment import (
+    get_environment as retail_domain_get_environment,
+)
+from tau2.domains.retail.environment import get_tasks as retail_domain_get_tasks
+from tau2.domains.telecom.environment import (
+    get_environment_manual_policy as telecom_domain_get_environment_manual_policy,
+)
+from tau2.domains.telecom.environment import (
+    get_environment_workflow_policy as telecom_domain_get_environment_workflow_policy,
+)
+from tau2.domains.telecom.environment import get_tasks as telecom_domain_get_tasks
+from tau2.domains.telecom.environment import (
+    get_tasks_full as telecom_domain_get_tasks_full,
+)
+from tau2.domains.telecom.environment import (
+    get_tasks_small as telecom_domain_get_tasks_small,
+)
 from tau2.environment.environment import Environment
 from tau2.user.base import BaseUser
 from tau2.user.user_simulator import DummyUser, UserSimulator
@@ -180,6 +182,8 @@ try:
     logger.debug("Registering default components...")
     registry.register_user(UserSimulator, "user_simulator")
     registry.register_user(BankingUserSimulator, "banking_user_simulator")
+    registry.register_user(AirlineUserSimulator, "airline_user_simulator")
+    registry.register_user(RetailUserSimulator, "retail_user_simulator")
     registry.register_user(DummyUser, "dummy_user")
     registry.register_agent(LLMAgent, "llm_agent")
     registry.register_agent(LLMGTAgent, "llm_agent_gt")
@@ -200,6 +204,8 @@ try:
     registry.register_tasks(telecom_domain_get_tasks_small, "telecom_small")
     registry.register_tasks(telecom_domain_get_tasks, "telecom")
     registry.register_tasks(telecom_domain_get_tasks, "telecom-workflow")
-    logger.debug(f"Default components registered successfully. Registry info: {json.dumps(registry.get_info().model_dump(), indent=2)}")
+    logger.debug(
+        f"Default components registered successfully. Registry info: {json.dumps(registry.get_info().model_dump(), indent=2)}"
+    )
 except Exception as e:
     logger.error(f"Error initializing registry: {str(e)}")
