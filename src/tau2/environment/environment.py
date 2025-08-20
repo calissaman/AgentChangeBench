@@ -199,7 +199,9 @@ class Environment:
         if res is None:
             # If the tool kit is missing, treat as failed assertion and raise
             if raise_assertion_error:
-                raise AssertionError(assertion.message or f"Assertion failed: {assertion}")
+                raise AssertionError(
+                    assertion.message or f"Assertion failed: {assertion}"
+                )
             return False
         if not isinstance(res, bool):
             raise ValueError(

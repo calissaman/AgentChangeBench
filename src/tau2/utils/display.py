@@ -286,16 +286,22 @@ class ConsoleDisplay:
                     try:
                         data = info["gsrt_v2"]
                         start_goal = data.get("start_goal") or {}
-                        if isinstance(start_goal, dict) and isinstance(start_goal.get("turn"), int):
+                        if isinstance(start_goal, dict) and isinstance(
+                            start_goal.get("turn"), int
+                        ):
                             gsrt_markers.setdefault(start_goal["turn"], []).append(
                                 f"[bold yellow]START_GOAL[/]: {start_goal.get('goal')}"
                             )
                         for s in data.get("user_goal_shifts", []) or []:
                             if isinstance(s, dict) and isinstance(s.get("turn"), int):
                                 label = f"[bold yellow]GOAL_SHIFT[/]: {s.get('from')} → {s.get('to')}"
-                                if s.get("agent_responded") and isinstance(s.get("agent_turn"), int):
+                                if s.get("agent_responded") and isinstance(
+                                    s.get("agent_turn"), int
+                                ):
                                     label += f" (agent@{s.get('agent_turn')})"
-                                gsrt_markers.setdefault(int(s["turn"]), []).append(label)
+                                gsrt_markers.setdefault(int(s["turn"]), []).append(
+                                    label
+                                )
                     except Exception:
                         pass
 
@@ -388,14 +394,19 @@ class ConsoleDisplay:
         content.append(f"{metrics.tcrr:.2%}")
         content.append(f"\n🛠️  Total Tool Calls: ", style="bold white")
         content.append(f"{metrics.num_tool_calls}")
-        
+
         # Add GSRT metrics
         content.append(f"\n🔀 GSRT (Goal Shift Recovery Time): ", style="bold white")
-        if hasattr(metrics, 'gsrt_num_shifts') and metrics.gsrt_num_shifts > 0:
+        if hasattr(metrics, "gsrt_num_shifts") and metrics.gsrt_num_shifts > 0:
             content.append(f"\n  📊 Goal Shifts: {metrics.gsrt_num_shifts}")
-            if hasattr(metrics, 'gsrt_median') and metrics.gsrt_median is not None:
-                content.append(f"\n  📈 Median Recovery: {metrics.gsrt_median:.1f} turns")
-            if hasattr(metrics, 'gsrt_worst_case') and metrics.gsrt_worst_case is not None:
+            if hasattr(metrics, "gsrt_median") and metrics.gsrt_median is not None:
+                content.append(
+                    f"\n  📈 Median Recovery: {metrics.gsrt_median:.1f} turns"
+                )
+            if (
+                hasattr(metrics, "gsrt_worst_case")
+                and metrics.gsrt_worst_case is not None
+            ):
                 content.append(f"\n  📉 Worst Case: {metrics.gsrt_worst_case} turns")
         else:
             content.append("\n  ❌ No goal shifts detected")

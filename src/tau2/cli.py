@@ -225,7 +225,7 @@ def main():
 
 def run_view_simulations(args):
     from tau2.scripts.view_simulations import main as view_main
-    
+
     view_main(
         sim_file=args.file,
         only_show_failed=args.only_show_failed,

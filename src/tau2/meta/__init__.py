@@ -11,8 +11,8 @@ from .logging import emit_meta_event
 
 __all__ = [
     "parse_meta_line",
-    "MetaEvent", 
+    "MetaEvent",
     "GoalToken",
     "ShiftReason",
-    "emit_meta_event"
-] 
+    "emit_meta_event",
+]

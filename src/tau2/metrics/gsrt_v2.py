@@ -86,15 +86,20 @@ def _build_user_prompt(task: Task, sim: SimulationRun) -> str:
         f"{transcript}\n\n"
         "OUTPUT FORMAT (STRICT)\n"
         "{\n"
-        "  \"start_goal\": {\"turn\": <int>, \"goal\": <token>},\n"
-        "  \"user_goal_shifts\": [\n"
-        "    {\"turn\": <int>, \"from\": <token>, \"to\": <token>, \"type\": \"GOAL_SHIFT\", \"agent_responded\": <bool>, \"agent_turn\": <int or null>}\n"
+        '  "start_goal": {"turn": <int>, "goal": <token>},\n'
+        '  "user_goal_shifts": [\n'
+        '    {"turn": <int>, "from": <token>, "to": <token>, "type": "GOAL_SHIFT", "agent_responded": <bool>, "agent_turn": <int or null>}\n'
         "  ]\n"
         "}\n"
     )
 
 
-def detect_gsrt_v2(task: Task, sim: SimulationRun, model: Optional[str] = None, llm_args: Optional[dict] = None) -> Dict[str, Any]:
+def detect_gsrt_v2(
+    task: Task,
+    sim: SimulationRun,
+    model: Optional[str] = None,
+    llm_args: Optional[dict] = None,
+) -> Dict[str, Any]:
     if model is None:
         model = "gpt-4o-mini"  # lightweight default judge
     if llm_args is None:
@@ -109,7 +114,11 @@ def detect_gsrt_v2(task: Task, sim: SimulationRun, model: Optional[str] = None, 
     try:
         data = json.loads(assistant_message.content)
         # Minimal schema sanity
-        if not isinstance(data, dict) or "user_goal_shifts" not in data or "start_goal" not in data:
+        if (
+            not isinstance(data, dict)
+            or "user_goal_shifts" not in data
+            or "start_goal" not in data
+        ):
             raise ValueError("Bad judge JSON structure")
         shifts = data.get("user_goal_shifts", [])
         if not isinstance(shifts, list):
@@ -117,4 +126,4 @@ def detect_gsrt_v2(task: Task, sim: SimulationRun, model: Optional[str] = None, 
         return data
     except Exception:
         # On judge failure, return empty shifts to avoid breaking metrics
-        return {"start_goal": {"turn": None, "goal": None}, "user_goal_shifts": []} 
+        return {"start_goal": {"turn": None, "goal": None}, "user_goal_shifts": []}

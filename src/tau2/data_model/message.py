@@ -95,7 +95,8 @@ class ParticipantMessageBase(BaseModel):
         description="The tool calls made in the message.", default=None
     )
     meta: Optional[dict] = Field(
-        description="Legacy metadata for the message (deprecated - use meta_event).", default=None
+        description="Legacy metadata for the message (deprecated - use meta_event).",
+        default=None,
     )
     meta_event: Optional["MetaEvent"] = Field(  # Forward reference
         description="Structured meta event from meta-tags v2 system.", default=None
@@ -104,10 +105,12 @@ class ParticipantMessageBase(BaseModel):
         description="Error message if meta tag parsing failed.", default=None
     )
     display_content: Optional[str] = Field(
-        description="Filtered content for display purposes (without meta tags).", default=None
+        description="Filtered content for display purposes (without meta tags).",
+        default=None,
     )
     original_content: Optional[str] = Field(
-        description="Original content with meta tags preserved for simulation analysis.", default=None
+        description="Original content with meta tags preserved for simulation analysis.",
+        default=None,
     )
     turn_idx: Optional[int] = Field(
         description="The index of the turn in the conversation.", default=None
@@ -156,18 +159,20 @@ class ParticipantMessageBase(BaseModel):
         """
         if self.content is None:
             return None
-        
+
         # Remove meta tags and their content
-        filtered_content = re.sub(r'<meta>.*?</meta>', '', self.content, flags=re.DOTALL)
+        filtered_content = re.sub(
+            r"<meta>.*?</meta>", "", self.content, flags=re.DOTALL
+        )
         # Clean up any extra whitespace left behind
-        filtered_content = re.sub(r'\n\s*\n', '\n', filtered_content).strip()
-        
+        filtered_content = re.sub(r"\n\s*\n", "\n", filtered_content).strip()
+
         return filtered_content if filtered_content else None
 
     def extract_meta_from_content(self) -> None:
         """
         Extract meta information using the new meta-tags v2 system.
-        
+
         This method:
         1. Parses the first line for meta tags using the new grammar
         2. Falls back to legacy migration if needed
@@ -176,49 +181,51 @@ class ParticipantMessageBase(BaseModel):
         """
         if self.content is None:
             return
-            
+
         # Import here to avoid circular imports
         from tau2.meta.grammar import parse_meta_line
         from tau2.meta.migrations import migrate_legacy_meta, is_legacy_meta_line
         from tau2.meta.schema import MetaEvent
-        
+
         # Store original content
         if self.original_content is None:
             self.original_content = self.content
-            
+
         lines = self.content.splitlines()
         if not lines:
             return
-            
+
         first_line = lines[0].strip()
-        
+
         # Try parsing with new grammar first
         meta_dict, error = parse_meta_line(first_line)
-        
+
         # If new parsing failed but this looks like a legacy meta tag, try migration
         if meta_dict is None and is_legacy_meta_line(first_line):
             meta_dict, error = migrate_legacy_meta(first_line)
-            
+
         if meta_dict is not None:
             # Create MetaEvent from parsed data
             try:
                 meta_event = MetaEvent(raw=first_line, **meta_dict)
                 self.meta_event = meta_event
-                
+
                 # Check if valid and set error if not
                 if not meta_event.is_valid():
                     self.meta_error = error or "INVALID_META_FIELDS"
-                    
+
             except Exception as e:
                 self.meta_error = f"META_VALIDATION_ERROR:{str(e)}"
                 # Create a minimal MetaEvent for analysis with safe values
                 try:
                     safe_dict = {"event": meta_dict.get("event", "UNKNOWN")}
-                    self.meta_event = MetaEvent(raw=first_line, error=str(e), **safe_dict)
+                    self.meta_event = MetaEvent(
+                        raw=first_line, error=str(e), **safe_dict
+                    )
                 except Exception:
                     # If even that fails, just store the error
                     self.meta_event = None
-            
+
             # Remove the first line (meta tag) from content
             body = "\n".join(lines[1:]) if len(lines) > 1 else ""
         else:
@@ -226,15 +233,15 @@ class ParticipantMessageBase(BaseModel):
             body = self.content
             if error and error != "NO_META_OR_BAD_TAG":
                 self.meta_error = error
-        
+
         # Remove any stray meta tags elsewhere in the content (legacy behavior)
         # Use a more precise regex that preserves spacing
-        body = re.sub(r'<meta>.*?</meta>', '', body, flags=re.DOTALL)
-        
+        body = re.sub(r"<meta>.*?</meta>", "", body, flags=re.DOTALL)
+
         # Clean up excessive whitespace but preserve single line breaks
-        body = re.sub(r'\n\s*\n\s*\n', '\n\n', body)  # Multiple empty lines -> double
+        body = re.sub(r"\n\s*\n\s*\n", "\n\n", body)  # Multiple empty lines -> double
         body = body.strip()
-        
+
         # Set filtered content
         self.display_content = body
         self.content = body
@@ -246,15 +253,15 @@ class ParticipantMessageBase(BaseModel):
         """
         if self.content is None:
             return None
-            
-        meta_match = re.search(r'<meta>(.*?)</meta>', self.content, flags=re.DOTALL)
+
+        meta_match = re.search(r"<meta>(.*?)</meta>", self.content, flags=re.DOTALL)
         if meta_match:
             meta_content = meta_match.group(1).strip()
             # Try to parse as structured data, otherwise just store as text
             try:
                 # If it looks like a simple key:value or just value, parse accordingly
-                if ':' in meta_content:
-                    parts = meta_content.split(':', 1)
+                if ":" in meta_content:
+                    parts = meta_content.split(":", 1)
                     return {parts[0].strip(): parts[1].strip()}
                 else:
                     return {"type": meta_content}
@@ -371,4 +378,5 @@ Message = (
 
 # Forward reference resolution for MetaEvent
 from tau2.meta.schema import MetaEvent
+
 ParticipantMessageBase.model_rebuild()

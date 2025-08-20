@@ -159,7 +159,10 @@ class RunConfig(BaseModel):
     ]
     gsrt_judge_llm_args: Annotated[
         Optional[dict],
-        Field(description="Judge model args for GSRT v2", default_factory=lambda: {"temperature": 0.0}),
+        Field(
+            description="Judge model args for GSRT v2",
+            default_factory=lambda: {"temperature": 0.0},
+        ),
     ]
 
     def validate(self) -> None:

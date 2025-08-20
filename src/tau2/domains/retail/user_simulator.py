@@ -1,6 +1,7 @@
 """
 Retail-specific user simulator that uses domain policy as system prompt.
 """
+
 from typing import Optional, Tuple
 
 from loguru import logger
@@ -71,9 +72,7 @@ class RetailUserSimulator(BaseUser):
             retail_user_policy=self.retail_user_policy,
             instructions=self.instructions,
         )
-        
 
-        
         return system_prompt
 
     def get_init_state(
@@ -131,28 +130,26 @@ class RetailUserSimulator(BaseUser):
                 model=self.llm,
                 messages=state.system_messages + state.messages + [message],
                 tools=self.tools,
-                **(self.llm_args or {})
+                **(self.llm_args or {}),
             )
-            
+
             # Handle different response types
             if isinstance(response, str):
                 # Simple text response
                 user_message = UserMessage(role="user", content=response)
-                
-            elif hasattr(response, 'tool_calls') and response.tool_calls:
+
+            elif hasattr(response, "tool_calls") and response.tool_calls:
                 # Response with tool calls
                 tool_calls = [
                     ToolCall(
-                        name=tc.function.name,
-                        arguments=tc.function.arguments,
-                        id=tc.id
-                    ) for tc in response.tool_calls
+                        name=tc.function.name, arguments=tc.function.arguments, id=tc.id
+                    )
+                    for tc in response.tool_calls
                 ]
                 user_message = MultiToolMessage(
-                    content=response.content or "",
-                    tool_calls=tool_calls
+                    content=response.content or "", tool_calls=tool_calls
                 )
-                
+
             else:
                 # Standard message response
                 user_message = UserMessage(role="user", content=response.content or "")
@@ -168,7 +165,10 @@ class RetailUserSimulator(BaseUser):
         except Exception as e:
             logger.error(f"Error generating user response: {e}")
             # Fallback response
-            user_message = UserMessage(role="user", content="I'm having trouble responding. Could you please repeat that?")
+            user_message = UserMessage(
+                role="user",
+                content="I'm having trouble responding. Could you please repeat that?",
+            )
             updated_state = UserState(
                 system_messages=state.system_messages,
                 messages=state.messages + [message, user_message],

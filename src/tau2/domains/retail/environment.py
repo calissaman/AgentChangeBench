@@ -41,7 +41,7 @@ def load_personas() -> dict:
     """Load user personas from the retail domain personas file"""
     try:
         personas_path = DATA_DIR / "tau2" / "domains" / "retail" / "user_personas.json"
-        with open(personas_path, 'r') as f:
+        with open(personas_path, "r") as f:
             return json.load(f)
     except FileNotFoundError:
         return {}
@@ -59,12 +59,12 @@ def inject_persona_data(task_data: dict, personas: dict) -> dict:
 def get_tasks() -> list[Task]:
     with open(RETAIL_TASK_SET_PATH, "r") as fp:
         tasks = json.load(fp)
-    
+
     personas = load_personas()
-    
+
     processed_tasks = []
     for task in tasks:
         task_with_persona = inject_persona_data(task, personas)
         processed_tasks.append(Task.model_validate(task_with_persona))
-    
+
     return processed_tasks

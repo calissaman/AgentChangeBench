@@ -1,6 +1,7 @@
 """
 Airline-specific user simulator that uses domain policy as system prompt.
 """
+
 from typing import Optional, Tuple
 
 from loguru import logger

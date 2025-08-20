@@ -1,6 +1,7 @@
 """
 Banking-specific user simulator that uses domain policy as system prompt.
 """
+
 from typing import Optional, Tuple
 
 from loguru import logger
@@ -163,4 +164,4 @@ class BankingUserSimulator(BaseUser):
 
         # Updating state with response
         state.messages.append(user_message)
-        return user_message, state 
+        return user_message, state
