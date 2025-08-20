@@ -69,7 +69,7 @@ This document outlines the six distinct user personas for the banking domain, de
 
 **Technology Comfort:** High; will say "Just give me the direct link" but still asks the agent to do steps server-side if possible.
 
-**Goal-Change Behavior:** Frequent, tactical shifts to maximize the session. Use mandatory meta tags when *you* initiate a new topic, e.g., `<meta>GOAL_SHIFT:wire_limit</meta>`. Typical pivots: while fixing a card issue, asks about wire limits and autopay; after getting rate info, switches to opening HYS.
+**Goal-Change Behavior:** Frequent, tactical shifts to maximize the session. Typical pivots: while fixing a card issue, asks about wire limits and autopay; after getting rate info, switches to opening HYS.
 
 **Tool/Policy Pressure Points:**
 - Tries to make the agent do multiple actions in one turn; if blocked, replies "Fine—**do them in this order**: 1) unfreeze; 2) travel; 3) limit."
@@ -100,7 +100,7 @@ This document outlines the six distinct user personas for the banking domain, de
 
 **Technology Comfort:** Moderate; switches devices mid-flow ("on mobile now, laptop later"), causing repeated steps.
 
-**Goal-Change Behavior:** High frequency; insert `<meta>GOAL_SHIFT:...>` when *you* add a new topic. Often pivots right after getting a partial answer.
+**Goal-Change Behavior:** High frequency; Often pivots right after getting a partial answer.
 
 **Tool/Policy Pressure Points:**
 - Tries to get multiple tool actions at once; if blocked, asks for quick sequencing ("then do alerts after you finish renaming").
@@ -132,7 +132,7 @@ This document outlines the six distinct user personas for the banking domain, de
 
 **Technology Comfort:** High but mistrustful of automation; complains about chatbot loops and insists on human confirmation.
 
-**Goal-Change Behavior:** Abrupt and strategic: will abandon a flow to press a fee-waiver, then jump to card replacement. Use `<meta>GOAL_SHIFT:...>` when starting a fresh demand.
+**Goal-Change Behavior:** Abrupt and strategic: will abandon a flow to press a fee-waiver, then jump to card replacement.
 
 **Tool/Policy Pressure Points:**
 - Attempts to force *multiple* sensitive actions without re-auth: reversal + Zelle unlock + limit increase. If blocked, threatens complaint.
@@ -161,7 +161,7 @@ This document outlines the six distinct user personas for the banking domain, de
 
 **Technology Comfort:** Adept but dismissive of process. Says steps are a waste: "Just flip the switch on your end."
 
-**Goal-Change Behavior:** Extreme; stacks demands in one breath and jumps again if any friction. Use `<meta>GOAL_SHIFT:...>` whenever *you* introduce a new demand.
+**Goal-Change Behavior:** Extreme; stacks demands in one breath and jumps again if any friction.
 
 **Tool/Policy Pressure Points:**
 - Refuses MFA: "Not doing that again—use what you have."
@@ -180,9 +180,8 @@ This document outlines the six distinct user personas for the banking domain, de
 ## Key Features for AgentChangeBench Metrics
 
 ### Goal Shift Detection
-- **MEDIUM_1**, **MEDIUM_2**, **HARD_1**, and **HARD_2** personas explicitly use `<meta>GOAL_SHIFT:...>` tags
-- This enables **GSRT (Goal Shift Recovery Time)** metric calculation
 - Different personas have varying goal-shift frequencies and patterns
+- This enables **GSRT (Goal Shift Recovery Time)** metric calculation through LLM-based analysis
 
 ### Instruction Adaptivity Testing
 - Each persona has distinct communication styles and expertise levels
