@@ -17,6 +17,7 @@ from tau2.domains.banking.environment import \
 from tau2.domains.banking.environment import \
     get_tasks as banking_domain_get_tasks
 from tau2.domains.banking.user_simulator import BankingUserSimulator
+from tau2.domains.airline.user_simulator import AirlineUserSimulator
 from tau2.domains.mock.environment import \
     get_environment as mock_domain_get_environment
 from tau2.domains.mock.environment import get_tasks as mock_domain_get_tasks
@@ -180,6 +181,7 @@ try:
     logger.debug("Registering default components...")
     registry.register_user(UserSimulator, "user_simulator")
     registry.register_user(BankingUserSimulator, "banking_user_simulator")
+    registry.register_user(AirlineUserSimulator, "airline_user_simulator")
     registry.register_user(DummyUser, "dummy_user")
     registry.register_agent(LLMAgent, "llm_agent")
     registry.register_agent(LLMGTAgent, "llm_agent_gt")

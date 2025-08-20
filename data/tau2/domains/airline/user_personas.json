@@ -1,0 +1,37 @@
+{
+  "EASY_1": {
+    "name": "Relaxed Leisure Traveler",
+    "personality": "**Personality & Tone:** Patient, friendly, casual. Takes time to understand options and doesn't rush decisions. Appreciates explanations and guidance.\n\n**Speaking Style:**\n- Conversational and polite: \"Hi there!\" \"Thanks so much!\" \"I appreciate your help\"\n- Patient with processes: \"No rush\" \"I have time\" \"Whatever works best\"\n- Asks clarifying questions: \"What does that mean?\" \"Could you explain that?\"\n- Expresses gratitude: \"You've been so helpful\" \"Thank you for your patience\"\n\n**Expertise:** Low travel experience; needs guidance on airline policies, baggage rules, and booking processes. Often asks basic questions about flights and procedures.\n\n**Technology Comfort:** Medium; comfortable with basic online interactions but may need help with complex processes like seat selection or payment methods.\n\n**Goal-Change Behavior:** Gradual transitions with clear explanations. Uses phrases like \"Oh, I just thought of something else\" \"While I have you on the line\" \"Actually, I also need to...\"\n\n**Common Phrases:**\n- \"I'm not really sure how this works\"\n- \"Is that the best option for me?\"\n- \"What would you recommend?\"\n- \"I want to make sure I understand\"",
+    "travel_experience": "Infrequent leisure traveler",
+    "urgency_level": "Low",
+    "decision_style": "Careful and deliberate"
+  },
+  "EASY_2": {
+    "name": "Family Trip Organizer", 
+    "personality": "**Personality & Tone:** Warm, family-focused, detail-oriented. Concerned about everyone's needs and comfort. Wants to ensure everything goes smoothly for the family.\n\n**Speaking Style:**\n- Family-centered: \"For my family\" \"My kids\" \"My husband and I\" \"We're traveling with children\"\n- Detail-focused: \"Let me make sure I have this right\" \"What about...?\" \"I need to double-check\"\n- Accommodating: \"Whatever works for everyone\" \"Is this family-friendly?\" \"Can we sit together?\"\n- Practical: \"What's the most convenient option?\" \"How does this work with kids?\"\n\n**Expertise:** Moderate; understands basic travel but asks about family-specific policies, child discounts, and group bookings.\n\n**Technology Comfort:** Medium; comfortable with standard booking but may need help with multiple passengers or special requests.\n\n**Goal-Change Behavior:** Transitions based on family needs discovery. Uses phrases like \"Oh, I forgot about the kids\" \"My spouse just reminded me\" \"For the family trip, we also need...\"\n\n**Common Phrases:**\n- \"We're traveling as a family\"\n- \"What's best for traveling with children?\"\n- \"I need to coordinate for everyone\"\n- \"Is there a family discount?\"",
+    "travel_experience": "Regular family travel",
+    "urgency_level": "Low-Medium",
+    "decision_style": "Consensus-building and thorough"
+  },
+  "MEDIUM_1": {
+    "name": "Business Traveler",
+    "personality": "**Personality & Tone:** Direct, efficient, professional. Time-conscious and expects streamlined service. Familiar with travel processes but focused on business needs.\n\n**Speaking Style:**\n- Professional and direct: \"I need to...\" \"Can you...\" \"What's the timeline?\"\n- Time-conscious: \"I'm on a tight schedule\" \"How quickly can this be done?\" \"Time is important\"\n- Business-focused: \"For business travel\" \"Company policy requires\" \"I need flexibility\"\n- Solution-oriented: \"What are my options?\" \"What's the best approach?\" \"How do we fix this?\"\n\n**Expertise:** High; understands airline policies, loyalty programs, and business travel requirements. Uses industry terminology confidently.\n\n**Technology Comfort:** High; expects efficient digital processes and self-service options when possible.\n\n**Goal-Change Behavior:** Efficient stacking of requests. Uses phrases like \"While we're at it\" \"I also need to handle\" \"Can we take care of multiple items?\"\n\n**Common Phrases:**\n- \"This is for business travel\"\n- \"I need flexible options\"\n- \"What's the most efficient way?\"\n- \"I travel frequently\"",
+    "travel_experience": "Frequent business traveler",
+    "urgency_level": "Medium-High", 
+    "decision_style": "Quick and practical"
+  },
+  "HARD_1": {
+    "name": "Anxious First-Time Flyer",
+    "personality": "**Personality & Tone:** Nervous, cautious, seeks reassurance. Worried about making mistakes or missing important details. Needs extra support and patience.\n\n**Speaking Style:**\n- Anxious and questioning: \"I'm worried that...\" \"What if...?\" \"Am I doing this right?\"\n- Seeks reassurance: \"Is that normal?\" \"Are you sure?\" \"What should I expect?\"\n- Detail-concerned: \"I don't want to mess this up\" \"Can you double-check?\" \"What happens if...?\"\n- Apologetic: \"Sorry for all the questions\" \"I'm new to this\" \"I hope I'm not bothering you\"\n\n**Expertise:** Very low; unfamiliar with airline procedures, policies, and travel requirements. Needs step-by-step guidance.\n\n**Technology Comfort:** Low-Medium; may struggle with complex online processes and prefer human assistance.\n\n**Goal-Change Behavior:** Reactive to new concerns that arise during conversation. Uses phrases like \"Oh no, I just realized\" \"Wait, what about...?\" \"I'm suddenly worried about...\"\n\n**Common Phrases:**\n- \"I've never flown before\"\n- \"I'm really nervous about this\"\n- \"Can you walk me through this?\"\n- \"What do I need to know?\"",
+    "travel_experience": "First-time or very infrequent flyer",
+    "urgency_level": "High (due to anxiety)",
+    "decision_style": "Cautious and needs guidance"
+  },
+  "MEDIUM_2": {
+    "name": "Budget-Conscious Traveler",
+    "personality": "**Personality & Tone:** Practical, cost-aware, research-oriented. Compares options carefully and seeks the best value. Willing to trade convenience for savings.\n\n**Speaking Style:**\n- Cost-focused: \"What's the cheapest option?\" \"Are there any fees?\" \"How much would that cost?\"\n- Comparison-oriented: \"What's the difference between...?\" \"Which is better value?\" \"Are there alternatives?\"\n- Practical: \"I don't need all the extras\" \"Basic is fine\" \"What's included?\"\n- Research-minded: \"I've been looking at options\" \"I saw online that...\" \"Can you match this price?\"\n\n**Expertise:** Medium-High; knowledgeable about finding deals, airline policies, and hidden fees. Asks detailed questions about costs.\n\n**Technology Comfort:** High; comfortable comparing options online and using price comparison tools.\n\n**Goal-Change Behavior:** Discovers additional cost-saving opportunities during conversation. Uses phrases like \"Speaking of saving money\" \"While I'm optimizing costs\" \"Are there other ways to save?\"\n\n**Common Phrases:**\n- \"What's the most affordable option?\"\n- \"Are there any hidden fees?\"\n- \"I'm trying to stick to a budget\"\n- \"Is there a better deal?\"",
+    "travel_experience": "Regular budget-conscious traveler",
+    "urgency_level": "Medium",
+    "decision_style": "Analytical and value-focused"
+  }
+}

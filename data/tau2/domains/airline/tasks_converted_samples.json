@@ -1,0 +1,236 @@
+[
+  {
+    "id": "airline_booking_easy_1_soft_001_converted",
+    "description": {
+      "purpose": "Flight booking with goal shift to delayed flight complaint - EASY_1 persona soft shift",
+      "relevant_policies": "Flight booking procedures and delay compensation policy",
+      "notes": "Converted from original task 2. 2-goal soft shift: booking → complaint with relaxed traveler persona."
+    },
+    "user_scenario": {
+      "persona": "**Personality & Tone:** Patient, friendly, casual. Takes time to understand options and doesn't rush decisions. Appreciates explanations and guidance.\n\n**Speaking Style:**\n- Conversational and polite: \"Hi there!\" \"Thanks so much!\" \"I appreciate your help\"\n- Patient with processes: \"No rush\" \"I have time\" \"Whatever works best\"\n- Asks clarifying questions: \"What does that mean?\" \"Could you explain that?\"\n- Expresses gratitude: \"You've been so helpful\" \"Thank you for your patience\"\n\n**Expertise:** Low travel experience; needs guidance on airline policies, baggage rules, and booking processes. Often asks basic questions about flights and procedures.\n\n**Technology Comfort:** Medium; comfortable with basic online interactions but may need help with complex processes like seat selection or payment methods.\n\n**Goal-Change Behavior:** Gradual transitions with clear explanations. Uses phrases like \"Oh, I just thought of something else\" \"While I have you on the line\" \"Actually, I also need to...\"\n\n**Common Phrases:**\n- \"I'm not really sure how this works\"\n- \"Is that the best option for me?\"\n- \"What would you recommend?\"\n- \"I want to make sure I understand\"",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Book a family flight from San Francisco to New York, then discuss a previous delayed flight issue",
+        "known_info": "You are Noah Muller with user ID noah_muller_9847. You need to book for 3 passengers. You recently had a delayed basic economy flight with insurance.",
+        "unknown_info": "Specific delay compensation policies and exact compensation amounts",
+        "task_instructions": "Start by trying to book a flight from SF to NY for 3 passengers. Be patient and ask questions about the process. Halfway through booking, casually mention that you're also frustrated about a delayed flight from your most recent reservation and would like to discuss that too."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "booking",
+          "complaint"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "noah_muller_9847",
+          "has_recent_delayed_flight": true,
+          "delayed_flight_compensation_eligible": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle both booking inquiry and delay complaint",
+        "Agent should offer appropriate compensation for delayed flight",
+        "Agent should verify user details and reservation information"
+      ]
+    }
+  },
+  {
+    "id": "airline_cancellation_medium_1_single_001_converted", 
+    "description": {
+      "purpose": "Business traveler cancellation request - MEDIUM_1 persona single goal",
+      "relevant_policies": "Cancellation policies and refund procedures",
+      "notes": "Converted from original task 1. Single goal: cancellation with business traveler efficiency."
+    },
+    "user_scenario": {
+      "persona": "**Personality & Tone:** Direct, efficient, professional. Time-conscious and expects streamlined service. Familiar with travel processes but focused on business needs.\n\n**Speaking Style:**\n- Professional and direct: \"I need to...\" \"Can you...\" \"What's the timeline?\"\n- Time-conscious: \"I'm on a tight schedule\" \"How quickly can this be done?\" \"Time is important\"\n- Business-focused: \"For business travel\" \"Company policy requires\" \"I need flexibility\"\n- Solution-oriented: \"What are my options?\" \"What's the best approach?\" \"How do we fix this?\"\n\n**Expertise:** High; understands airline policies, loyalty programs, and business travel requirements. Uses industry terminology confidently.\n\n**Technology Comfort:** High; expects efficient digital processes and self-service options when possible.\n\n**Goal-Change Behavior:** Efficient stacking of requests. Uses phrases like \"While we're at it\" \"I also need to handle\" \"Can we take care of multiple items?\"\n\n**Common Phrases:**\n- \"This is for business travel\"\n- \"I need flexible options\"\n- \"What's the most efficient way?\"\n- \"I travel frequently\"",
+      "instructions": {
+        "domain": "airline", 
+        "reason_for_call": "Cancel business reservation due to meeting changes",
+        "known_info": "You are Raj Sanchez with user ID raj_sanchez_7340. You have a reservation from Philadelphia to LaGuardia. Customer support previously told you cancellation would be possible.",
+        "unknown_info": "Specific cancellation fees and refund timeline",
+        "task_instructions": "You need to efficiently cancel your reservation. Be direct and professional. If the agent says cancellation isn't possible, mention that customer support already approved it. You only want to proceed if you get a refund."
+      },
+      "goal_shifts": {
+        "required_shifts": 0,
+        "goals": [
+          "cancellation"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "raj_sanchez_7340",
+          "has_reservation": true,
+          "reservation_id": "Q69X3R",
+          "previous_support_contact": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should not approve the cancellation without proper verification",
+        "Agent should check reservation details and cancellation eligibility",
+        "Agent should verify user identity before proceeding"
+      ]
+    }
+  },
+  {
+    "id": "airline_modification_hard_1_hard_001_converted",
+    "description": {
+      "purpose": "Anxious traveler emergency flight change - HARD_1 persona hard shift", 
+      "relevant_policies": "Flight modification policies and emergency procedures",
+      "notes": "New task with hard shift pattern. 3-goal hard shift: inquiry → modification → emergency with anxious first-time flyer."
+    },
+    "user_scenario": {
+      "persona": "**Personality & Tone:** Nervous, cautious, seeks reassurance. Worried about making mistakes or missing important details. Needs extra support and patience.\n\n**Speaking Style:**\n- Anxious and questioning: \"I'm worried that...\" \"What if...?\" \"Am I doing this right?\"\n- Seeks reassurance: \"Is that normal?\" \"Are you sure?\" \"What should I expect?\"\n- Detail-concerned: \"I don't want to mess this up\" \"Can you double-check?\" \"What happens if...?\"\n- Apologetic: \"Sorry for all the questions\" \"I'm new to this\" \"I hope I'm not bothering you\"\n\n**Expertise:** Very low; unfamiliar with airline procedures, policies, and travel requirements. Needs step-by-step guidance.\n\n**Technology Comfort:** Low-Medium; may struggle with complex online processes and prefer human assistance.\n\n**Goal-Change Behavior:** Reactive to new concerns that arise during conversation. Uses phrases like \"Oh no, I just realized\" \"Wait, what about...?\" \"I'm suddenly worried about...\"\n\n**Common Phrases:**\n- \"I've never flown before\"\n- \"I'm really nervous about this\"\n- \"Can you walk me through this?\"\n- \"What do I need to know?\"",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Start with general flight inquiry, then need to modify flight, then discover family emergency",
+        "known_info": "You are Sarah Johnson with user ID sarah_johnson_2456. You're a first-time flyer with an upcoming flight next week. You have a family member who just got hospitalized.",
+        "unknown_info": "How flight changes work, emergency procedures, what documentation is needed",
+        "task_instructions": "Begin by asking general questions about your upcoming flight because you're nervous. Then realize you need to change your flight dates. Finally, discover that there's a family emergency and you need to travel immediately instead. Get increasingly anxious as the situation escalates."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "inquiry",
+          "modification", 
+          "emergency"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "sarah_johnson_2456",
+          "has_upcoming_flight": true,
+          "first_time_flyer": true,
+          "family_emergency": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should provide reassurance and clear explanations for anxious traveler",
+        "Agent should handle escalating situation from inquiry to emergency",
+        "Agent should offer appropriate emergency flight change options",
+        "Agent should guide first-time flyer through complex procedures"
+      ]
+    }
+  },
+  {
+    "id": "airline_booking_medium_2_soft_002_converted",
+    "description": {
+      "purpose": "Budget traveler booking with baggage goal shift - MEDIUM_2 persona soft shift",
+      "relevant_policies": "Flight booking and baggage policies",
+      "notes": "New task with soft shift pattern. 2-goal soft shift: booking → baggage with budget-conscious traveler."
+    },
+    "user_scenario": {
+      "persona": "**Personality & Tone:** Practical, cost-aware, research-oriented. Compares options carefully and seeks the best value. Willing to trade convenience for savings.\n\n**Speaking Style:**\n- Cost-focused: \"What's the cheapest option?\" \"Are there any fees?\" \"How much would that cost?\"\n- Comparison-oriented: \"What's the difference between...?\" \"Which is better value?\" \"Are there alternatives?\"\n- Practical: \"I don't need all the extras\" \"Basic is fine\" \"What's included?\"\n- Research-minded: \"I've been looking at options\" \"I saw online that...\" \"Can you match this price?\"\n\n**Expertise:** Medium-High; knowledgeable about finding deals, airline policies, and hidden fees. Asks detailed questions about costs.\n\n**Technology Comfort:** High; comfortable comparing options online and using price comparison tools.\n\n**Goal-Change Behavior:** Discovers additional cost-saving opportunities during conversation. Uses phrases like \"Speaking of saving money\" \"While I'm optimizing costs\" \"Are there other ways to save?\"\n\n**Common Phrases:**\n- \"What's the most affordable option?\"\n- \"Are there any hidden fees?\"\n- \"I'm trying to stick to a budget\"\n- \"Is there a better deal?\"",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Book budget flight then optimize baggage costs",
+        "known_info": "You are Mike Chen with user ID mike_chen_3344. You're looking for the cheapest flight options and want to understand all fees. You're traveling with one checked bag.",
+        "unknown_info": "Best baggage strategies to save money and all possible hidden fees",
+        "task_instructions": "Start by looking for the most affordable flight options and asking about all fees. Once you find a good deal, shift to optimizing baggage costs and ask about the cheapest way to handle your checked bag."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "booking",
+          "baggage"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "mike_chen_3344",
+          "budget_conscious": true,
+          "has_checked_bag": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should provide clear information about all fees and costs",
+        "Agent should help optimize both flight and baggage costs",
+        "Agent should explain different baggage options and pricing"
+      ]
+    }
+  },
+  {
+    "id": "airline_support_easy_2_soft_003_converted", 
+    "description": {
+      "purpose": "Family traveler seat selection with meal goal shift - EASY_2 persona soft shift",
+      "relevant_policies": "Seat selection and meal service policies",
+      "notes": "New task with soft shift pattern. 2-goal soft shift: seat_selection → meal_service with family-focused traveler."
+    },
+    "user_scenario": {
+      "persona": "**Personality & Tone:** Warm, family-focused, detail-oriented. Concerned about everyone's needs and comfort. Wants to ensure everything goes smoothly for the family.\n\n**Speaking Style:**\n- Family-centered: \"For my family\" \"My kids\" \"My husband and I\" \"We're traveling with children\"\n- Detail-focused: \"Let me make sure I have this right\" \"What about...?\" \"I need to double-check\"\n- Accommodating: \"Whatever works for everyone\" \"Is this family-friendly?\" \"Can we sit together?\"\n- Practical: \"What's the most convenient option?\" \"How does this work with kids?\"\n\n**Expertise:** Moderate; understands basic travel but asks about family-specific policies, child discounts, and group bookings.\n\n**Technology Comfort:** Medium; comfortable with standard booking but may need help with multiple passengers or special requests.\n\n**Goal-Change Behavior:** Transitions based on family needs discovery. Uses phrases like \"Oh, I forgot about the kids\" \"My spouse just reminded me\" \"For the family trip, we also need...\"\n\n**Common Phrases:**\n- \"We're traveling as a family\"\n- \"What's best for traveling with children?\"\n- \"I need to coordinate for everyone\"\n- \"Is there a family discount?\"",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Arrange seating for family trip then ask about meals for children",
+        "known_info": "You are Lisa Thompson with user ID lisa_thompson_5678. You're traveling with your husband and two young children. You have an existing reservation and want to ensure the family sits together.",
+        "unknown_info": "Family seating policies, children's meal options, and special dietary accommodations",
+        "task_instructions": "Start by trying to arrange seating so your family can sit together. Ask about policies for families with young children. Once seating is handled, transition to asking about meal options for the kids and any special dietary needs."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "seat_selection",
+          "meal_service"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "lisa_thompson_5678",
+          "has_family": true,
+          "traveling_with_children": true,
+          "has_existing_reservation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should help arrange family seating preferences",
+        "Agent should provide information about children's meal options",
+        "Agent should explain family-friendly policies and accommodations"
+      ]
+    }
+  }
+]
