@@ -5,6 +5,7 @@ from typing import Literal, Optional
 from pydantic import BaseModel, Field
 
 from tau2.utils.utils import get_now
+from tau2.meta.schema import MetaEvent
 
 SystemRole = Literal["system"]
 UserRole = Literal["user"]
@@ -265,7 +266,7 @@ class ParticipantMessageBase(BaseModel):
                     return {parts[0].strip(): parts[1].strip()}
                 else:
                     return {"type": meta_content}
-            except:
+            except:  # noqa: E722
                 return {"content": meta_content}
         return None
 
@@ -377,6 +378,5 @@ Message = (
 )
 
 # Forward reference resolution for MetaEvent
-from tau2.meta.schema import MetaEvent
 
 ParticipantMessageBase.model_rebuild()

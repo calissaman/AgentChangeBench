@@ -78,6 +78,7 @@ class BankingEnvironment(Environment):
 
         except Exception as e:
             # If sync fails, just continue - user tools will use default values
+            print(f"Error syncing tools: {e}")
             pass
 
 

@@ -1,4 +1,5 @@
-import os, subprocess
+import os
+import subprocess
 from pathlib import Path
 from dotenv import load_dotenv
 
