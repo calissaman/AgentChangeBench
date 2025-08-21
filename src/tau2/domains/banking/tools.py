@@ -129,21 +129,50 @@ class BankingTools(ToolKitBase):
     @is_tool(ToolType.READ)
     def get_customer_by_id(self, customer_id: str) -> Customer:
         """
-        Retrieve a customer by id.
+        Retrieve a customer by their unique customer ID.
+
+        Args:
+            customer_id: The customer ID, such as 'cust_001' or 'cust_101'.
+
+        Returns:
+            The customer details including accounts, cards, and contact information.
+
+        Raises:
+            ValueError: If the customer is not found.
         """
         return self._get_customer_by_id(customer_id)
 
     @is_tool(ToolType.READ)
     def get_customer_by_phone(self, phone_number: str) -> Customer:
         """
-        Retrieve a customer by their primary phone number.
+        Retrieve a customer by their complete registered phone number.
+        
+        Args:
+            phone_number: The complete phone number, such as '+15551234567' or '555-123-7890'. 
+                         Must be the exact full phone number as registered, not partial digits.
+
+        Returns:
+            The customer details including accounts, cards, and contact information.
+
+        Raises:
+            ValueError: If no customer is found with that exact phone number.
         """
         return self._get_customer_by_phone_exact(phone_number)
 
     @is_tool(ToolType.READ)
     def get_customer_by_name(self, full_name: str, dob: str) -> List[Customer]:
         """
-        Search customers by exact full name and DOB (YYYY-MM-DD).
+        Search for customers by their exact full name and date of birth.
+        
+        Args:
+            full_name: The complete full name, such as 'Maria Santos' or 'Alex Morgan'.
+            dob: The date of birth in YYYY-MM-DD format, such as '1986-02-11'.
+
+        Returns:
+            A list of matching customers (usually one, but could be multiple if names match).
+
+        Raises:
+            ValueError: If no customers are found with that name and date of birth.
         """
         matches: List[Customer] = []
         for c in self.db.customers:
@@ -158,7 +187,16 @@ class BankingTools(ToolKitBase):
     @is_tool(ToolType.READ)
     def get_accounts(self, customer_id: str) -> List[Account]:
         """
-        List accounts owned by the customer.
+        Retrieve all accounts owned by a customer.
+
+        Args:
+            customer_id: The customer ID, such as 'cust_001'.
+
+        Returns:
+            A list of all accounts owned by the customer, including checking and savings accounts.
+
+        Raises:
+            ValueError: If the customer is not found.
         """
         c = self._get_customer_by_id(customer_id)
         return [self._get_account(aid) for aid in c.account_ids]
@@ -166,14 +204,33 @@ class BankingTools(ToolKitBase):
     @is_tool(ToolType.READ)
     def get_account(self, account_id: str) -> Account:
         """
-        Get one account.
+        Retrieve details for a specific account.
+
+        Args:
+            account_id: The account ID, such as 'acc_001' or 'acc_101'.
+
+        Returns:
+            The account details including balance, status, and account type.
+
+        Raises:
+            ValueError: If the account is not found.
         """
         return self._get_account(account_id)
 
     @is_tool(ToolType.READ)
     def get_statements(self, account_id: str, limit: int = 12) -> List[Statement]:
         """
-        Return recent statements for an account, newest first.
+        Retrieve recent account statements, newest first.
+
+        Args:
+            account_id: The account ID, such as 'acc_001'.
+            limit: Maximum number of statements to return (default: 12).
+
+        Returns:
+            A list of recent statements for the account, ordered by date (newest first).
+
+        Raises:
+            ValueError: If the account is not found.
         """
         items = [s for s in self.db.statements if s.account_id == account_id]
         items.sort(key=lambda s: s.issue_date, reverse=True)
@@ -188,7 +245,19 @@ class BankingTools(ToolKitBase):
         limit: int = 100,
     ) -> List[Transaction]:
         """
-        Return recent transactions filtered by time window, newest first.
+        Retrieve recent transactions for an account, with optional time filtering.
+
+        Args:
+            account_id: The account ID, such as 'acc_001'.
+            start_time: Optional start date/time for filtering transactions.
+            end_time: Optional end date/time for filtering transactions.
+            limit: Maximum number of transactions to return (default: 100).
+
+        Returns:
+            A list of transactions for the account, ordered by date (newest first).
+
+        Raises:
+            ValueError: If the account is not found.
         """
         txs = [t for t in self.db.transactions if t.account_id == account_id]
         if start_time:
@@ -207,7 +276,19 @@ class BankingTools(ToolKitBase):
         self, customer_id: str, name: str, deliver_type: str = "electronic"
     ) -> Dict[str, Any]:
         """
-        Add a bill pay payee for the customer. New payees are considered verified for this simulator.
+        Add a new bill pay payee for a customer. New payees are automatically verified.
+
+        Args:
+            customer_id: The customer ID, such as 'cust_001'.
+            name: The payee name, such as 'Electric Company' or 'Water Department'.
+            deliver_type: Payment delivery method, either 'electronic' or 'check' (default: 'electronic').
+
+        Returns:
+            A dictionary containing the new payee_id and verification status.
+            Example: {"payee_id": "PY_abc123", "verified": True}
+
+        Raises:
+            ValueError: If the customer is not found or deliver_type is invalid.
         """
         c = self._get_customer_by_id(customer_id)
         try:
@@ -238,11 +319,22 @@ class BankingTools(ToolKitBase):
         expires_at: Optional[datetime] = None,
     ) -> Dict[str, Any]:
         """
-        Create a bill pay payment request and set status to AWAITING_PAYMENT.
-        Checks:
-          - Customer owns the from_account and payee.
-          - No other request in AWAITING_PAYMENT for this customer (policy parity with telecom).
-          - Account is Active.
+        Create a bill payment request and set status to AWAITING_PAYMENT.
+
+        Args:
+            customer_id: The customer ID, such as 'cust_001'.
+            from_account_id: The source account ID, such as 'acc_001'.
+            to_payee_id: The payee ID, such as 'PY_abc123'.
+            amount: The payment amount (must be positive).
+            expires_at: Optional expiration datetime for the payment request.
+
+        Returns:
+            A dictionary containing the request_id and status.
+            Example: {"request_id": "PR_xyz789", "status": "AWAITING_PAYMENT"}
+
+        Raises:
+            ValueError: If customer doesn't own the account/payee, account is inactive,
+                       amount is invalid, or another payment is already awaiting.
         """
         self._assert_customer_owns_account(customer_id, from_account_id)
         self._assert_customer_owns_payee(customer_id, to_payee_id)
@@ -393,7 +485,21 @@ class BankingTools(ToolKitBase):
         self, account_id: str, tx_id: str, reason_code: str
     ) -> Dict[str, Any]:
         """
-        File a transaction dispute. Transaction is marked as Disputed.
+        File a dispute for a specific transaction. The transaction will be marked as disputed.
+
+        Args:
+            account_id: The account ID containing the transaction, such as 'acc_001'.
+            tx_id: The transaction ID to dispute, such as 'tx_12345'.
+            reason_code: The reason for the dispute, such as 'unauthorized', 'incorrect_amount', 
+                        'duplicate_charge', or 'goods_not_received'.
+
+        Returns:
+            A dictionary containing the new dispute_id and status.
+            Example: {"dispute_id": "DP_abc123", "status": "SUBMITTED"}
+
+        Raises:
+            ValueError: If the account or transaction is not found, or if the transaction
+                       doesn't belong to the specified account.
         """
         # Validate account and tx
         _ = self._get_account(account_id)
