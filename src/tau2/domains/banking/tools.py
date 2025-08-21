@@ -1,6 +1,6 @@
 import uuid
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from loguru import logger
@@ -31,15 +31,17 @@ from tau2.domains.banking.data_model import (
 class IDGenerator:
     def __init__(self) -> None:
         self._ctr = defaultdict(int)
+        self._random_ctr = defaultdict(int)
 
     def get_id(self, kind: str, prefix: Optional[str] = None) -> str:
         self._ctr[kind] += 1
         prefix = prefix or kind
         return f"{prefix}_{self._ctr[kind]}"
 
-    @staticmethod
-    def random_id(prefix: str) -> str:
-        return f"{prefix}_{uuid.uuid4().hex[:8]}"
+    def random_id(self, prefix: str) -> str:
+        self._random_ctr[prefix] += 1
+        counter_hex = f"{self._random_ctr[prefix]:08x}"
+        return f"{prefix}_{counter_hex}"
 
 
 def _now() -> datetime:
@@ -61,6 +63,13 @@ class BankingTools(ToolKitBase):
         # Ephemeral stores for research instrumentation
         self._shift_events: List[Dict[str, Any]] = []
         self._parked_tasks: Dict[str, Dict[str, Any]] = {}
+        self._base_time = datetime(2025, 8, 21, 8, 0, 0)  # Fixed base time
+        self._time_counter = 0
+
+    def _now(self) -> datetime:
+        """Generate deterministic timestamps for consistent evaluation."""
+        self._time_counter += 1
+        return self._base_time + timedelta(seconds=self._time_counter)
 
     def _get_customer_by_id(self, customer_id: str) -> Customer:
         for c in self.db.customers:
@@ -296,7 +305,7 @@ class BankingTools(ToolKitBase):
         except Exception:
             raise ValueError("deliver_type must be 'electronic' or 'check'")
 
-        payee_id = IDGenerator.random_id("PY")
+        payee_id = self.idgen.random_id("PY")
         p = Payee(
             payee_id=payee_id,
             customer_id=customer_id,
@@ -354,7 +363,7 @@ class BankingTools(ToolKitBase):
                     "Another payment request is already Awaiting Payment for this customer"
                 )
 
-        rid = IDGenerator.random_id("PR")
+        rid = self.idgen.random_id("PR")
         pr = PaymentRequest(
             request_id=rid,
             origin="agent",
@@ -363,7 +372,7 @@ class BankingTools(ToolKitBase):
             to_payee_id=to_payee_id,
             amount=amount,
             status=PaymentRequestStatus.AWAITING_PAYMENT,
-            created_at=_now(),
+            created_at=self._now(),
             expires_at=expires_at,
         )
         self.db.payment_requests.append(pr)
@@ -419,11 +428,11 @@ class BankingTools(ToolKitBase):
         acct.current_balance -= pr.amount
 
         # Record transaction
-        tx_id = IDGenerator.random_id("TX")
+        tx_id = self.idgen.random_id("TX")
         tx = Transaction(
             tx_id=tx_id,
             account_id=acct.account_id,
-            timestamp=_now(),
+            timestamp=self._now(),
             type=TransactionType.BILLPAY,
             amount=-abs(pr.amount),
             merchant_or_payee=self._get_payee(pr.to_payee_id).name,
@@ -518,14 +527,14 @@ class BankingTools(ToolKitBase):
         )
         tx.status = TransactionStatus.DISPUTED
 
-        dispute_id = IDGenerator.random_id("DP")
+        dispute_id = self.idgen.random_id("DP")
         d = Dispute(
             dispute_id=dispute_id,
             account_id=account_id,
             tx_id=tx_id,
             reason_code=reason_code,
             status=DisputeStatus.SUBMITTED,
-            opened_at=_now(),
+            opened_at=self._now(),
         )
         self.db.disputes.append(d)
         logger.info(f"Dispute filed {dispute_id} for tx {tx_id}")
@@ -551,7 +560,7 @@ class BankingTools(ToolKitBase):
         Record a goal-shift detection event for evaluation.
         """
         evt = {
-            "ts": _now().isoformat(),
+            "ts": self._now().isoformat(),
             "turn_no": turn_no,
             "from_class": from_class,
             "to_class": to_class,
@@ -569,11 +578,11 @@ class BankingTools(ToolKitBase):
         """
         Park the current task and return a parked_task_id that can be resumed later.
         """
-        pid = IDGenerator.random_id("PT")
+        pid = self.idgen.random_id("PT")
         self._parked_tasks[pid] = {
             "task_id": current_task_id,
             "resume_hint": resume_hint,
-            "parked_at": _now().isoformat(),
+            "parked_at": self._now().isoformat(),
         }
         logger.info(f"Task parked {pid}: {self._parked_tasks[pid]}")
         return {"parked_task_id": pid}
