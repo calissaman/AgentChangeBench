@@ -35,17 +35,6 @@
           "customer_id": "cust_101"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "authenticated": false,
-            "phone_number": "555-123-7890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -133,17 +122,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "payment_request_id": "req_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -227,17 +205,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "primary_card_id": "card_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -327,19 +294,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "authenticated": false,
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "primary_account_id": "acc_001",
-            "primary_card_id": "card_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -426,17 +380,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "authenticated": false,
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -518,16 +461,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -609,16 +542,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -705,16 +628,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -807,17 +720,6 @@
           "primary_card_active": true
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "primary_card_id": "card_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -900,17 +802,6 @@
           "primary_card_active": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "primary_card_active": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -985,16 +876,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1081,16 +962,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1176,16 +1047,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1267,16 +1128,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1362,16 +1213,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1453,17 +1294,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1534,17 +1364,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1617,17 +1436,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1697,17 +1505,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1778,17 +1575,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1861,17 +1647,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -1952,17 +1727,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2033,17 +1797,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2127,17 +1880,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2233,17 +1975,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2314,17 +2045,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2408,17 +2128,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2514,17 +2223,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2595,17 +2293,6 @@
           "authenticated": false
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2689,17 +2376,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001",
-            "authenticated": false
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2795,16 +2471,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2875,16 +2541,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -2968,16 +2624,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3073,16 +2719,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3153,16 +2789,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3246,16 +2872,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3351,16 +2967,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3431,16 +3037,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3524,16 +3120,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3629,16 +3215,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3709,16 +3285,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3802,16 +3368,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3907,16 +3463,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -3987,16 +3533,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4080,16 +3616,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4186,16 +3712,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4273,16 +3789,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4373,16 +3879,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4485,16 +3981,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4577,16 +4063,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4682,16 +4158,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4799,16 +4265,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4886,16 +4342,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -4997,16 +4443,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5109,16 +4545,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5201,16 +4627,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5306,16 +4722,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5423,16 +4829,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5510,16 +4906,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5621,16 +5007,6 @@
           "payment_request_id": "req_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5743,16 +5119,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5823,16 +5189,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -5915,16 +5271,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6020,16 +5366,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6100,16 +5436,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6192,16 +5518,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6297,16 +5613,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6377,16 +5683,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6469,16 +5765,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6574,16 +5860,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6654,16 +5930,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6746,16 +6012,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6851,16 +6107,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -6931,16 +6177,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7023,16 +6259,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7128,16 +6354,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7212,16 +6428,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7308,16 +6514,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7413,16 +6609,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7497,16 +6683,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7593,16 +6769,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7698,16 +6864,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7782,16 +6938,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7878,16 +7024,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -7983,16 +7119,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8067,16 +7193,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8163,16 +7279,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8268,16 +7374,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8352,16 +7448,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8448,16 +7534,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8553,16 +7629,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8633,16 +7699,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8726,16 +7782,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8816,16 +7862,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8896,16 +7932,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -8989,16 +8015,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9079,16 +8095,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9159,16 +8165,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9252,16 +8248,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9342,16 +8328,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9422,16 +8398,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9515,16 +8481,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9605,16 +8561,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9685,16 +8631,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9778,16 +8714,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9868,16 +8794,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -9948,16 +8864,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10041,16 +8947,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10146,16 +9042,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10226,16 +9112,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10319,16 +9195,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10424,16 +9290,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10504,16 +9360,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10597,16 +9443,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10702,16 +9538,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10782,16 +9608,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10875,16 +9691,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -10980,16 +9786,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -11060,16 +9856,6 @@
           "primary_account_id": "acc_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
@@ -11153,16 +9939,6 @@
           "primary_card_id": "card_001"
         }
       },
-      "initialization_actions": [
-        {
-          "env_type": "user",
-          "func_name": "update_user",
-          "arguments": {
-            "phone_number": "+1234567890",
-            "customer_id": "cust_001"
-          }
-        }
-      ],
       "message_history": []
     },
     "evaluation_criteria": {
