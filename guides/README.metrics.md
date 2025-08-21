@@ -21,14 +21,30 @@ Metrics now break down by component, task, and failure type to identify specific
 Multi-channel success assessment replacing simple binary thresholding.
 
 ```
-TSR_overall = weighted_average(TSR_completion, TSR_action, TSR_nl)
-TSR_completion = tasks_with_required_strings / total_tasks
-TSR_action = tasks_with_correct_tools / total_tasks  
-TSR_nl = tasks_with_proper_behavior / total_tasks
-OSR = tasks_with_environment_success / total_tasks
+TSR_overall = weighted_average(TSR_communicate_info, TSR_action, TSR_nl)
 ```
 
-Shows overall success rate plus breakdown by component type. OSR provides cross-domain comparison using only environment outcomes.
+```
+TSR_communicate_info = tasks_where_agent_outputted_required_information / total_tasks
+```
+Measures whether agents said the specific numbers or values from communicate_info. This comes from `evaluation_criteria.communicate_info`.
+
+```
+TSR_action = tasks_where_agent_used_correct_tools / total_tasks
+```
+Measures whether agents called the appropriate tools with correct parameters. This comes from `evaluation_criteria.actions`.
+
+```
+TSR_nl = tasks_where_agent_behaved_appropriately / total_tasks  
+```
+Measures whether agents met the behavioral expectations from nl_assertions. This comes from `evaluation_criteria.nl_assertions`.
+
+```
+OSR = tasks_where_environment_reached_expected_state / total_tasks
+```
+Environment-only success rate for cross-domain comparison, ignores agent communication. This comes from `evaluation_criteria.env_assertions`.
+
+**Interpretation**: Overall success rate shows percentage of tasks that achieved acceptable outcomes. OSR provides cross-domain comparison using only environment outcomes.
 
 ### TUE v2 (Tool Usage Efficiency)
 Simplified performance measurement focusing on tool selection and parameter accuracy.
@@ -41,6 +57,8 @@ P_params = valid_parameter_calls / total_tool_calls
 
 Latency component removed since tools are in-memory operations. Cost efficiency placeholder for future real-cost scenarios.
 
+**Interpretation**: Tool correctness shows agent's ability to select appropriate tools from allowed options. Parameter accuracy shows agent's precision in providing correct parameters. Redundancy rate shows how often agents repeat recent tool calls unnecessarily.
+
 ### TCRR v2 (Tool-Call Redundancy Ratio)
 Window-based redundancy detection that only considers recent assistant turns.
 
@@ -50,6 +68,8 @@ redundant_call = same_tool_and_params within last 3 turns
 ```
 
 More lenient than identity-based approach, allowing legitimate re-checking after time has passed.
+
+**Interpretation**: Redundancy rate shows how often agents repeat recent tool calls unnecessarily.
 
 ### GSRT v2 (Goal Shift Recovery Time)
 Multi-variant recovery assessment with task-level breakdown.
@@ -63,18 +83,22 @@ Recovery_rate = successful_recoveries / total_shifts
 
 Three recovery measurements capture different aspects of goal shift handling. Transfer-to-human is not considered acknowledgment.
 
+**Interpretation**: Acknowledgment median shows how quickly agents recognize goal changes. Tool usage median shows how quickly agents start using relevant tools for new goals. Outcome success median shows how quickly agents actually achieve new goals. Transfer-to-human rate shows how often agents give up and transfer instead of adapting.
+
 ### Reward System v2
 Weighted average replacing broken multiplicative combination.
 
 ```
-final_reward = (0.5 × COMPLETION) + (0.3 × ACTION) + (0.2 × NL_ASSERTION)
+final_reward = (0.5 × COMMUNICATE_INFO) + (0.3 × ACTION) + (0.2 × NL_ASSERTION)
 
-COMPLETION = matched_completion_strings / total_completion_strings
+COMMUNICATE_INFO = matched_communicate_info_strings / total_communicate_info_strings
 ACTION = (0.5 × tool_correctness + 0.5 × param_correctness) per action_id
 NL_ASSERTION = met_assertions / total_assertions
 ```
 
-COMPLETION component validates factual accuracy. All components use partial scoring.
+COMMUNICATE_INFO component validates factual accuracy. All components use partial scoring.
+
+**Interpretation**: Communicate_info scores show how well agents communicate required information. Action scores show how well agents select and use appropriate tools. NL assertion scores show how well agents follow behavioral expectations.
 
 ## Complete Metrics Output
 
@@ -92,13 +116,13 @@ COMPLETION component validates factual accuracy. All components use partial scor
   "tsr_v2": {
     "overall": 0.78,
     "by_channel": {
-      "completion": 0.85,
+      "communicate_info": 0.85,
       "action": 0.72,
       "nl_assertion": 0.77
     },
     "osr": 0.81,
     "partial_credit_rates": {
-      "completion_pass_rate": 0.89,
+      "communicate_info_pass_rate": 0.89,
       "action_pass_rate": 0.76,
       "nl_pass_rate": 0.82
     }
@@ -164,10 +188,10 @@ COMPLETION component validates factual accuracy. All components use partial scor
   },
 
   "component_breakdown": {
-    "completion_metrics": {
+    "communicate_info_metrics": {
       "avg_score": 0.85,
       "exact_matches": 0.78,
-      "total_completion_checks": 127
+      "total_communicate_info_checks": 127
     },
     "action_metrics": {
       "avg_score": 0.72,
@@ -187,7 +211,7 @@ COMPLETION component validates factual accuracy. All components use partial scor
         "task_id": "banking_001",
         "success_rate": 0.90,
         "avg_reward": 0.88,
-        "completion_score": 0.95,
+        "communicate_info_score": 0.95,
         "action_score": 0.85,
         "nl_score": 0.82
       },
@@ -195,7 +219,7 @@ COMPLETION component validates factual accuracy. All components use partial scor
         "task_id": "banking_002",
         "success_rate": 0.65,
         "avg_reward": 0.71,
-        "completion_score": 0.78,
+        "communicate_info_score": 0.78,
         "action_score": 0.60,
         "nl_score": 0.75
       }
@@ -204,7 +228,7 @@ COMPLETION component validates factual accuracy. All components use partial scor
 
   "cross_cutting_analysis": {
     "reward_weights_used": {
-      "COMPLETION": 0.5,
+      "COMMUNICATE_INFO": 0.5,
       "ACTION": 0.3,
       "NL_ASSERTION": 0.2
     },
@@ -213,7 +237,7 @@ COMPLETION component validates factual accuracy. All components use partial scor
       "avg_reward_increase": 0.18
     },
     "coverage_statistics": {
-      "tasks_with_completions": 47,
+      "tasks_with_communicate_info": 47,
       "tasks_with_actions": 50,
       "tasks_with_nl_assertions": 48,
       "tasks_with_goal_shifts": 23
@@ -229,30 +253,6 @@ COMPLETION component validates factual accuracy. All components use partial scor
 }
 ```
 
-## Interpretation Guide
-
-### High-Level Success Indicators
-- **overall_success_rate**: Percentage of tasks that achieved acceptable outcomes
-- **avg_reward**: Average weighted score across all reward components
-- **osr**: Environment-only success rate for cross-domain comparison
-
-### Component Performance Analysis
-- **completion scores**: How well agents communicate required information
-- **action scores**: How well agents select and use appropriate tools
-- **nl_assertion scores**: How well agents follow behavioral expectations
-
-### Tool Usage Insights
-- **tool_correctness**: Agent's ability to select appropriate tools from allowed options
-- **parameter_accuracy**: Agent's precision in providing correct parameters
-- **redundancy_rate**: How often agents repeat recent tool calls unnecessarily
-
-### Goal Shift Recovery Patterns
-- **acknowledgment median**: How quickly agents recognize goal changes
-- **tool_usage median**: How quickly agents start using relevant tools for new goals
-- **outcome_success median**: How quickly agents actually achieve new goals
-- **transfer_to_human_rate**: How often agents give up and transfer instead of adapting
-
-### Task-Level Patterns
-Individual task performance breakdown enables identification of consistently difficult tasks and common failure patterns across the domain.
+**Task-Level Patterns**: Individual task performance breakdown enables identification of consistently difficult tasks and common failure patterns across the domain.
 
 This metrics system provides actionable insights for improving agent performance by identifying specific areas of weakness while giving credit for partial progress.
