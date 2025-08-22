@@ -18,8 +18,6 @@ class MetricsConfig:
 
     @classmethod
     def validate_config(cls) -> None:
-        """Validate that all configuration values are sensible."""
-
         tsr_sum = sum(cls.TSR_WEIGHTS.values())
         if abs(tsr_sum - 1.0) > 1e-6:
             raise ValueError(f"TSR weights must sum to 1.0, got {tsr_sum}")
@@ -48,22 +46,18 @@ MetricsConfig.validate_config()
 
 
 def get_tsr_weights() -> Dict[str, float]:
-    """Get TSR channel weights."""
     return MetricsConfig.TSR_WEIGHTS.copy()
 
 
 def get_tue_weights() -> Dict[str, float]:
-    """Get TUE component weights."""
     return MetricsConfig.TUE_WEIGHTS.copy()
 
 
 def get_tcrr_window_size() -> int:
-    """Get TCRR window size."""
     return MetricsConfig.TCRR_WINDOW_SIZE
 
 
 def get_gsrt_judge_config() -> tuple[str, Dict]:
-    """Get GSRT judge model and arguments."""
     return (
         MetricsConfig.GSRT_DEFAULT_JUDGE_MODEL,
         MetricsConfig.GSRT_DEFAULT_JUDGE_ARGS.copy(),

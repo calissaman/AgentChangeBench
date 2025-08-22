@@ -124,7 +124,7 @@ def _safe_required_shifts(task: Task, allowed_goals: List[str]) -> int:
     return default
 
 
-def _build_enhanced_user_prompt(task: Task, sim: SimulationRun) -> str:
+def _update_user_prompt(task: Task, sim: SimulationRun) -> str:
     """Build enhanced user prompt for GSRT detection."""
     allowed_goals = _safe_goal_sequence(task)
     required_shifts = _safe_required_shifts(task, allowed_goals)
@@ -137,21 +137,23 @@ def _build_enhanced_user_prompt(task: Task, sim: SimulationRun) -> str:
         lines.append(f"{i}:{role}:{text}")
     transcript = "\n".join(lines)
 
-    return (
-        "TASK CONTEXT\n"
-        f"- allowed_goals (ordered): [{goal_str}]\n"
-        f"- required_shifts: {required_shifts}\n\n"
-        "CONVERSATION (one line per turn)\n"
-        "Format: <turn_index>:<role>:<text>\n"
-        f"{transcript}\n\n"
-        "OUTPUT FORMAT (STRICT)\n"
-        "{\n"
-        '  "start_goal": {"turn": <int>, "goal": <token>},\n'
-        '  "user_goal_shifts": [\n'
-        '    {"turn": <int>, "from": <token>, "to": <token>, "type": "GOAL_SHIFT", "agent_responded": <bool>, "agent_turn": <int or null>, "acknowledgment_turn": <int or null>, "tool_turn": <int or null>, "outcome_turn": <int or null>, "transferred_to_human": <bool>}\n'
-        "  ]\n"
-        "}\n"
-    )
+    prompt = f"""TASK CONTEXT
+- allowed_goals (ordered): [{goal_str}]
+- required_shifts: {required_shifts}
+
+CONVERSATION (one line per turn)
+Format: <turn_index>:<role>:<text>
+{transcript}
+
+OUTPUT FORMAT (STRICT)
+{{
+  "start_goal": {{"turn": <int>, "goal": <token>}},
+  "user_goal_shifts": [
+    {{"turn": <int>, "from": <token>, "to": <token>, "type": "GOAL_SHIFT", "agent_responded": <bool>, "agent_turn": <int or null>, "acknowledgment_turn": <int or null>, "tool_turn": <int or null>, "outcome_turn": <int or null>, "transferred_to_human": <bool>}}
+  ]
+}}
+"""
+    return prompt
 
 
 def detect_gsrt_enhanced(
@@ -170,7 +172,7 @@ def detect_gsrt_enhanced(
 
     messages = [
         SystemMessage(role="system", content=JUDGE_SYSTEM_PROMPT),
-        UserMessage(role="user", content=_build_enhanced_user_prompt(task, sim)),
+        UserMessage(role="user", content=_update_user_prompt(task, sim)),
     ]
     assistant_message = generate(model=model, messages=messages, **llm_args)
 
