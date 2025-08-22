@@ -780,19 +780,6 @@ class ConsoleDisplay:
                     f"\n    🔢 Total Assertions: {metrics.total_nl_assertions}"
                 )
 
-        # Partial Scoring Impact
-        if hasattr(metrics, "tasks_benefiting_from_partial") and hasattr(
-            metrics, "avg_reward_increase"
-        ):
-            content.append(f"\n\n🎯 Partial Scoring Impact:", style="bold cyan")
-            content.append(
-                f"\n  📈 Tasks Benefiting: {metrics.tasks_benefiting_from_partial}"
-            )
-            content.append(
-                f"\n  ⬆️  Average Reward Increase: {metrics.avg_reward_increase:.2%}"
-            )
-
-        # Create and display panel
         metrics_panel = Panel(
             content,
             title="[bold blue]Agent Metrics",
