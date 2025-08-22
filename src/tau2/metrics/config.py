@@ -3,14 +3,14 @@ from typing import Dict
 
 class MetricsConfig:
     TSR_WEIGHTS: Dict[str, float] = {
-        "communicate_info": 0.5,
-        "action": 0.3,
-        "nl_assertion": 0.2,
+        "communicate_info": 0.2,
+        "action": 0.4,
+        "nl_assertion": 0.4,
     }
     TSR_SUCCESS_THRESHOLD: float = 0.5
     TCRR_WINDOW_SIZE: int = 3
     TUE_WEIGHTS: Dict[str, float] = {"tool_correctness": 0.6, "param_accuracy": 0.4}
-    GSRT_DEFAULT_JUDGE_MODEL: str = "gpt-5"
+    GSRT_DEFAULT_JUDGE_MODEL: str = "gpt-4o-mini"
     GSRT_DEFAULT_JUDGE_ARGS: Dict = {"temperature": 0.0}
 
     METRICS_DISPLAY_PRECISION: int = 2
