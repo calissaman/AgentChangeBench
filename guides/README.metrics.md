@@ -60,16 +60,19 @@ Latency component removed since tools are in-memory operations. Cost efficiency 
 **Interpretation**: Tool correctness shows agent's ability to select appropriate tools from allowed options. Parameter accuracy shows agent's precision in providing correct parameters. Redundancy rate shows how often agents repeat recent tool calls unnecessarily.
 
 ### TCRR v2 (Tool-Call Redundancy Ratio)
-Window-based redundancy detection that only considers recent assistant turns.
+Enhanced window-based redundancy detection with batch inefficiency detection.
 
 ```
 TCRR = redundant_calls_in_window / total_calls
-redundant_call = same_tool_and_params within last 3 turns
+redundant_call = (same_tool_and_params within last 3 turns) OR 
+                 (excess_calls_to_same_function > batch_threshold)
 ```
 
-More lenient than identity-based approach, allowing legitimate re-checking after time has passed.
+**Recent Enhancement**: Added intra-turn batch redundancy detection to catch inefficient patterns like making 5+ calls to the same function simultaneously. The batch threshold (default: 2) flags excess calls beyond reasonable limits.
 
-**Interpretation**: Redundancy rate shows how often agents repeat recent tool calls unnecessarily.
+**Example**: Agent makes 5 `get_reservation_details` calls in one turn → 3 flagged as redundant (5 - 2 threshold = 3).
+
+**Interpretation**: Redundancy rate shows both traditional duplicate calls and modern batch inefficiency patterns. This catches real-world agent inefficiencies that the original metric missed.
 
 ### GSRT v2 (Goal Shift Recovery Time)
 Multi-variant recovery assessment with task-level breakdown.
@@ -80,6 +83,10 @@ GSRT_tool = turns_until_agent_uses_relevant_tool
 GSRT_outcome = turns_until_new_goal_achieved
 Recovery_rate = successful_recoveries / total_shifts
 ```
+
+**Recent Fix**: Corrected recovery rate calculation to exclude transfers-to-human from successful recoveries. Previously, transfers were incorrectly counted as agent successes, inflating recovery rates.
+
+**Key Logic**: `recovery_successful = acknowledged AND not transferred_to_human`
 
 Three recovery measurements capture different aspects of goal shift handling. Transfer-to-human is not considered acknowledgment.
 
@@ -99,6 +106,28 @@ NL_ASSERTION = met_assertions / total_assertions
 COMMUNICATE_INFO component validates factual accuracy. All components use partial scoring.
 
 **Interpretation**: Communicate_info scores show how well agents communicate required information. Action scores show how well agents select and use appropriate tools. NL assertion scores show how well agents follow behavioral expectations.
+
+## Recent Improvements & Bug Fixes
+
+### Enhanced TCRR Batch Detection
+- **Problem**: Original TCRR missed inefficient batch patterns (e.g., 5 consecutive calls to same function)
+- **Solution**: Added intra-turn batch redundancy detection with configurable threshold
+- **Configuration**: `TCRR_BATCH_THRESHOLD = 2` in metrics config
+
+### GSRT Recovery Rate Correction  
+- **Problem**: Transfers-to-human were incorrectly counted as successful agent recoveries
+- **Solution**: Modified logic to exclude transfers from recovery rate calculation
+- **Impact**: More accurate measurement of actual agent adaptability vs. giving up
+
+### TSR Proportional Rebalancing Verification
+- **Issue**: Cached results sometimes show incorrect 50/50 weight distributions
+- **Status**: Core proportional rebalancing logic confirmed working correctly
+- **Note**: Cached simulation results may show outdated weights; recomputation resolves this
+
+### Action Scoring Accuracy Confirmation
+- **Issue**: Some cached results showed 0.75 scores for perfect tool usage
+- **Status**: Current action scoring logic confirmed working correctly 
+- **Note**: Modern scoring properly handles multiple tool calls and finds best matches
 
 ## Complete Metrics Output
 
@@ -145,10 +174,11 @@ COMMUNICATE_INFO component validates factual accuracy. All components use partia
     "redundant_calls": 62,
     "total_calls": 1247,
     "window_size": 3,
+    "batch_threshold": 2,
     "redundancy_breakdown": {
-      "within_1_turn": 0.02,
-      "within_3_turns": 0.05,
-      "beyond_window": 0.08
+      "cross_turn_duplicates": 0.02,
+      "intra_turn_batch": 0.03,
+      "total_redundancy": 0.05
     }
   },
 

@@ -4,7 +4,7 @@ from loguru import logger
 
 from tau2.data_model.message import Message, ToolMessage, AssistantMessage, UserMessage
 from tau2.data_model.simulation import SimulationRun
-from tau2.metrics.config import get_tcrr_window_size
+from tau2.metrics.config import get_tcrr_window_size, get_tcrr_batch_threshold
 
 
 @dataclass
@@ -100,14 +100,15 @@ def extract_tool_calls_with_turns(messages: List[Message]) -> List[ToolCallInfo]
 
 
 def compute_tcrr_windowed(
-    tool_calls: List[ToolCallInfo], window_size: int = 3
+    tool_calls: List[ToolCallInfo], window_size: int = 3, batch_threshold: int = 2
 ) -> TCRRResult:
     """
-    Compute TCRR using window-based approach.
+    Compute TCRR using window-based approach with batch redundancy detection.
 
     Args:
         tool_calls: List of tool calls with turn information
         window_size: Number of previous assistant turns to consider for redundancy
+        batch_threshold: Maximum calls to same function in one turn before flagging as redundant
 
     Returns:
         TCRRResult with redundancy statistics
@@ -172,6 +173,21 @@ def compute_tcrr_windowed(
                     redundant_calls += 1
                     redundant_by_turn[current_turn] += 1
 
+        # Check for intra-turn batch redundancy
+        function_counts = {}
+        for call in current_calls:
+            func_name = call.name
+            if func_name not in function_counts:
+                function_counts[func_name] = 0
+            function_counts[func_name] += 1
+
+        # Flag excess calls beyond reasonable threshold
+        for func_name, count in function_counts.items():
+            if count > batch_threshold:
+                excess_calls = count - batch_threshold
+                redundant_calls += excess_calls
+                redundant_by_turn[current_turn] += excess_calls
+
     redundancy_ratio = redundant_calls / total_calls if total_calls > 0 else 0.0
 
     return TCRRResult(
@@ -184,20 +200,19 @@ def compute_tcrr_windowed(
 
 
 def compute_tcrr(
-    simulations: List[SimulationRun], window_size: Optional[int] = None
+    simulations: List[SimulationRun],
 ) -> Tuple[TCRRResult, Dict[str, TCRRResult]]:
     """
     Compute TCRR for each task separately and return both aggregated and per-task results.
 
     Args:
         simulations: List of simulation runs
-        window_size: Number of previous assistant turns to consider (uses config default if None)
 
     Returns:
         Tuple of (aggregated_result, results_by_task)
     """
-    if window_size is None:
-        window_size = get_tcrr_window_size()
+    window_size = get_tcrr_window_size()
+    batch_threshold = get_tcrr_batch_threshold()
 
     results_by_task = {}
     all_tool_calls = []
@@ -217,8 +232,12 @@ def compute_tcrr(
             tool_calls = extract_tool_calls_with_turns(sim.messages)
             task_tool_calls.extend(tool_calls)
             all_tool_calls.extend(tool_calls)
-        results_by_task[task_id] = compute_tcrr_windowed(task_tool_calls, window_size)
+        results_by_task[task_id] = compute_tcrr_windowed(
+            task_tool_calls, window_size, batch_threshold
+        )
 
-    aggregated_result = compute_tcrr_windowed(all_tool_calls, window_size)
+    aggregated_result = compute_tcrr_windowed(
+        all_tool_calls, window_size, batch_threshold
+    )
 
     return aggregated_result, results_by_task
