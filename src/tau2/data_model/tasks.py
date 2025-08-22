@@ -252,7 +252,7 @@ class EvaluationCriteria(BaseModel):
             default=None,
         ),
     ]
-    
+
     action_sets: Annotated[
         Optional[list[dict]],
         Field(

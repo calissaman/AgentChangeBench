@@ -4,7 +4,12 @@ from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass
 
 from tau2.utils.llm_utils import generate
-from tau2.data_model.message import SystemMessage, UserMessage, Message, AssistantMessage
+from tau2.data_model.message import (
+    SystemMessage,
+    UserMessage,
+    Message,
+    AssistantMessage,
+)
 from tau2.data_model.simulation import SimulationRun
 from tau2.data_model.tasks import Task
 from tau2.metrics.config import get_gsrt_judge_config
@@ -13,6 +18,7 @@ from tau2.metrics.config import get_gsrt_judge_config
 @dataclass
 class GSRTShiftResult:
     """Result for a single goal shift."""
+
     shift_turn: int
     from_goal: str
     to_goal: str
@@ -26,6 +32,7 @@ class GSRTShiftResult:
 @dataclass
 class GSRTTaskResult:
     """GSRT results for a single task."""
+
     task_id: str
     shifts: List[GSRTShiftResult]
     total_shifts: int
@@ -42,6 +49,7 @@ class GSRTTaskResult:
 @dataclass
 class GSRTAggregateResult:
     """Aggregated GSRT results across all tasks."""
+
     by_task: Dict[str, GSRTTaskResult]
     aggregate_median_ack: Optional[float] = None
     aggregate_median_tool: Optional[float] = None
@@ -205,36 +213,36 @@ def compute_gsrt_for_task(
     # Get GSRT detection results
     detection_result = detect_gsrt_enhanced(task, sim, model, llm_args)
     shifts_data = detection_result.get("user_goal_shifts", [])
-    
+
     # Process shifts into GSRTShiftResult objects
     shifts = []
     recovery_times_ack = []
     recovery_times_tool = []
     recovery_times_outcome = []
-    
+
     for shift_data in shifts_data:
         shift_turn = shift_data.get("turn", 0)
         from_goal = shift_data.get("from", "")
         to_goal = shift_data.get("to", "")
-        
+
         # Extract recovery turn information
         ack_turn = shift_data.get("acknowledgment_turn")
-        tool_turn = shift_data.get("tool_turn") 
+        tool_turn = shift_data.get("tool_turn")
         outcome_turn = shift_data.get("outcome_turn")
         transferred = shift_data.get("transferred_to_human", False)
-        
+
         # Calculate recovery times
         recovery_successful = False
         if ack_turn is not None and ack_turn > shift_turn:
             recovery_times_ack.append(ack_turn - shift_turn)
             recovery_successful = True
-            
+
         if tool_turn is not None and tool_turn > shift_turn:
             recovery_times_tool.append(tool_turn - shift_turn)
-            
+
         if outcome_turn is not None and outcome_turn > shift_turn:
             recovery_times_outcome.append(outcome_turn - shift_turn)
-        
+
         shift_result = GSRTShiftResult(
             shift_turn=shift_turn,
             from_goal=from_goal,
@@ -243,19 +251,31 @@ def compute_gsrt_for_task(
             tool_usage_turn=tool_turn,
             outcome_turn=outcome_turn,
             transferred_to_human=transferred,
-            recovery_successful=recovery_successful
+            recovery_successful=recovery_successful,
         )
         shifts.append(shift_result)
-    
+
     # Calculate statistics
     total_shifts = len(shifts)
-    recovery_rate = sum(1 for s in shifts if s.recovery_successful) / total_shifts if total_shifts > 0 else 0.0
-    transfer_rate = sum(1 for s in shifts if s.transferred_to_human) / total_shifts if total_shifts > 0 else 0.0
-    
+    recovery_rate = (
+        sum(1 for s in shifts if s.recovery_successful) / total_shifts
+        if total_shifts > 0
+        else 0.0
+    )
+    transfer_rate = (
+        sum(1 for s in shifts if s.transferred_to_human) / total_shifts
+        if total_shifts > 0
+        else 0.0
+    )
+
     median_ack = statistics.median(recovery_times_ack) if recovery_times_ack else None
-    median_tool = statistics.median(recovery_times_tool) if recovery_times_tool else None
-    median_outcome = statistics.median(recovery_times_outcome) if recovery_times_outcome else None
-    
+    median_tool = (
+        statistics.median(recovery_times_tool) if recovery_times_tool else None
+    )
+    median_outcome = (
+        statistics.median(recovery_times_outcome) if recovery_times_outcome else None
+    )
+
     return GSRTTaskResult(
         task_id=sim.task_id,
         shifts=shifts,
@@ -267,12 +287,12 @@ def compute_gsrt_for_task(
         median_gsrt_tool=median_tool,
         median_gsrt_outcome=median_outcome,
         recovery_rate=recovery_rate,
-        transfer_rate=transfer_rate
+        transfer_rate=transfer_rate,
     )
 
 
 def compute_gsrt_aggregate(
-    results_by_task: Dict[str, GSRTTaskResult]
+    results_by_task: Dict[str, GSRTTaskResult],
 ) -> GSRTAggregateResult:
     """Aggregate GSRT results across all tasks."""
     all_recovery_times_ack = []
@@ -281,24 +301,38 @@ def compute_gsrt_aggregate(
     total_shifts = 0
     total_recovered = 0
     total_transferred = 0
-    
+
     for task_result in results_by_task.values():
         all_recovery_times_ack.extend(task_result.recovery_times_ack)
         all_recovery_times_tool.extend(task_result.recovery_times_tool)
         all_recovery_times_outcome.extend(task_result.recovery_times_outcome)
         total_shifts += task_result.total_shifts
         total_recovered += sum(1 for s in task_result.shifts if s.recovery_successful)
-        total_transferred += sum(1 for s in task_result.shifts if s.transferred_to_human)
-    
+        total_transferred += sum(
+            1 for s in task_result.shifts if s.transferred_to_human
+        )
+
     # Calculate aggregate statistics
-    aggregate_median_ack = statistics.median(all_recovery_times_ack) if all_recovery_times_ack else None
-    aggregate_median_tool = statistics.median(all_recovery_times_tool) if all_recovery_times_tool else None
-    aggregate_median_outcome = statistics.median(all_recovery_times_outcome) if all_recovery_times_outcome else None
-    
+    aggregate_median_ack = (
+        statistics.median(all_recovery_times_ack) if all_recovery_times_ack else None
+    )
+    aggregate_median_tool = (
+        statistics.median(all_recovery_times_tool) if all_recovery_times_tool else None
+    )
+    aggregate_median_outcome = (
+        statistics.median(all_recovery_times_outcome)
+        if all_recovery_times_outcome
+        else None
+    )
+
     overall_recovery_rate = total_recovered / total_shifts if total_shifts > 0 else 0.0
-    overall_transfer_rate = total_transferred / total_shifts if total_shifts > 0 else 0.0
-    never_recovered_rate = (total_shifts - total_recovered) / total_shifts if total_shifts > 0 else 0.0
-    
+    overall_transfer_rate = (
+        total_transferred / total_shifts if total_shifts > 0 else 0.0
+    )
+    never_recovered_rate = (
+        (total_shifts - total_recovered) / total_shifts if total_shifts > 0 else 0.0
+    )
+
     return GSRTAggregateResult(
         by_task=results_by_task,
         aggregate_median_ack=aggregate_median_ack,
@@ -307,7 +341,7 @@ def compute_gsrt_aggregate(
         total_shifts=total_shifts,
         overall_recovery_rate=overall_recovery_rate,
         overall_transfer_rate=overall_transfer_rate,
-        never_recovered_rate=never_recovered_rate
+        never_recovered_rate=never_recovered_rate,
     )
 
 
@@ -320,12 +354,12 @@ def compute_gsrt_enhanced_metrics(
     """Compute enhanced GSRT metrics for all tasks and simulations."""
     task_map = {task.id: task for task in tasks}
     results_by_task: Dict[str, GSRTTaskResult] = {}
-    
+
     for sim in simulations:
         task = task_map.get(sim.task_id)
         if not task:
             continue
-            
+
         # Check if we already have cached results
         cached_result = None
         if (
@@ -334,11 +368,11 @@ def compute_gsrt_enhanced_metrics(
             and isinstance(sim.reward_info.info, dict)
         ):
             cached_result = sim.reward_info.info.get("gsrt_enhanced")
-        
+
         if not cached_result:
             # Compute GSRT for this task
             task_result = compute_gsrt_for_task(task, sim, model, llm_args)
-            
+
             # Cache the result
             try:
                 if sim.reward_info is not None:
@@ -370,9 +404,9 @@ def compute_gsrt_enhanced_metrics(
                 median_gsrt_tool=cached_result["median_gsrt_tool"],
                 median_gsrt_outcome=cached_result["median_gsrt_outcome"],
                 recovery_rate=cached_result["recovery_rate"],
-                transfer_rate=cached_result["transfer_rate"]
+                transfer_rate=cached_result["transfer_rate"],
             )
-        
+
         # Aggregate results by task (handling multiple simulations per task)
         if task_result.task_id not in results_by_task:
             results_by_task[task_result.task_id] = task_result
@@ -383,10 +417,22 @@ def compute_gsrt_enhanced_metrics(
             existing.recovery_times_ack.extend(task_result.recovery_times_ack)
             existing.recovery_times_tool.extend(task_result.recovery_times_tool)
             existing.recovery_times_outcome.extend(task_result.recovery_times_outcome)
-            
+
             # Recalculate medians
-            existing.median_gsrt_ack = statistics.median(existing.recovery_times_ack) if existing.recovery_times_ack else None
-            existing.median_gsrt_tool = statistics.median(existing.recovery_times_tool) if existing.recovery_times_tool else None
-            existing.median_gsrt_outcome = statistics.median(existing.recovery_times_outcome) if existing.recovery_times_outcome else None
-    
+            existing.median_gsrt_ack = (
+                statistics.median(existing.recovery_times_ack)
+                if existing.recovery_times_ack
+                else None
+            )
+            existing.median_gsrt_tool = (
+                statistics.median(existing.recovery_times_tool)
+                if existing.recovery_times_tool
+                else None
+            )
+            existing.median_gsrt_outcome = (
+                statistics.median(existing.recovery_times_outcome)
+                if existing.recovery_times_outcome
+                else None
+            )
+
     return compute_gsrt_aggregate(results_by_task)

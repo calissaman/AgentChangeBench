@@ -9,10 +9,10 @@ load_dotenv()
 def get_served_model_name(model_path):
     if not model_path:
         return "unknown-model"
-    model_name = model_path.split('/')[-1].lower()
-    model_name = model_name.replace('-instruct', '-instruct')
-    model_name = model_name.replace('-fp8', '')
-    model_name = model_name.replace('-2507', '')
+    model_name = model_path.split("/")[-1].lower()
+    model_name = model_name.replace("-instruct", "-instruct")
+    model_name = model_name.replace("-fp8", "")
+    model_name = model_name.replace("-2507", "")
     return model_name
 
 
@@ -25,7 +25,9 @@ def setup_vllms():
     return subprocess.call(["bash", str(script_path)])
 
 
-def run_single(model_env, port_env, dtype_env, tool_parser="hermes", extra_flags: str = ""):
+def run_single(
+    model_env, port_env, dtype_env, tool_parser="hermes", extra_flags: str = ""
+):
     mprocs_bin = os.getenv("MPROCS_BIN", "mprocs")
     model = os.getenv(model_env)
     served_name = get_served_model_name(model)
@@ -50,14 +52,21 @@ def run_single(model_env, port_env, dtype_env, tool_parser="hermes", extra_flags
     )
 
 
-
 def run_qwen():
     qwen_flags = os.getenv("QWEN_FLAGS", "")
-    return run_single("QWEN_MODEL", "QWEN_PORT", "DTYPE_QWEN", tool_parser="hermes", extra_flags=qwen_flags)
+    return run_single(
+        "QWEN_MODEL",
+        "QWEN_PORT",
+        "DTYPE_QWEN",
+        tool_parser="hermes",
+        extra_flags=qwen_flags,
+    )
 
 
 def run_deepseek():
-    return run_single("DEEPSEEK_MODEL", "DEEPSEEK_PORT", "DTYPE_DEEPSEEK", tool_parser="hermes")
+    return run_single(
+        "DEEPSEEK_MODEL", "DEEPSEEK_PORT", "DTYPE_DEEPSEEK", tool_parser="hermes"
+    )
 
 
 def run_mistral():

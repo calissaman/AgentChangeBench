@@ -60,14 +60,14 @@ def inject_persona_data(task_data: dict, personas: dict) -> dict:
 def get_tasks() -> list[Task]:
     with open(BANKING_TASK_SET_PATH, "r") as fp:
         task_data_list = json.load(fp)
-    
+
     # Load personas for injection
     personas = load_personas()
-    
+
     tasks = []
     for task_data in task_data_list:
         # Inject persona data if available
         task_data = inject_persona_data(task_data, personas)
         tasks.append(Task(**task_data))
-    
+
     return tasks
