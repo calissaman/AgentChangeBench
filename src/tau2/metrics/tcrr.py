@@ -205,48 +205,24 @@ def compute_tcrr_windowed(
     )
 
 
-def compute_tcrr_enhanced(
+def compute_tcrr(
     simulations: List[SimulationRun], window_size: Optional[int] = None
-) -> TCRRResult:
+) -> Tuple[TCRRResult, Dict[str, TCRRResult]]:
     """
-    Compute enhanced TCRR across all simulations with window-based redundancy detection.
+    Compute TCRR for each task separately and return both aggregated and per-task results.
 
     Args:
         simulations: List of simulation runs
         window_size: Number of previous assistant turns to consider (uses config default if None)
 
     Returns:
-        Aggregated TCRRResult across all simulations
-    """
-    if window_size is None:
-        window_size = get_tcrr_window_size()
-
-    all_tool_calls = []
-
-    for sim in simulations:
-        tool_calls = extract_tool_calls_with_turns(sim.messages)
-        all_tool_calls.extend(tool_calls)
-
-    return compute_tcrr_windowed(all_tool_calls, window_size)
-
-
-def compute_tcrr_by_task(
-    simulations: List[SimulationRun], window_size: Optional[int] = None
-) -> Dict[str, TCRRResult]:
-    """
-    Compute TCRR for each task separately.
-
-    Args:
-        simulations: List of simulation runs
-        window_size: Number of previous assistant turns to consider (uses config default if None)
-
-    Returns:
-        Dictionary mapping task_id to TCRRResult
+        Tuple of (aggregated_result, results_by_task)
     """
     if window_size is None:
         window_size = get_tcrr_window_size()
 
     results_by_task = {}
+    all_tool_calls = []
 
     # Group simulations by task
     sims_by_task: Dict[str, List[SimulationRun]] = {}
@@ -258,6 +234,13 @@ def compute_tcrr_by_task(
 
     # Compute TCRR for each task
     for task_id, task_sims in sims_by_task.items():
-        results_by_task[task_id] = compute_tcrr_enhanced(task_sims, window_size)
+        task_tool_calls = []
+        for sim in task_sims:
+            tool_calls = extract_tool_calls_with_turns(sim.messages)
+            task_tool_calls.extend(tool_calls)
+            all_tool_calls.extend(tool_calls)
+        results_by_task[task_id] = compute_tcrr_windowed(task_tool_calls, window_size)
 
-    return results_by_task
+    aggregated_result = compute_tcrr_windowed(all_tool_calls, window_size)
+
+    return aggregated_result, results_by_task

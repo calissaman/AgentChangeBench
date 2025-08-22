@@ -364,16 +364,15 @@ def _compute_tcrr_metrics(
 ) -> tuple[float, int, int, int, dict]:
     """Compute TCRR metrics with enhanced window-based detection."""
     try:
-        from tau2.metrics.tcrr import compute_tcrr_enhanced, compute_tcrr_by_task
+        from tau2.metrics.tcrr import compute_tcrr
 
-        tcrr_result = compute_tcrr_enhanced(results.simulations)
+        tcrr_result, tcrr_by_task_results = compute_tcrr(results.simulations)
         tcrr = tcrr_result.redundancy_ratio
         tcrr_window_size = tcrr_result.window_size
         tcrr_total_calls = tcrr_result.total_calls
         tcrr_redundant_calls = tcrr_result.redundant_calls
 
-        # Get task-level breakdown
-        tcrr_by_task_results = compute_tcrr_by_task(results.simulations)
+        # Format task-level breakdown
         tcrr_by_task = {
             task_id: {
                 "redundancy_ratio": result.redundancy_ratio,

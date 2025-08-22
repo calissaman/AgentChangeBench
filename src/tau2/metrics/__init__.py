@@ -13,7 +13,7 @@ from .agent_metrics import (
 # Enhanced metrics modules
 from .tsr import compute_tsr_enhanced, compute_reward_from_tsr
 from .tue import compute_tue_enhanced, compute_tue_enhanced_for_simulations
-from .tcrr import compute_tcrr_enhanced, compute_tcrr_by_task
+from .tcrr import compute_tcrr
 from .gsrt import compute_gsrt_enhanced_metrics
 
 # Meta-tags v2 system imports
@@ -34,8 +34,7 @@ __all__ = [
     "compute_reward_from_tsr",
     "compute_tue_enhanced",
     "compute_tue_enhanced_for_simulations",
-    "compute_tcrr_enhanced",
-    "compute_tcrr_by_task",
+    "compute_tcrr",
     "compute_gsrt_enhanced_metrics",
     # Meta-tags v2 exports
     "alignment_score",
