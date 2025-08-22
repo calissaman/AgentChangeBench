@@ -124,16 +124,6 @@ def extract_tool_calls_from_messages(messages: list[Message]) -> list[dict]:
 
     return tool_calls
 
-
-# Old compute_tsr function removed - now using enhanced TSR implementation
-
-
-# Old compute_tcrr function removed - now using enhanced TCRR implementation
-
-
-# Old compute_tue function removed - now using enhanced TUE implementation
-
-
 def extract_domain_from_task_id(task_id: str) -> str:
     """Extract domain name from task_id."""
     parts = task_id.split("_")
