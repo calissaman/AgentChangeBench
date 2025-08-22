@@ -3,9 +3,9 @@ from typing import Dict
 
 class MetricsConfig:
     TSR_WEIGHTS: Dict[str, float] = {
-        "communicate_info": 0.2,
-        "action": 0.4,
-        "nl_assertion": 0.4,
+        "communicate_info": 0.25,
+        "action": 0.45,
+        "nl_assertion": 0.3,
     }
     TSR_SUCCESS_THRESHOLD: float = 0.5
     TCRR_WINDOW_SIZE: int = 3
