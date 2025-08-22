@@ -9,6 +9,7 @@ class MetricsConfig:
     }
     TSR_SUCCESS_THRESHOLD: float = 0.5
     TCRR_WINDOW_SIZE: int = 3
+    TCRR_BATCH_THRESHOLD: int = 2
     TUE_WEIGHTS: Dict[str, float] = {"tool_correctness": 0.6, "param_accuracy": 0.4}
     GSRT_DEFAULT_JUDGE_MODEL: str = "gpt-4o-mini"
     GSRT_DEFAULT_JUDGE_ARGS: Dict = {"temperature": 0.0}
@@ -36,6 +37,11 @@ class MetricsConfig:
                 f"TCRR_WINDOW_SIZE must be >= 1, got {cls.TCRR_WINDOW_SIZE}"
             )
 
+        if cls.TCRR_BATCH_THRESHOLD < 1:
+            raise ValueError(
+                f"TCRR_BATCH_THRESHOLD must be >= 1, got {cls.TCRR_BATCH_THRESHOLD}"
+            )
+
         if not (0.0 < cls.CONFIDENCE_INTERVAL_LEVEL < 1.0):
             raise ValueError(
                 f"CONFIDENCE_INTERVAL_LEVEL must be between 0 and 1, got {cls.CONFIDENCE_INTERVAL_LEVEL}"
@@ -55,6 +61,10 @@ def get_tue_weights() -> Dict[str, float]:
 
 def get_tcrr_window_size() -> int:
     return MetricsConfig.TCRR_WINDOW_SIZE
+
+
+def get_tcrr_batch_threshold() -> int:
+    return MetricsConfig.TCRR_BATCH_THRESHOLD
 
 
 def get_gsrt_judge_config() -> tuple[str, Dict]:
