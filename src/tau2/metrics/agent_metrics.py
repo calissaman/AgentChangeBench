@@ -137,29 +137,29 @@ class AgentMetrics(BaseModel):
     avg_reward: float
     pass_hat_ks: dict[int, float]
     avg_agent_cost: float
-    # New AgentChangeBench metrics
+
     tsr: float  # Task Success Rate
     tue: float  # Tool Usage Efficiency
     tcrr: float  # Tool-Call Redundancy Ratio
     num_tool_calls: int
-    # Enhanced TSR metrics (multi-channel breakdown)
+
     tsr_communicate_info: float = 0.0
     tsr_action: float = 0.0
     tsr_nl_assertion: float = 0.0
     tsr_weights: dict = {}  # Weights used in TSR calculation
     tsr_by_task: dict = {}  # Task-level TSR breakdown
-    # Enhanced TUE metrics
+
     tue_tool_correctness: float = 0.0
     tue_param_accuracy: float = 0.0
     tue_correct_calls: int = 0
     tue_valid_param_calls: int = 0
     tue_by_task: dict = {}  # Task-level TUE breakdown
-    # Enhanced TCRR metrics
+
     tcrr_window_size: int = 3
     tcrr_total_calls: int = 0
     tcrr_redundant_calls: int = 0
     tcrr_by_task: dict = {}  # Task-level TCRR breakdown
-    # Enhanced GSRT metrics
+
     gsrt_median_ack: Optional[float] = None
     gsrt_median_tool: Optional[float] = None
     gsrt_median_outcome: Optional[float] = None
@@ -169,13 +169,11 @@ class AgentMetrics(BaseModel):
     gsrt_never_recovered_rate: float = 0.0
     gsrt_by_task: dict = {}  # Task-level breakdown
 
-    # Coverage Statistics
     tasks_with_communicate_info: int = 0
     tasks_with_actions: int = 0
     tasks_with_nl_assertions: int = 0
     tasks_with_goal_shifts: int = 0
 
-    # Component Breakdown
     communicate_info_avg_score: Optional[float] = None
     communicate_info_exact_matches: Optional[float] = None
     total_communicate_info_checks: int = 0
@@ -188,7 +186,6 @@ class AgentMetrics(BaseModel):
     nl_assertion_avg_score: Optional[float] = None
     total_nl_assertions: int = 0
 
-    # Partial Scoring Impact
     tasks_benefiting_from_partial: int = 0
     avg_reward_increase: float = 0.0
 
