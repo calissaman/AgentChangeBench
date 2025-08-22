@@ -1,14 +1,12 @@
 import json
 import statistics
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
 
 from tau2.utils.llm_utils import generate
 from tau2.data_model.message import (
     SystemMessage,
     UserMessage,
-    Message,
-    AssistantMessage,
 )
 from tau2.data_model.simulation import SimulationRun
 from tau2.data_model.tasks import Task
@@ -17,8 +15,6 @@ from tau2.metrics.config import get_gsrt_judge_config
 
 @dataclass
 class GSRTShiftResult:
-    """Result for a single goal shift."""
-
     shift_turn: int
     from_goal: str
     to_goal: str
@@ -31,8 +27,6 @@ class GSRTShiftResult:
 
 @dataclass
 class GSRTTaskResult:
-    """GSRT results for a single task."""
-
     task_id: str
     shifts: List[GSRTShiftResult]
     total_shifts: int
@@ -48,8 +42,6 @@ class GSRTTaskResult:
 
 @dataclass
 class GSRTAggregateResult:
-    """Aggregated GSRT results across all tasks."""
-
     by_task: Dict[str, GSRTTaskResult]
     aggregate_median_ack: Optional[float] = None
     aggregate_median_tool: Optional[float] = None
@@ -60,8 +52,7 @@ class GSRTAggregateResult:
     never_recovered_rate: float = 0.0
 
 
-# Enhanced system prompt that detects transfer attempts
-ENHANCED_SYSTEM_PROMPT = """
+JUDGE_SYSTEM_PROMPT = """
 You are a judge. Given a task description (with expected goal order) and a full conversation transcript (user/assistant turns), you must:
 
 STRICT GOAL RULES
@@ -135,12 +126,10 @@ def _safe_required_shifts(task: Task, allowed_goals: List[str]) -> int:
 
 def _build_enhanced_user_prompt(task: Task, sim: SimulationRun) -> str:
     """Build enhanced user prompt for GSRT detection."""
-    # Task context: allowed goals and required shifts
     allowed_goals = _safe_goal_sequence(task)
     required_shifts = _safe_required_shifts(task, allowed_goals)
     goal_str = ", ".join(allowed_goals) if allowed_goals else ""
 
-    # Build transcript
     lines: List[str] = []
     for i, m in enumerate(sim.messages):
         role = m.role
@@ -180,14 +169,13 @@ def detect_gsrt_enhanced(
             llm_args = default_args
 
     messages = [
-        SystemMessage(role="system", content=ENHANCED_SYSTEM_PROMPT),
+        SystemMessage(role="system", content=JUDGE_SYSTEM_PROMPT),
         UserMessage(role="user", content=_build_enhanced_user_prompt(task, sim)),
     ]
     assistant_message = generate(model=model, messages=messages, **llm_args)
 
     try:
         data = json.loads(assistant_message.content)
-        # Minimal schema sanity
         if (
             not isinstance(data, dict)
             or "user_goal_shifts" not in data
@@ -199,7 +187,6 @@ def detect_gsrt_enhanced(
             raise ValueError("user_goal_shifts must be a list")
         return data
     except Exception:
-        # On judge failure, return empty shifts to avoid breaking metrics
         return {"start_goal": {"turn": None, "goal": None}, "user_goal_shifts": []}
 
 
@@ -210,11 +197,9 @@ def compute_gsrt_for_task(
     llm_args: Optional[dict] = None,
 ) -> GSRTTaskResult:
     """Compute GSRT metrics for a single task."""
-    # Get GSRT detection results
     detection_result = detect_gsrt_enhanced(task, sim, model, llm_args)
     shifts_data = detection_result.get("user_goal_shifts", [])
 
-    # Process shifts into GSRTShiftResult objects
     shifts = []
     recovery_times_ack = []
     recovery_times_tool = []
@@ -225,13 +210,11 @@ def compute_gsrt_for_task(
         from_goal = shift_data.get("from", "")
         to_goal = shift_data.get("to", "")
 
-        # Extract recovery turn information
         ack_turn = shift_data.get("acknowledgment_turn")
         tool_turn = shift_data.get("tool_turn")
         outcome_turn = shift_data.get("outcome_turn")
         transferred = shift_data.get("transferred_to_human", False)
 
-        # Calculate recovery times
         recovery_successful = False
         if ack_turn is not None and ack_turn > shift_turn:
             recovery_times_ack.append(ack_turn - shift_turn)
@@ -255,7 +238,6 @@ def compute_gsrt_for_task(
         )
         shifts.append(shift_result)
 
-    # Calculate statistics
     total_shifts = len(shifts)
     recovery_rate = (
         sum(1 for s in shifts if s.recovery_successful) / total_shifts
@@ -312,7 +294,6 @@ def compute_gsrt_aggregate(
             1 for s in task_result.shifts if s.transferred_to_human
         )
 
-    # Calculate aggregate statistics
     aggregate_median_ack = (
         statistics.median(all_recovery_times_ack) if all_recovery_times_ack else None
     )
@@ -360,7 +341,6 @@ def compute_gsrt_enhanced_metrics(
         if not task:
             continue
 
-        # Check if we already have cached results
         cached_result = None
         if (
             sim.reward_info
@@ -370,16 +350,13 @@ def compute_gsrt_enhanced_metrics(
             cached_result = sim.reward_info.info.get("gsrt_enhanced")
 
         if not cached_result:
-            # Compute GSRT for this task
             task_result = compute_gsrt_for_task(task, sim, model, llm_args)
 
-            # Cache the result
             try:
                 if sim.reward_info is not None:
                     if sim.reward_info.info is None:
                         sim.reward_info.info = {}
                     if isinstance(sim.reward_info.info, dict):
-                        # Store serializable version
                         sim.reward_info.info["gsrt_enhanced"] = {
                             "task_id": task_result.task_id,
                             "total_shifts": task_result.total_shifts,
@@ -392,10 +369,9 @@ def compute_gsrt_enhanced_metrics(
             except Exception:
                 pass
         else:
-            # Use cached result to create GSRTTaskResult
             task_result = GSRTTaskResult(
                 task_id=cached_result["task_id"],
-                shifts=[],  # Don't store individual shifts in cache
+                shifts=[],
                 total_shifts=cached_result["total_shifts"],
                 recovery_times_ack=[],
                 recovery_times_tool=[],
@@ -407,18 +383,15 @@ def compute_gsrt_enhanced_metrics(
                 transfer_rate=cached_result["transfer_rate"],
             )
 
-        # Aggregate results by task (handling multiple simulations per task)
         if task_result.task_id not in results_by_task:
             results_by_task[task_result.task_id] = task_result
         else:
-            # Combine results from multiple simulations of the same task
             existing = results_by_task[task_result.task_id]
             existing.total_shifts += task_result.total_shifts
             existing.recovery_times_ack.extend(task_result.recovery_times_ack)
             existing.recovery_times_tool.extend(task_result.recovery_times_tool)
             existing.recovery_times_outcome.extend(task_result.recovery_times_outcome)
 
-            # Recalculate medians
             existing.median_gsrt_ack = (
                 statistics.median(existing.recovery_times_ack)
                 if existing.recovery_times_ack

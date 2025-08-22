@@ -9,12 +9,10 @@ from tau2.metrics.config import get_tcrr_window_size
 
 @dataclass
 class ToolCallInfo:
-    """Information about a tool call with turn context."""
-
     name: str
     params: dict
     turn_idx: int
-    assistant_turn_idx: int  # Which assistant turn this belongs to
+    assistant_turn_idx: int
     call_id: str
     correct: bool
     params_valid: bool
@@ -22,20 +20,15 @@ class ToolCallInfo:
 
 @dataclass
 class TCRRResult:
-    """Result of TCRR computation."""
-
     total_calls: int
     redundant_calls: int
     redundancy_ratio: float
-    redundant_by_turn: Dict[int, int]  # Turn index -> number of redundant calls
+    redundant_by_turn: Dict[int, int]
     window_size: int
 
 
 def normalized_params(params: dict) -> tuple:
     """Recursively normalize parameters for consistency."""
-    if not isinstance(params, dict):
-        return str(params)
-
     normalized_items = []
     for k, v in sorted(params.items()):
         if isinstance(v, dict):
@@ -55,7 +48,6 @@ def extract_tool_calls_with_turns(messages: List[Message]) -> List[ToolCallInfo]
     """Extract tool calls with turn context information."""
     tool_calls = []
 
-    # Create mapping of tool call IDs to their results
     tool_results = {}
     for msg in messages:
         if isinstance(msg, ToolMessage):
@@ -65,23 +57,16 @@ def extract_tool_calls_with_turns(messages: List[Message]) -> List[ToolCallInfo]
                 "content": msg.content,
             }
 
-    # Track assistant turn indices
     assistant_turn_count = 0
 
     for msg in messages:
-        # Count assistant turns
         if isinstance(msg, AssistantMessage):
             assistant_turn_count += 1
-
-            # Extract tool calls from this assistant message
             if hasattr(msg, "tool_calls") and msg.tool_calls:
                 for tool_call in msg.tool_calls:
-                    # Determine correctness
                     correct = True
                     if hasattr(tool_call, "id") and tool_call.id in tool_results:
                         correct = tool_results[tool_call.id]["success"]
-
-                    # Determine parameter validity
                     params_valid = True
                     if hasattr(tool_call, "id") and tool_call.id in tool_results:
                         result = tool_results[tool_call.id]
@@ -140,7 +125,6 @@ def compute_tcrr_windowed(
     redundant_calls = 0
     redundant_by_turn = {}
 
-    # Group tool calls by assistant turn
     calls_by_turn: Dict[int, List[ToolCallInfo]] = {}
     for call in tool_calls:
         turn = call.assistant_turn_idx
@@ -148,14 +132,12 @@ def compute_tcrr_windowed(
             calls_by_turn[turn] = []
         calls_by_turn[turn].append(call)
 
-    # Sort turns to process in order
     sorted_turns = sorted(calls_by_turn.keys())
 
     for current_turn in sorted_turns:
         current_calls = calls_by_turn[current_turn]
         redundant_by_turn[current_turn] = 0
 
-        # Look back at previous turns within window
         window_start = max(1, current_turn - window_size)
         previous_calls = []
 
@@ -163,7 +145,6 @@ def compute_tcrr_windowed(
             if prev_turn in calls_by_turn:
                 previous_calls.extend(calls_by_turn[prev_turn])
 
-        # Build set of previous call identities
         previous_identities: Set[Tuple[str, tuple]] = set()
         for prev_call in previous_calls:
             try:
@@ -172,11 +153,9 @@ def compute_tcrr_windowed(
                 previous_identities.add(identity)
             except Exception as e:
                 logger.warning(f"Error normalizing params for TCRR: {e}")
-                # Fallback to string representation
                 identity = (prev_call.name, str(prev_call.params))
                 previous_identities.add(identity)
 
-        # Check current calls for redundancy
         for call in current_calls:
             try:
                 params_norm = normalized_params(call.params)
@@ -188,7 +167,6 @@ def compute_tcrr_windowed(
 
             except Exception as e:
                 logger.warning(f"Error normalizing params for TCRR: {e}")
-                # Fallback to string representation
                 identity = (call.name, str(call.params))
                 if identity in previous_identities:
                     redundant_calls += 1

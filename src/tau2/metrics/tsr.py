@@ -191,7 +191,7 @@ def evaluate_nl_assertions_for_task(
     Returns:
         tuple: (score, has_nl_assertions, detailed_checks) where:
         - score: fraction of assertions that passed
-        - has_nl_assertions: indicates if task has NL requirements  
+        - has_nl_assertions: indicates if task has NL requirements
         - detailed_checks: list of NLAssertionCheck objects with justifications
     """
     if not task.evaluation_criteria or not task.evaluation_criteria.nl_assertions:
@@ -230,7 +230,9 @@ def compute_tsr_for_task(
         task, sim
     )
     action_score, has_actions = evaluate_actions_for_task(task, sim)
-    nl_score, has_nl_assertions, nl_assertion_details = evaluate_nl_assertions_for_task(task, sim)
+    nl_score, has_nl_assertions, nl_assertion_details = evaluate_nl_assertions_for_task(
+        task, sim
+    )
 
     # Dynamic reweighting: exclude components that don't exist
     active_weights = {}
@@ -269,99 +271,6 @@ def compute_tsr_for_task(
         "has_communicate_info": has_communicate_info,
         "nl_assertion_details": nl_assertion_details,
     }
-
-
-def compute_tsr_enhanced(
-    tasks: List[Task],
-    simulations: List[SimulationRun],
-    weights: Optional[Dict[str, float]] = None,
-) -> TSRResult:
-    """
-    Compute enhanced TSR with multi-channel breakdown.
-
-    Args:
-        tasks: List of tasks
-        simulations: List of simulation runs
-        weights: Channel weights (defaults to 50% communicate_info, 30% action, 20% nl)
-
-    Returns:
-        TSRResult with detailed breakdown
-    """
-    if weights is None:
-        weights = get_tsr_weights()
-
-    # Create task lookup
-    task_map = {task.id: task for task in tasks}
-
-    # Results by channel
-    communicate_successes = 0
-    action_successes = 0
-    nl_successes = 0
-    overall_successes = 0
-    total_tasks = 0
-
-    by_task = {}
-
-    for sim in simulations:
-        task = task_map.get(sim.task_id)
-        if not task:
-            continue
-
-        total_tasks += 1
-
-        # Compute scores for this task
-        task_scores = compute_tsr_for_task(task, sim, weights)
-
-        # Track channel successes using configured threshold
-        from tau2.metrics.config import MetricsConfig
-
-        threshold = MetricsConfig.TSR_SUCCESS_THRESHOLD
-
-        if (
-            task_scores["communicate_info"] is not None
-            and task_scores["communicate_info"] >= threshold
-        ):
-            communicate_successes += 1
-        if task_scores["action"] is not None and task_scores["action"] >= threshold:
-            action_successes += 1
-        if (
-            task_scores["nl_assertion"] is not None
-            and task_scores["nl_assertion"] >= threshold
-        ):
-            nl_successes += 1
-        if task_scores["overall_tsr"] >= threshold:
-            overall_successes += 1
-
-        # Store task-level results
-        by_task[sim.task_id] = task_scores
-
-    if total_tasks == 0:
-        return TSRResult(
-            overall_tsr=0.0,
-            communicate_info=TSRChannelResult(0, 0, 0.0, 0),
-            action=TSRChannelResult(0, 0, 0.0, 0),
-            nl_assertion=TSRChannelResult(0, 0, 0.0, 0),
-            weights=weights,
-            by_task={},
-        )
-
-    return TSRResult(
-        overall_tsr=overall_successes / total_tasks,
-        communicate_info=TSRChannelResult(
-            communicate_successes,
-            total_tasks,
-            communicate_successes / total_tasks,
-            total_tasks,
-        ),
-        action=TSRChannelResult(
-            action_successes, total_tasks, action_successes / total_tasks, total_tasks
-        ),
-        nl_assertion=TSRChannelResult(
-            nl_successes, total_tasks, nl_successes / total_tasks, total_tasks
-        ),
-        weights=weights,
-        by_task=by_task,
-    )
 
 
 def compute_reward_from_tsr(

@@ -533,9 +533,8 @@ def run_task(
 
         # Create reward_info with TSR data and NL assertions for display
         nl_assertions_for_display = []
-        if (
-            tsr_result.get("has_nl_assertions", False)
-            and tsr_result.get("nl_assertion_details")
+        if tsr_result.get("has_nl_assertions", False) and tsr_result.get(
+            "nl_assertion_details"
         ):
             # Use cached NL assertion details from TSR computation (no re-evaluation needed!)
             nl_assertion_checks = tsr_result["nl_assertion_details"]

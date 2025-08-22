@@ -295,35 +295,54 @@ def _compute_tsr_metrics(
         # Check if we can use cached TSR results from simulation runs
         cached_tsr_results = []
         has_cached_data = True
-        
+
         for sim in results.simulations:
-            if (sim.reward_info and 
-                sim.reward_info.info and 
-                isinstance(sim.reward_info.info, dict) and
-                "tsr_details" in sim.reward_info.info):
+            if (
+                sim.reward_info
+                and sim.reward_info.info
+                and isinstance(sim.reward_info.info, dict)
+                and "tsr_details" in sim.reward_info.info
+            ):
                 cached_tsr_results.append(sim.reward_info.info["tsr_details"])
             else:
                 has_cached_data = False
                 break
-        
+
         if has_cached_data and cached_tsr_results:
-            # Aggregate cached TSR results
-            total_tsr = sum(result.get("overall_tsr", 0) for result in cached_tsr_results)
+            total_tsr = sum(
+                result.get("overall_tsr", 0) for result in cached_tsr_results
+            )
             avg_tsr = total_tsr / len(cached_tsr_results)
-            
-            # Aggregate channel scores
-            comm_scores = [r.get("communicate_info") for r in cached_tsr_results if r.get("communicate_info") is not None]
-            action_scores = [r.get("action") for r in cached_tsr_results if r.get("action") is not None]  
-            nl_scores = [r.get("nl_assertion") for r in cached_tsr_results if r.get("nl_assertion") is not None]
-            
-            tsr_communicate_info = sum(comm_scores) / len(comm_scores) if comm_scores else 0.0
-            tsr_action = sum(action_scores) / len(action_scores) if action_scores else 0.0
+
+            comm_scores = [
+                r.get("communicate_info")
+                for r in cached_tsr_results
+                if r.get("communicate_info") is not None
+            ]
+            action_scores = [
+                r.get("action")
+                for r in cached_tsr_results
+                if r.get("action") is not None
+            ]
+            nl_scores = [
+                r.get("nl_assertion")
+                for r in cached_tsr_results
+                if r.get("nl_assertion") is not None
+            ]
+
+            tsr_communicate_info = (
+                sum(comm_scores) / len(comm_scores) if comm_scores else 0.0
+            )
+            tsr_action = (
+                sum(action_scores) / len(action_scores) if action_scores else 0.0
+            )
             tsr_nl_assertion = sum(nl_scores) / len(nl_scores) if nl_scores else 0.0
-            
-            # Use weights from first result (should be consistent)
-            tsr_weights = cached_tsr_results[0].get("weights_used", {"communicate_info": 0.5, "action": 0.3, "nl_assertion": 0.2})
-            
-            # Build by-task breakdown
+
+            tsr_weights = cached_tsr_results[0].get(
+                "weights_used",
+                {"communicate_info": 0.5, "action": 0.3, "nl_assertion": 0.2},
+            )
+
             tsr_by_task = {}
             for sim, tsr_result in zip(results.simulations, cached_tsr_results):
                 tsr_by_task[sim.task_id] = {
@@ -332,14 +351,27 @@ def _compute_tsr_metrics(
                     "action": tsr_result.get("action"),
                     "nl_assertion": tsr_result.get("nl_assertion"),
                 }
-            
-            logger.info("Using cached TSR results from simulation runs - no recomputation needed!")
-            return avg_tsr, tsr_communicate_info, tsr_action, tsr_nl_assertion, tsr_weights, tsr_by_task
-        
+
+            logger.info(
+                "Using cached TSR results from simulation runs - no recomputation needed!"
+            )
+            return (
+                avg_tsr,
+                tsr_communicate_info,
+                tsr_action,
+                tsr_nl_assertion,
+                tsr_weights,
+                tsr_by_task,
+            )
+
         else:
-            # No cached TSR data found - this should not happen in normal operation
-            logger.error("No cached TSR data found in simulation runs! TSR should be computed during tau2 run, not during metrics aggregation.")
-            raise ValueError("Missing cached TSR data - ensure simulations were run with TSR computation enabled")
+            # This should not happen in normal operation
+            logger.error(
+                "No cached TSR data found in simulation runs! TSR should be computed during tau2 run, not during metrics aggregation."
+            )
+            raise ValueError(
+                "Missing cached TSR data - ensure simulations were run with TSR computation enabled"
+            )
 
     except Exception as e:
         logger.error(f"TSR metrics computation failed: {e}")
@@ -372,7 +404,6 @@ def _compute_tcrr_metrics(
         tcrr_total_calls = tcrr_result.total_calls
         tcrr_redundant_calls = tcrr_result.redundant_calls
 
-        # Format task-level breakdown
         tcrr_by_task = {
             task_id: {
                 "redundancy_ratio": result.redundancy_ratio,
@@ -394,20 +425,15 @@ def _compute_tue_metrics(
 ) -> tuple[float, float, float, int, int, dict]:
     """Compute TUE metrics with enhanced tool correctness and parameter accuracy."""
     try:
-        from tau2.metrics.tue import (
-            compute_tue_enhanced_for_simulations,
-            compute_tue_by_task,
-        )
+        from tau2.metrics.tue import compute_tue
 
-        tue_result = compute_tue_enhanced_for_simulations(results.simulations)
+        tue_result, tue_by_task_results = compute_tue(results.simulations)
         tue = tue_result.overall_tue
         tue_tool_correctness = tue_result.tool_correctness
         tue_param_accuracy = tue_result.param_accuracy
         tue_correct_calls = tue_result.correct_calls
         tue_valid_param_calls = tue_result.valid_param_calls
 
-        # Get task-level breakdown
-        tue_by_task_results = compute_tue_by_task(results.simulations)
         tue_by_task = {
             task_id: {
                 "overall_tue": result.overall_tue,
@@ -440,24 +466,28 @@ def _compute_gsrt_metrics(
 ]:
     """Compute GSRT metrics using cached results from simulation runs."""
     try:
-        # Check if we can use cached GSRT results from simulation runs
         cached_gsrt_results = []
         has_cached_data = True
-        
+
         for sim in results.simulations:
-            if (sim.reward_info and 
-                sim.reward_info.info and 
-                isinstance(sim.reward_info.info, dict) and
-                ("gsrt_v2" in sim.reward_info.info or "gsrt_enhanced" in sim.reward_info.info)):
-                # Use either gsrt_v2 or gsrt_enhanced (both are cached)
-                gsrt_data = sim.reward_info.info.get("gsrt_v2") or sim.reward_info.info.get("gsrt_enhanced")
+            if (
+                sim.reward_info
+                and sim.reward_info.info
+                and isinstance(sim.reward_info.info, dict)
+                and (
+                    "gsrt_v2" in sim.reward_info.info
+                    or "gsrt_enhanced" in sim.reward_info.info
+                )
+            ):
+                gsrt_data = sim.reward_info.info.get(
+                    "gsrt_v2"
+                ) or sim.reward_info.info.get("gsrt_enhanced")
                 cached_gsrt_results.append((sim.task_id, gsrt_data))
             else:
                 has_cached_data = False
                 break
-        
+
         if has_cached_data and cached_gsrt_results:
-            # Aggregate cached GSRT results
             total_shifts = 0
             all_ack_times = []
             all_tool_times = []
@@ -466,73 +496,100 @@ def _compute_gsrt_metrics(
             transfer_count = 0
             never_recovered_count = 0
             gsrt_by_task = {}
-            
+
             for task_id, gsrt_data in cached_gsrt_results:
                 if not gsrt_data or not isinstance(gsrt_data, dict):
                     continue
-                    
-                # Count goal shifts
+
                 goal_shifts = gsrt_data.get("user_goal_shifts", [])
                 task_shifts = len(goal_shifts)
                 total_shifts += task_shifts
-                
-                # Process recovery times for each shift
+
                 task_ack_times = []
                 task_tool_times = []
                 task_outcome_times = []
                 task_recovered = 0
                 task_transfers = 0
-                
+
                 for shift in goal_shifts:
                     if isinstance(shift, dict):
-                        # Check for acknowledgment recovery
                         if "agent_responses" in shift:
                             responses = shift["agent_responses"]
                             if responses:
-                                ack_time = min(r.get("turn", float('inf')) for r in responses if isinstance(r, dict))
-                                if ack_time != float('inf'):
+                                ack_time = min(
+                                    r.get("turn", float("inf"))
+                                    for r in responses
+                                    if isinstance(r, dict)
+                                )
+                                if ack_time != float("inf"):
                                     task_ack_times.append(ack_time)
-                        
-                        # Check for transfer to human
+
                         if shift.get("transfer_to_human"):
                             task_transfers += 1
-                        
-                        # Simple recovery indicator
-                        if shift.get("agent_responses") or shift.get("tool_usage") or shift.get("outcome_success"):
+
+                        if (
+                            shift.get("agent_responses")
+                            or shift.get("tool_usage")
+                            or shift.get("outcome_success")
+                        ):
                             task_recovered += 1
-                
+
                 all_ack_times.extend(task_ack_times)
                 all_tool_times.extend(task_tool_times)
                 all_outcome_times.extend(task_outcome_times)
-                
+
                 recovered_count += task_recovered
                 transfer_count += task_transfers
-                
+
                 if task_shifts > 0 and task_recovered == 0:
                     never_recovered_count += 1
-                
-                # Store task-level results
+
                 gsrt_by_task[task_id] = {
                     "shifts": task_shifts,
-                    "median_ack": statistics.median(task_ack_times) if task_ack_times else None,
-                    "median_tool": statistics.median(task_tool_times) if task_tool_times else None,
-                    "median_outcome": statistics.median(task_outcome_times) if task_outcome_times else None,
-                    "recovery_rate": task_recovered / task_shifts if task_shifts > 0 else 0.0,
-                    "transfer_rate": task_transfers / task_shifts if task_shifts > 0 else 0.0,
+                    "median_ack": statistics.median(task_ack_times)
+                    if task_ack_times
+                    else None,
+                    "median_tool": statistics.median(task_tool_times)
+                    if task_tool_times
+                    else None,
+                    "median_outcome": statistics.median(task_outcome_times)
+                    if task_outcome_times
+                    else None,
+                    "recovery_rate": task_recovered / task_shifts
+                    if task_shifts > 0
+                    else 0.0,
+                    "transfer_rate": task_transfers / task_shifts
+                    if task_shifts > 0
+                    else 0.0,
                 }
-            
-            # Aggregate metrics
-            gsrt_median_ack = statistics.median(all_ack_times) if all_ack_times else None
-            gsrt_median_tool = statistics.median(all_tool_times) if all_tool_times else None  
-            gsrt_median_outcome = statistics.median(all_outcome_times) if all_outcome_times else None
-            gsrt_recovery_rate = recovered_count / total_shifts if total_shifts > 0 else 0.0
-            gsrt_transfer_rate = transfer_count / total_shifts if total_shifts > 0 else 0.0
-            gsrt_never_recovered_rate = never_recovered_count / len(cached_gsrt_results) if cached_gsrt_results else 0.0
-            
-            logger.info("Using cached GSRT results from simulation runs - no LLM judge recomputation needed!")
+
+            gsrt_median_ack = (
+                statistics.median(all_ack_times) if all_ack_times else None
+            )
+            gsrt_median_tool = (
+                statistics.median(all_tool_times) if all_tool_times else None
+            )
+            gsrt_median_outcome = (
+                statistics.median(all_outcome_times) if all_outcome_times else None
+            )
+            gsrt_recovery_rate = (
+                recovered_count / total_shifts if total_shifts > 0 else 0.0
+            )
+            gsrt_transfer_rate = (
+                transfer_count / total_shifts if total_shifts > 0 else 0.0
+            )
+            gsrt_never_recovered_rate = (
+                never_recovered_count / len(cached_gsrt_results)
+                if cached_gsrt_results
+                else 0.0
+            )
+
+            logger.info(
+                "Using cached GSRT results from simulation runs - no LLM judge recomputation needed!"
+            )
             return (
                 gsrt_median_ack,
-                gsrt_median_tool, 
+                gsrt_median_tool,
                 gsrt_median_outcome,
                 total_shifts,
                 gsrt_recovery_rate,
@@ -540,11 +597,15 @@ def _compute_gsrt_metrics(
                 gsrt_never_recovered_rate,
                 gsrt_by_task,
             )
-        
+
         else:
             # No cached GSRT data found - this should not happen in normal operation
-            logger.error("No cached GSRT data found in simulation runs! GSRT should be computed during tau2 run, not during metrics aggregation.")
-            raise ValueError("Missing cached GSRT data - ensure simulations were run with GSRT computation enabled")
+            logger.error(
+                "No cached GSRT data found in simulation runs! GSRT should be computed during tau2 run, not during metrics aggregation."
+            )
+            raise ValueError(
+                "Missing cached GSRT data - ensure simulations were run with GSRT computation enabled"
+            )
 
     except Exception as e:
         logger.error(f"GSRT metrics computation failed: {e}")
@@ -597,7 +658,6 @@ def _compute_component_breakdown(
 ) -> tuple[dict, dict, dict]:
     """Compute component breakdown metrics."""
     try:
-        # Communicate Info Metrics
         communicate_info_metrics = {
             "avg_score": tsr_communicate_info if tsr_communicate_info > 0 else None,
             "exact_matches": tsr_communicate_info if tsr_communicate_info > 0 else None,
@@ -609,7 +669,6 @@ def _compute_component_breakdown(
             ),
         }
 
-        # Action Metrics
         action_metrics = {
             "avg_score": tsr_action if tsr_action > 0 else None,
             "tool_correctness": tue_tool_correctness
@@ -624,7 +683,6 @@ def _compute_component_breakdown(
             ),
         }
 
-        # NL Assertion Metrics
         nl_assertion_metrics = {
             "avg_score": tsr_nl_assertion if tsr_nl_assertion > 0 else None,
             "total_assertions": sum(
@@ -711,33 +769,27 @@ def compute_metrics(results: Results) -> AgentMetrics:
     )
 
     return AgentMetrics(
-        # Basic metrics
         avg_reward=avg_reward,
         pass_hat_ks=pass_hat_ks,
         avg_agent_cost=avg_agent_cost,
         num_tool_calls=len(all_tool_calls),
-        # Core metrics
         tsr=tsr,
         tue=tue,
         tcrr=tcrr,
-        # TSR breakdown
         tsr_communicate_info=tsr_communicate_info,
         tsr_action=tsr_action,
         tsr_nl_assertion=tsr_nl_assertion,
         tsr_weights=tsr_weights,
         tsr_by_task=tsr_by_task,
-        # TCRR breakdown
         tcrr_window_size=tcrr_window_size,
         tcrr_total_calls=tcrr_total_calls,
         tcrr_redundant_calls=tcrr_redundant_calls,
         tcrr_by_task=tcrr_by_task,
-        # TUE breakdown
         tue_tool_correctness=tue_tool_correctness,
         tue_param_accuracy=tue_param_accuracy,
         tue_correct_calls=tue_correct_calls,
         tue_valid_param_calls=tue_valid_param_calls,
         tue_by_task=tue_by_task,
-        # GSRT breakdown
         gsrt_median_ack=gsrt_median_ack,
         gsrt_median_tool=gsrt_median_tool,
         gsrt_median_outcome=gsrt_median_outcome,
@@ -746,12 +798,10 @@ def compute_metrics(results: Results) -> AgentMetrics:
         gsrt_transfer_rate=gsrt_transfer_rate,
         gsrt_never_recovered_rate=gsrt_never_recovered_rate,
         gsrt_by_task=gsrt_by_task,
-        # Coverage statistics
         tasks_with_communicate_info=tasks_with_communicate_info,
         tasks_with_actions=tasks_with_actions,
         tasks_with_nl_assertions=tasks_with_nl_assertions,
         tasks_with_goal_shifts=tasks_with_goal_shifts,
-        # Component breakdown
         communicate_info_avg_score=communicate_info_metrics["avg_score"],
         communicate_info_exact_matches=communicate_info_metrics["exact_matches"],
         total_communicate_info_checks=communicate_info_metrics["total_checks"],
@@ -761,7 +811,6 @@ def compute_metrics(results: Results) -> AgentMetrics:
         total_action_checks=action_metrics["total_checks"],
         nl_assertion_avg_score=nl_assertion_metrics["avg_score"],
         total_nl_assertions=nl_assertion_metrics["total_assertions"],
-        # Partial scoring impact
         tasks_benefiting_from_partial=tasks_benefiting_from_partial,
         avg_reward_increase=0.0,  # Would need old vs new comparison
     )

@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 from loguru import logger
 
@@ -8,8 +8,6 @@ from tau2.metrics.config import get_tue_weights
 
 @dataclass
 class TUEResult:
-    """Result of TUE computation."""
-
     overall_tue: float
     tool_correctness: float
     param_accuracy: float
@@ -44,16 +42,12 @@ def compute_tue_enhanced(tool_calls: List[dict]) -> TUEResult:
 
     total_calls = len(tool_calls)
 
-    # Tool Correctness: Fraction of tool calls that executed without errors
     correct_calls = sum(1 for call in tool_calls if call.get("correct", False))
     tool_correctness = correct_calls / total_calls
 
-    # Parameter Accuracy: Fraction of tool calls with valid parameters
     valid_param_calls = sum(1 for call in tool_calls if call.get("params_valid", False))
     param_accuracy = valid_param_calls / total_calls
 
-    # Enhanced TUE formula (without latency)
-    # Use configured weights for TUE calculation
     weights = get_tue_weights()
     overall_tue = (
         weights["tool_correctness"] * tool_correctness
@@ -80,7 +74,6 @@ def extract_tool_calls_for_tue(messages: List) -> List[dict]:
     """Extract tool calls from messages for TUE computation."""
     tool_calls = []
 
-    # Create mapping of tool call IDs to their results
     tool_results = {}
     for msg in messages:
         if hasattr(msg, "role") and msg.role == "tool":
@@ -91,15 +84,12 @@ def extract_tool_calls_for_tue(messages: List) -> List[dict]:
             }
 
     for msg in messages:
-        # Look for tool calls in AssistantMessage and UserMessage objects
         if hasattr(msg, "tool_calls") and msg.tool_calls:
             for tool_call in msg.tool_calls:
-                # Determine correctness based on whether the tool executed without errors
                 correct = True
                 if hasattr(tool_call, "id") and tool_call.id in tool_results:
                     correct = tool_results[tool_call.id]["success"]
 
-                # Determine parameter validity
                 params_valid = True
                 if hasattr(tool_call, "id") and tool_call.id in tool_results:
                     result = tool_results[tool_call.id]
@@ -129,36 +119,20 @@ def extract_tool_calls_for_tue(messages: List) -> List[dict]:
     return tool_calls
 
 
-def compute_tue_enhanced_for_simulations(simulations: List[SimulationRun]) -> TUEResult:
+def compute_tue(
+    simulations: List[SimulationRun],
+) -> Tuple[TUEResult, Dict[str, TUEResult]]:
     """
-    Compute enhanced TUE across all simulations.
+    Compute TUE for each task separately and return both aggregated and per-task results.
 
     Args:
         simulations: List of simulation runs
 
     Returns:
-        Aggregated TUEResult across all simulations
-    """
-    all_tool_calls = []
-
-    for sim in simulations:
-        tool_calls = extract_tool_calls_for_tue(sim.messages)
-        all_tool_calls.extend(tool_calls)
-
-    return compute_tue_enhanced(all_tool_calls)
-
-
-def compute_tue_by_task(simulations: List[SimulationRun]) -> Dict[str, TUEResult]:
-    """
-    Compute TUE for each task separately.
-
-    Args:
-        simulations: List of simulation runs
-
-    Returns:
-        Dictionary mapping task_id to TUEResult
+        Tuple of (aggregated_result, results_by_task)
     """
     results_by_task = {}
+    all_tool_calls = []
 
     # Group simulations by task
     sims_by_task: Dict[str, List[SimulationRun]] = {}
@@ -170,6 +144,14 @@ def compute_tue_by_task(simulations: List[SimulationRun]) -> Dict[str, TUEResult
 
     # Compute TUE for each task
     for task_id, task_sims in sims_by_task.items():
-        results_by_task[task_id] = compute_tue_enhanced_for_simulations(task_sims)
+        task_tool_calls = []
+        for sim in task_sims:
+            tool_calls = extract_tool_calls_for_tue(sim.messages)
+            task_tool_calls.extend(tool_calls)
+            all_tool_calls.extend(tool_calls)
 
-    return results_by_task
+        results_by_task[task_id] = compute_tue_enhanced(task_tool_calls)
+
+    aggregated_result = compute_tue_enhanced(all_tool_calls)
+
+    return aggregated_result, results_by_task
