@@ -253,6 +253,14 @@ class EvaluationCriteria(BaseModel):
         ),
     ]
 
+    action_sets: Annotated[
+        Optional[list[dict]],
+        Field(
+            description="Enhanced action format with allowed tools. Each action_set contains action_id and allowed_tools list.",
+            default=None,
+        ),
+    ]
+
     env_assertions: Annotated[
         Optional[list[EnvAssertion]],
         Field(

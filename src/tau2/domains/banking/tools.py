@@ -155,9 +155,9 @@ class BankingTools(ToolKitBase):
     def get_customer_by_phone(self, phone_number: str) -> Customer:
         """
         Retrieve a customer by their complete registered phone number.
-        
+
         Args:
-            phone_number: The complete phone number, such as '+15551234567' or '555-123-7890'. 
+            phone_number: The complete phone number, such as '+15551234567' or '555-123-7890'.
                          Must be the exact full phone number as registered, not partial digits.
 
         Returns:
@@ -172,7 +172,7 @@ class BankingTools(ToolKitBase):
     def get_customer_by_name(self, full_name: str, dob: str) -> List[Customer]:
         """
         Search for customers by their exact full name and date of birth.
-        
+
         Args:
             full_name: The complete full name, such as 'Maria Santos' or 'Alex Morgan'.
             dob: The date of birth in YYYY-MM-DD format, such as '1986-02-11'.
@@ -499,7 +499,7 @@ class BankingTools(ToolKitBase):
         Args:
             account_id: The account ID containing the transaction, such as 'acc_001'.
             tx_id: The transaction ID to dispute, such as 'tx_12345'.
-            reason_code: The reason for the dispute, such as 'unauthorized', 'incorrect_amount', 
+            reason_code: The reason for the dispute, such as 'unauthorized', 'incorrect_amount',
                         'duplicate_charge', or 'goods_not_received'.
 
         Returns:

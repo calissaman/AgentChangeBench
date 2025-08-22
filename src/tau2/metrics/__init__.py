@@ -7,16 +7,15 @@ from .agent_metrics import (
     prepare_dfs,
     pass_hat_k,
     is_successful,
-    # AgentChangeBench metrics functions
-    compute_tsr,
-    compute_tue,
-    compute_tcrr,
     extract_tool_calls_from_messages,
 )
 
-# Meta-tags v2 system imports
+from .tsr import compute_reward_from_tsr
+from .tue import compute_tue
+from .tcrr import compute_tcrr
+from .gsrt import compute_gsrt_enhanced_metrics
+
 from .alignment import alignment_score, AlignmentDetectors, calculate_tool_alignment
-from .goal_shift import compute_gsrt, calculate_gsrt_statistics
 
 __all__ = [
     "AgentMetrics",
@@ -27,14 +26,12 @@ __all__ = [
     "prepare_dfs",
     "pass_hat_k",
     "is_successful",
-    "compute_tsr",
+    "extract_tool_calls_from_messages",
+    "compute_reward_from_tsr",
     "compute_tue",
     "compute_tcrr",
-    "extract_tool_calls_from_messages",
-    # Meta-tags v2 exports
+    "compute_gsrt_enhanced_metrics",
     "alignment_score",
     "AlignmentDetectors",
     "calculate_tool_alignment",
-    "compute_gsrt",
-    "calculate_gsrt_statistics",
 ]
