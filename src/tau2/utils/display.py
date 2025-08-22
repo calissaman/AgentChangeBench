@@ -167,7 +167,104 @@ class ConsoleDisplay:
         cls.console.print(task_panel)
 
     @classmethod
-    def display_simulation(cls, simulation: SimulationRun, show_details: bool = True):
+    def _display_tsr_actions(cls, sim_info, task, simulation):
+        """Display actions based on TSR evaluation criteria."""
+        from tau2.metrics.tsr import extract_action_sets_from_task
+        
+        # Check for new action_sets format first
+        action_sets = extract_action_sets_from_task(task)
+        if action_sets:
+            sim_info.append("\nAction Checks:\n", style="bold magenta")
+            
+            # Extract tool calls from simulation
+            tool_calls = []
+            for msg in simulation.messages:
+                if hasattr(msg, 'tool_calls') and msg.tool_calls:
+                    for tool_call in msg.tool_calls:
+                        tool_calls.append({
+                            'name': tool_call.name,
+                            'arguments': getattr(tool_call, 'arguments', {})
+                        })
+            
+            for i, action_set in enumerate(action_sets):
+                action_id = action_set.action_id
+                allowed_tools = action_set.allowed_tools
+                
+                if len(allowed_tools) == 1:
+                    # Single tool expected
+                    tool = allowed_tools[0]
+                    func_name = tool.get('function_name', '')
+                    params = tool.get('params', {})
+                    
+                    # Check if this tool was called
+                    tool_called = any(
+                        tc['name'] == func_name and 
+                        all(tc['arguments'].get(k) == v for k, v in params.items())
+                        for tc in tool_calls
+                    )
+                    
+                    # Format parameters for display
+                    param_str = ', '.join(f"{k}={repr(v)}" for k, v in params.items())
+                    display_name = f"{func_name}({param_str})"
+                    
+                    sim_info.append(f"- {i}: {display_name} {'✅' if tool_called else '❌'}\n")
+                
+                else:
+                    # Multiple tools allowed - show list
+                    sim_info.append(f"- {i}: {action_id}\n")
+                    for tool in allowed_tools:
+                        func_name = tool.get('function_name', '')
+                        params = tool.get('params', {})
+                        
+                        # Check if this specific tool was called
+                        tool_called = any(
+                            tc['name'] == func_name and 
+                            all(tc['arguments'].get(k) == v for k, v in params.items())
+                            for tc in tool_calls
+                        )
+                        
+                        # Format parameters for display
+                        param_str = ', '.join(f"{k}={repr(v)}" for k, v in params.items())
+                        display_name = f"{func_name}({param_str})"
+                        
+                        sim_info.append(f"    • {display_name} {'✅' if tool_called else '❌'}\n")
+        
+        # Fallback to old actions format if no action_sets
+        elif (task.evaluation_criteria and 
+              hasattr(task.evaluation_criteria, 'actions') and 
+              task.evaluation_criteria.actions):
+            
+            sim_info.append("\nAction Checks:\n", style="bold magenta")
+            
+            # Extract tool calls from simulation
+            tool_calls = []
+            for msg in simulation.messages:
+                if hasattr(msg, 'tool_calls') and msg.tool_calls:
+                    for tool_call in msg.tool_calls:
+                        tool_calls.append({
+                            'name': tool_call.name,
+                            'arguments': getattr(tool_call, 'arguments', {})
+                        })
+            
+            for i, action in enumerate(task.evaluation_criteria.actions):
+                func_name = action.get('name', '')
+                expected_args = action.get('arguments', {})
+                
+                # Check if this action was performed
+                action_performed = any(
+                    tc['name'] == func_name and 
+                    all(tc['arguments'].get(k) == v for k, v in expected_args.items())
+                    for tc in tool_calls
+                )
+                
+                # Format parameters for display
+                param_str = ', '.join(f"{k}={repr(v)}" for k, v in expected_args.items())
+                display_name = f"{func_name}({param_str})"
+                
+                sim_info.append(f"- {i}: {display_name} {'✅' if action_performed else '❌'}\n")
+
+    @classmethod
+    def display_simulation(cls, simulation: SimulationRun, show_details: bool = True, task=None):
         """
         Display the simulation content in a formatted way using Rich library.
 
@@ -200,7 +297,6 @@ class ConsoleDisplay:
             sim_info.append("User Cost: ", style="bold cyan")
             sim_info.append(f"${simulation.user_cost:.4f}\n")
         if simulation.reward_info:
-            marker = "✅" if is_successful(simulation.reward_info.reward) else "❌"
             sim_info.append("Reward: ", style="bold cyan")
             if simulation.reward_info.reward_breakdown:
                 breakdown = sorted(
@@ -213,7 +309,7 @@ class ConsoleDisplay:
                 breakdown = []
 
             sim_info.append(
-                f"{marker} {simulation.reward_info.reward:.4f} ({', '.join(breakdown)})\n"
+                f"{simulation.reward_info.reward:.4f} ({', '.join(breakdown)})\n"
             )
 
             # Add DB check info if present
@@ -238,6 +334,8 @@ class ConsoleDisplay:
                     sim_info.append(
                         f"- {i}: {check.action.name} {'✅' if check.action_match else '❌'} {check.action_reward}\n"
                     )
+            elif task:
+                cls._display_tsr_actions(sim_info, task, simulation)
 
             # Add communication checks if present
             if simulation.reward_info.communicate_checks:
@@ -251,15 +349,79 @@ class ConsoleDisplay:
             if simulation.reward_info.nl_assertions:
                 sim_info.append("\nNL Assertions:\n", style="bold magenta")
                 for i, assertion in enumerate(simulation.reward_info.nl_assertions):
-                    sim_info.append(
-                        f"- {i}: {assertion.nl_assertion} {'✅' if assertion.met else '❌'}\n\t{assertion.justification}\n"
-                    )
+                    # Format: id: score then task + reason
+                    score = "1.0" if assertion.met else "0.0"
+                    score_color = "green" if assertion.met else "red"
+                    sim_info.append("- ", style="white")
+                    sim_info.append(f"{i}", style="bold cyan")
+                    sim_info.append(": ", style="white")
+                    sim_info.append(f"{score}", style=f"bold {score_color}")
+                    sim_info.append(f" {assertion.nl_assertion} {'✅' if assertion.met else '❌'}\n", style="white")
+                    sim_info.append(f"        {assertion.justification}\n", style="dim white")
 
-            # Add additional info if present
+            # Add task-based metrics if present
             if simulation.reward_info.info:
-                sim_info.append("\nAdditional Info:\n", style="bold magenta")
+                sim_info.append("\nTask Metrics:\n", style="bold magenta")
                 for key, value in simulation.reward_info.info.items():
-                    sim_info.append(f"{key}: {value}\n")
+                    if key == "gsrt_v2" and isinstance(value, dict):
+                        sim_info.append("GSRT Analysis:\n", style="bold yellow")
+                        if "start_goal" in value:
+                            start = value["start_goal"]
+                            sim_info.append(f"  Initial Goal: {start.get('goal', 'N/A')} (Turn {start.get('turn', 'N/A')})\n")
+                        
+                        if "user_goal_shifts" in value and value["user_goal_shifts"]:
+                            sim_info.append(f"  Goal Shifts ({len(value['user_goal_shifts'])}):\n")
+                            for i, shift in enumerate(value["user_goal_shifts"], 1):
+                                sim_info.append(f"    {i}. Turn {shift.get('turn', '?')}: {shift.get('from', '?')} → {shift.get('to', '?')}\n")
+                                sim_info.append(f"       Agent Response: Turn {shift.get('agent_turn', '?')}")
+                                if shift.get('acknowledgment_turn'):
+                                    sim_info.append(f", Acknowledged: Turn {shift.get('acknowledgment_turn')}")
+                                if shift.get('tool_turn'):
+                                    sim_info.append(f", Tool Used: Turn {shift.get('tool_turn')}")
+                                if shift.get('outcome_turn'):
+                                    sim_info.append(f", Outcome: Turn {shift.get('outcome_turn')}")
+                                if shift.get('transferred_to_human'):
+                                    sim_info.append(f", Transferred to Human: Yes")
+                                sim_info.append("\n")
+                        else:
+                            sim_info.append("  No goal shifts detected\n")
+                    
+                    elif key == "tsr_details" and isinstance(value, dict):
+                        sim_info.append("TSR Breakdown:\n", style="bold yellow")
+                        overall_tsr = value.get('overall_tsr')
+                        if overall_tsr is not None:
+                            sim_info.append(f"  Overall TSR: {overall_tsr:.3f}/1.0\n")
+                        if value.get('has_actions'):
+                            action_score = value.get('action')
+                            if action_score is not None:
+                                sim_info.append(f"  Actions Score: {action_score:.3f}/1.0\n")
+                        if value.get('has_nl_assertions'):
+                            nl_score = value.get('nl_assertion')
+                            if nl_score is not None:
+                                sim_info.append(f"  NL Assertions Score: {nl_score:.3f}/1.0\n")
+                        if value.get('has_communicate_info'):
+                            comm_score = value.get('communicate_info')
+                            if comm_score is not None:
+                                sim_info.append(f"  Communication Score: {comm_score:.3f}/1.0\n")
+                        if "weights_used" in value:
+                            weights = value["weights_used"]
+                            sim_info.append(f"  Weights Applied: {', '.join(f'{k}={v:.3f}' for k, v in weights.items())}\n")
+                    
+                    elif key.startswith("tue_") and isinstance(value, dict):
+                        sim_info.append("TUE Analysis:\n", style="bold yellow")
+                        sim_info.append(f"  Tool Usage Efficiency: {value.get('overall_tue', 'N/A'):.3f}\n")
+                        sim_info.append(f"  Tool Correctness: {value.get('tool_correctness', 'N/A'):.3f}\n")
+                        sim_info.append(f"  Parameter Accuracy: {value.get('param_accuracy', 'N/A'):.3f}\n")
+                    
+                    elif key.startswith("tcrr_") and isinstance(value, dict):
+                        sim_info.append("TCRR Analysis:\n", style="bold yellow")
+                        sim_info.append(f"  Redundancy Ratio: {value.get('ratio', 'N/A'):.3f}\n")
+                        sim_info.append(f"  Total Calls: {value.get('total_calls', 'N/A')}\n")
+                        sim_info.append(f"  Redundant Calls: {value.get('redundant_calls', 'N/A')}\n")
+                        sim_info.append(f"  Window Size: {value.get('window_size', 'N/A')} turns\n")
+                    
+                    else:
+                        sim_info.append(f"{key}: {value}\n")
 
         cls.console.print(
             Panel(sim_info, title="Simulation Overview", border_style="blue")
@@ -386,12 +548,33 @@ class ConsoleDisplay:
 
         # Add AgentChangeBench metrics section
         content.append("🎯 AgentChangeBench Metrics:", style="bold cyan")
+        
+        # TSR with detailed breakdown
         content.append(f"\n📊 TSR (Task Success Rate): ", style="bold white")
         content.append(f"{metrics.tsr:.2%}")
+        if hasattr(metrics, "tsr_communicate_info") and metrics.tsr_communicate_info is not None:
+            content.append(f"\n  💬 Communicate Info: {metrics.tsr_communicate_info:.2%}")
+        if hasattr(metrics, "tsr_action") and metrics.tsr_action is not None:
+            content.append(f"\n  🔧 Actions: {metrics.tsr_action:.2%}")
+        if hasattr(metrics, "tsr_nl_assertion") and metrics.tsr_nl_assertion is not None:
+            content.append(f"\n  📝 NL Assertions: {metrics.tsr_nl_assertion:.2%}")
+        
+        # TUE with component breakdown  
         content.append(f"\n⚙️  TUE (Tool Usage Efficiency): ", style="bold white")
         content.append(f"{metrics.tue:.2%}")
+        if hasattr(metrics, "tue_tool_correctness") and metrics.tue_tool_correctness is not None:
+            content.append(f"\n  ✅ Tool Correctness: {metrics.tue_tool_correctness:.2%}")
+        if hasattr(metrics, "tue_param_accuracy") and metrics.tue_param_accuracy is not None:
+            content.append(f"\n  🎯 Parameter Accuracy: {metrics.tue_param_accuracy:.2%}")
+        
+        # TCRR with redundancy breakdown
         content.append(f"\n🔄 TCRR (Tool-Call Redundancy Ratio): ", style="bold white")
         content.append(f"{metrics.tcrr:.2%}")
+        if hasattr(metrics, "tcrr_redundant_calls") and hasattr(metrics, "tcrr_total_calls"):
+            content.append(f"\n  📊 Redundant Calls: {metrics.tcrr_redundant_calls}/{metrics.tcrr_total_calls}")
+        if hasattr(metrics, "tcrr_window_size"):
+            content.append(f"\n  🪟 Window Size: {metrics.tcrr_window_size} turns")
+            
         content.append(f"\n🛠️  Total Tool Calls: ", style="bold white")
         content.append(f"{metrics.num_tool_calls}")
 
@@ -399,17 +582,69 @@ class ConsoleDisplay:
         content.append(f"\n🔀 GSRT (Goal Shift Recovery Time): ", style="bold white")
         if hasattr(metrics, "gsrt_num_shifts") and metrics.gsrt_num_shifts > 0:
             content.append(f"\n  📊 Goal Shifts: {metrics.gsrt_num_shifts}")
-            if hasattr(metrics, "gsrt_median") and metrics.gsrt_median is not None:
-                content.append(
-                    f"\n  📈 Median Recovery: {metrics.gsrt_median:.1f} turns"
-                )
-            if (
-                hasattr(metrics, "gsrt_worst_case")
-                and metrics.gsrt_worst_case is not None
-            ):
-                content.append(f"\n  📉 Worst Case: {metrics.gsrt_worst_case} turns")
+            
+            # New GSRT v2 metrics with multi-variant recovery times
+            if hasattr(metrics, "gsrt_median_ack") and metrics.gsrt_median_ack is not None:
+                content.append(f"\n  🎯 Acknowledgment: {metrics.gsrt_median_ack:.1f} turns (median)")
+            if hasattr(metrics, "gsrt_median_tool") and metrics.gsrt_median_tool is not None:
+                content.append(f"\n  🛠️  Tool Usage: {metrics.gsrt_median_tool:.1f} turns (median)")
+            if hasattr(metrics, "gsrt_median_outcome") and metrics.gsrt_median_outcome is not None:
+                content.append(f"\n  ✅ Outcome Success: {metrics.gsrt_median_outcome:.1f} turns (median)")
+            
+            # Recovery and transfer rates
+            if hasattr(metrics, "gsrt_recovery_rate") and metrics.gsrt_recovery_rate is not None:
+                content.append(f"\n  📈 Recovery Rate: {metrics.gsrt_recovery_rate:.1%}")
+            if hasattr(metrics, "gsrt_transfer_rate") and metrics.gsrt_transfer_rate is not None:
+                content.append(f"\n  🔄 Transfer Rate: {metrics.gsrt_transfer_rate:.1%}")
         else:
             content.append("\n  ❌ No goal shifts detected")
+
+        # Add Coverage Statistics section
+        content.append(f"\n\n📋 Coverage Statistics:", style="bold cyan")
+        if hasattr(metrics, "tasks_with_communicate_info"):
+            content.append(f"\n  💬 Tasks with Communicate Info: {metrics.tasks_with_communicate_info}")
+        if hasattr(metrics, "tasks_with_actions"):
+            content.append(f"\n  🔧 Tasks with Actions: {metrics.tasks_with_actions}")
+        if hasattr(metrics, "tasks_with_nl_assertions"):
+            content.append(f"\n  📝 Tasks with NL Assertions: {metrics.tasks_with_nl_assertions}")
+        if hasattr(metrics, "tasks_with_goal_shifts"):
+            content.append(f"\n  🔀 Tasks with Goal Shifts: {metrics.tasks_with_goal_shifts}")
+
+        # Add Component Breakdown section
+        content.append(f"\n\n🔍 Component Breakdown:", style="bold cyan")
+        
+        # Communicate Info Metrics
+        if hasattr(metrics, "communicate_info_avg_score") and metrics.communicate_info_avg_score is not None:
+            content.append(f"\n  💬 Communicate Info:")
+            content.append(f"\n    📊 Average Score: {metrics.communicate_info_avg_score:.2%}")
+            if hasattr(metrics, "communicate_info_exact_matches"):
+                content.append(f"\n    ✅ Exact Matches: {metrics.communicate_info_exact_matches:.2%}")
+            if hasattr(metrics, "total_communicate_info_checks"):
+                content.append(f"\n    🔢 Total Checks: {metrics.total_communicate_info_checks}")
+
+        # Action Metrics
+        if hasattr(metrics, "action_avg_score") and metrics.action_avg_score is not None:
+            content.append(f"\n  🔧 Action Metrics:")
+            content.append(f"\n    📊 Average Score: {metrics.action_avg_score:.2%}")
+            if hasattr(metrics, "action_tool_correctness"):
+                content.append(f"\n    ✅ Tool Correctness: {metrics.action_tool_correctness:.2%}")
+            if hasattr(metrics, "action_param_correctness"):
+                content.append(f"\n    🎯 Parameter Correctness: {metrics.action_param_correctness:.2%}")
+            if hasattr(metrics, "total_action_checks"):
+                content.append(f"\n    🔢 Total Checks: {metrics.total_action_checks}")
+
+        # NL Assertion Metrics
+        if hasattr(metrics, "nl_assertion_avg_score") and metrics.nl_assertion_avg_score is not None:
+            content.append(f"\n  📝 NL Assertion Metrics:")
+            content.append(f"\n    📊 Average Score: {metrics.nl_assertion_avg_score:.2%}")
+            if hasattr(metrics, "total_nl_assertions"):
+                content.append(f"\n    🔢 Total Assertions: {metrics.total_nl_assertions}")
+
+        # Partial Scoring Impact
+        if hasattr(metrics, "tasks_benefiting_from_partial") and hasattr(metrics, "avg_reward_increase"):
+            content.append(f"\n\n🎯 Partial Scoring Impact:", style="bold cyan")
+            content.append(f"\n  📈 Tasks Benefiting: {metrics.tasks_benefiting_from_partial}")
+            content.append(f"\n  ⬆️  Average Reward Increase: {metrics.avg_reward_increase:.2%}")
 
         # Create and display panel
         metrics_panel = Panel(

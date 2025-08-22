@@ -70,14 +70,18 @@ def extract_action_sets_from_task(task: Task) -> List[ActionSet]:
     return []
 
 
-def evaluate_communicate_info_for_task(task: Task, sim: SimulationRun) -> float:
-    """Evaluate communicate_info component for a single task."""
+def evaluate_communicate_info_for_task(task: Task, sim: SimulationRun) -> tuple[float, bool]:
+    """Evaluate communicate_info component for a single task.
+    
+    Returns:
+        tuple: (score, has_communicate_info) where has_communicate_info indicates if task has communicate requirements
+    """
     if not task.evaluation_criteria or not task.evaluation_criteria.communicate_info:
-        return 1.0  # No requirements means perfect score
+        return 0.0, False  # No communicate_info to evaluate
     
     communicate_info = task.evaluation_criteria.communicate_info
     if not communicate_info:
-        return 1.0
+        return 0.0, False
     
     # Extract all assistant messages
     assistant_messages = [
@@ -86,7 +90,7 @@ def evaluate_communicate_info_for_task(task: Task, sim: SimulationRun) -> float:
     ]
     
     if not assistant_messages:
-        return 0.0
+        return 0.0, True
     
     # Combine all assistant text
     full_response = " ".join(msg.content for msg in assistant_messages)
@@ -98,7 +102,7 @@ def evaluate_communicate_info_for_task(task: Task, sim: SimulationRun) -> float:
         if info.lower() in full_response_lower:
             matched_count += 1
     
-    return matched_count / len(communicate_info) if communicate_info else 1.0
+    return (matched_count / len(communicate_info) if communicate_info else 1.0), True
 
 
 def evaluate_actions_for_task(task: Task, sim: SimulationRun) -> tuple[float, bool]:
@@ -178,55 +182,27 @@ def evaluate_nl_assertions_for_task(task: Task, sim: SimulationRun) -> tuple[flo
     if not nl_assertions:
         return 0.0, False
     
-    # Try to get evaluation results from reward_info.nl_assertions (primary method)
-    if hasattr(sim, 'reward_info') and sim.reward_info and hasattr(sim.reward_info, 'nl_assertions'):
-        nl_results = sim.reward_info.nl_assertions
-        if isinstance(nl_results, list) and nl_results:
-            passed_count = sum(1 for result in nl_results if result.get('met', False))
-            return passed_count / len(nl_results), True
-    
-    # Try to get from info.nl_assertions (backup method)
-    if hasattr(sim, 'reward_info') and sim.reward_info and hasattr(sim.reward_info, 'info'):
-        reward_info = sim.reward_info.info
-        if isinstance(reward_info, dict) and 'nl_assertions' in reward_info:
-            nl_results = reward_info['nl_assertions']
-            if isinstance(nl_results, list) and nl_results:
-                passed_count = sum(1 for result in nl_results if result.get('met', False))
-                return passed_count / len(nl_results), True
-    
-    # Try to get from nl field in reward_info (legacy method)
-    if hasattr(sim, 'reward_info') and sim.reward_info and hasattr(sim.reward_info, 'nl'):
-        if sim.reward_info.nl is not None:
-            return float(sim.reward_info.nl), True
-    
-    # Fallback: Use NLAssertionsEvaluator if available
+    # Use NLAssertionsEvaluator to evaluate assertions
     try:
-        from tau2.evaluation.nl_assertions_evaluator import NLAssertionsEvaluator
-        evaluator = NLAssertionsEvaluator()
+        from tau2.evaluator.evaluator_nl_assertions import NLAssertionsEvaluator
         
-        # Extract assistant messages
-        assistant_messages = [
-            msg.content for msg in sim.messages 
-            if hasattr(msg, 'role') and msg.role == 'assistant' and hasattr(msg, 'content') and msg.content
-        ]
+        # Use the class method that returns detailed results
+        nl_checks = NLAssertionsEvaluator.evaluate_nl_assertions(
+            [msg for msg in sim.messages], nl_assertions
+        )
+        passed_count = sum(1 for check in nl_checks if check.met)
+        return passed_count / len(nl_assertions), True
         
-        if assistant_messages:
-            conversation_text = "\n".join(assistant_messages)
-            passed_count = 0
-            for assertion in nl_assertions:
-                if evaluator.evaluate_assertion(assertion, conversation_text):
-                    passed_count += 1
-            return passed_count / len(nl_assertions), True
-    except ImportError:
-        pass
-    
-    # Final fallback: assume 50% success if no evaluation method available
-    return 0.5, True
+    except Exception as e:
+        # If NL evaluation fails, exclude from scoring rather than guessing
+        import logging
+        logging.warning(f"NL assertion evaluation failed for task, excluding from TSR: {e}")
+        return 0.0, False  # Exclude from scoring to maintain data integrity
 
 
 def compute_tsr_for_task(task: Task, sim: SimulationRun, weights: Dict[str, float]) -> Dict[str, float]:
     """Compute TSR for a single task with dynamic reweighting for missing components."""
-    communicate_score = evaluate_communicate_info_for_task(task, sim)
+    communicate_score, has_communicate_info = evaluate_communicate_info_for_task(task, sim)
     action_score, has_actions = evaluate_actions_for_task(task, sim)
     nl_score, has_nl_assertions = evaluate_nl_assertions_for_task(task, sim)
     
@@ -236,21 +212,20 @@ def compute_tsr_for_task(task: Task, sim: SimulationRun, weights: Dict[str, floa
         active_weights['action'] = weights['action']
     if has_nl_assertions:
         active_weights['nl_assertion'] = weights['nl_assertion']
-    
-    # Communicate info is always included (tasks always have some form of communication requirement)
-    active_weights['communicate_info'] = weights['communicate_info']
+    if has_communicate_info:
+        active_weights['communicate_info'] = weights['communicate_info']
     
     # Normalize weights to sum to 1.0
     total_weight = sum(active_weights.values())
     if total_weight > 0:
         normalized_weights = {k: v / total_weight for k, v in active_weights.items()}
     else:
-        # Fallback: only communicate_info
-        normalized_weights = {'communicate_info': 1.0}
+        # Fallback: if no components exist, return 0
+        normalized_weights = {}
     
     # Weighted TSR calculation using normalized weights
     overall_tsr = 0.0
-    if 'communicate_info' in normalized_weights:
+    if 'communicate_info' in normalized_weights and has_communicate_info:
         overall_tsr += normalized_weights['communicate_info'] * communicate_score
     if 'action' in normalized_weights and has_actions:
         overall_tsr += normalized_weights['action'] * action_score
@@ -259,12 +234,13 @@ def compute_tsr_for_task(task: Task, sim: SimulationRun, weights: Dict[str, floa
     
     return {
         'overall_tsr': overall_tsr,
-        'communicate_info': communicate_score,
+        'communicate_info': communicate_score if has_communicate_info else None,
         'action': action_score if has_actions else None,
         'nl_assertion': nl_score if has_nl_assertions else None,
         'weights_used': normalized_weights,
         'has_actions': has_actions,
-        'has_nl_assertions': has_nl_assertions
+        'has_nl_assertions': has_nl_assertions,
+        'has_communicate_info': has_communicate_info
     }
 
 
@@ -313,11 +289,11 @@ def compute_tsr_enhanced(
         from tau2.metrics.config import MetricsConfig
         threshold = MetricsConfig.TSR_SUCCESS_THRESHOLD
         
-        if task_scores['communicate_info'] >= threshold:
+        if task_scores['communicate_info'] is not None and task_scores['communicate_info'] >= threshold:
             communicate_successes += 1
-        if task_scores['action'] >= threshold:
+        if task_scores['action'] is not None and task_scores['action'] >= threshold:
             action_successes += 1
-        if task_scores['nl_assertion'] >= threshold:
+        if task_scores['nl_assertion'] is not None and task_scores['nl_assertion'] >= threshold:
             nl_successes += 1
         if task_scores['overall_tsr'] >= threshold:
             overall_successes += 1

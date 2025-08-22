@@ -177,6 +177,29 @@ class AgentMetrics(BaseModel):
     gsrt_transfer_rate: float = 0.0
     gsrt_never_recovered_rate: float = 0.0
     gsrt_by_task: dict = {}  # Task-level breakdown
+    
+    # Coverage Statistics
+    tasks_with_communicate_info: int = 0
+    tasks_with_actions: int = 0
+    tasks_with_nl_assertions: int = 0
+    tasks_with_goal_shifts: int = 0
+    
+    # Component Breakdown
+    communicate_info_avg_score: Optional[float] = None
+    communicate_info_exact_matches: Optional[float] = None
+    total_communicate_info_checks: int = 0
+    
+    action_avg_score: Optional[float] = None
+    action_tool_correctness: Optional[float] = None
+    action_param_correctness: Optional[float] = None
+    total_action_checks: int = 0
+    
+    nl_assertion_avg_score: Optional[float] = None
+    total_nl_assertions: int = 0
+    
+    # Partial Scoring Impact
+    tasks_benefiting_from_partial: int = 0
+    avg_reward_increase: float = 0.0
 
     def as_dict(self) -> dict:
         data = {
@@ -513,6 +536,24 @@ def compute_metrics_simple(results: Results) -> AgentMetrics:
         gsrt_transfer_rate=gsrt_transfer_rate,
         gsrt_never_recovered_rate=gsrt_never_recovered_rate,
         gsrt_by_task=gsrt_by_task,
+        # Coverage Statistics - basic computation
+        tasks_with_communicate_info=0,  # Simple fallback doesn't compute this
+        tasks_with_actions=0,
+        tasks_with_nl_assertions=0, 
+        tasks_with_goal_shifts=0,
+        # Component Breakdown - basic values
+        communicate_info_avg_score=None,
+        communicate_info_exact_matches=None,
+        total_communicate_info_checks=0,
+        action_avg_score=None,
+        action_tool_correctness=None,
+        action_param_correctness=None,
+        total_action_checks=0,
+        nl_assertion_avg_score=None,
+        total_nl_assertions=0,
+        # Partial Scoring Impact
+        tasks_benefiting_from_partial=0,
+        avg_reward_increase=0.0,
     )
 
 
@@ -530,8 +571,11 @@ def compute_metrics(results: Results) -> AgentMetrics:
     """
     try:
         # Try the full computation first
-        df, df_pass_hat_k = get_metrics_df(results)
+        df, max_k = get_metrics_df(results)
         avg_reward = df.reward.mean()
+        
+        # Get pass^k metrics separately
+        df_pass_hat_k = get_tasks_pass_hat_k(results)
         pass_hat_ks = {}
         for column in df_pass_hat_k.columns:
             if match := re.match(r"pass\^(\d+)", column):
@@ -643,36 +687,36 @@ def compute_metrics(results: Results) -> AgentMetrics:
                 }
             except Exception as e:
                 logger.warning(f"Enhanced TUE computation failed, falling back to simple: {e}")
-                # Fallback to original TUE calculation
-                all_costs = [call["cost"] for call in all_tool_calls if call["cost"] > 0]
-                all_latencies = [call["latency"] for call in all_tool_calls if call["latency"] > 0]
-                cost_cap = np.percentile(all_costs, 95) if all_costs else 1.0
-                latency_cap = np.percentile(all_latencies, 95) if all_latencies else 1.0
-                cost_cap = max(cost_cap, 0.001)
-                latency_cap = max(latency_cap, 0.001)
-                # Fallback to simple TUE calculation
-                num_total = len(all_tool_calls)
-                num_correct = sum(1 for call in all_tool_calls if call.get("correct", False))
-                num_valid_params = sum(1 for call in all_tool_calls if call.get("params_valid", False))
-                T_correct = num_correct / num_total
-                P_params = num_valid_params / num_total
-                total_cost = sum(call.get("cost", 0.0) for call in all_tool_calls)
-                C_cost = max(0.0, min(1.0, 1.0 - (total_cost / cost_cap))) if cost_cap > 0 else 1.0
-                valid_latencies = [call.get("latency", 0.0) for call in all_tool_calls if call.get("latency", 0.0) > 0]
-                if valid_latencies and latency_cap > 0:
-                    avg_latency = sum(valid_latencies) / len(valid_latencies)
-                    capped_latency = min(avg_latency, latency_cap)
-                    L_latency = max(0.0, min(1.0, 1.0 - (capped_latency / latency_cap)))
-                else:
-                    L_latency = 1.0
-                tue = 0.4 * T_correct + 0.25 * P_params + 0.2 * C_cost + 0.15 * L_latency
+            # Fallback to original TUE calculation
+            all_costs = [call["cost"] for call in all_tool_calls if call["cost"] > 0]
+            all_latencies = [call["latency"] for call in all_tool_calls if call["latency"] > 0]
+            cost_cap = np.percentile(all_costs, 95) if all_costs else 1.0
+            latency_cap = np.percentile(all_latencies, 95) if all_latencies else 1.0
+            cost_cap = max(cost_cap, 0.001)
+            latency_cap = max(latency_cap, 0.001)
+            # Fallback to simple TUE calculation
+            num_total = len(all_tool_calls)
+            num_correct = sum(1 for call in all_tool_calls if call.get("correct", False))
+            num_valid_params = sum(1 for call in all_tool_calls if call.get("params_valid", False))
+            T_correct = num_correct / num_total
+            P_params = num_valid_params / num_total
+            total_cost = sum(call.get("cost", 0.0) for call in all_tool_calls)
+            C_cost = max(0.0, min(1.0, 1.0 - (total_cost / cost_cap))) if cost_cap > 0 else 1.0
+            valid_latencies = [call.get("latency", 0.0) for call in all_tool_calls if call.get("latency", 0.0) > 0]
+            if valid_latencies and latency_cap > 0:
+                avg_latency = sum(valid_latencies) / len(valid_latencies)
+                capped_latency = min(avg_latency, latency_cap)
+                L_latency = max(0.0, min(1.0, 1.0 - (capped_latency / latency_cap)))
+            else:
+                L_latency = 1.0
+            tue = 0.4 * T_correct + 0.25 * P_params + 0.2 * C_cost + 0.15 * L_latency
                 
                 # Extract basic metrics for fallback
-                tue_correct_calls = sum(1 for call in all_tool_calls if call.get("correct", False))
-                tue_valid_param_calls = sum(1 for call in all_tool_calls if call.get("params_valid", False))
-                tue_tool_correctness = tue_correct_calls / len(all_tool_calls) if all_tool_calls else 0.0
-                tue_param_accuracy = tue_valid_param_calls / len(all_tool_calls) if all_tool_calls else 0.0
-                tue_by_task = {}
+            tue_correct_calls = sum(1 for call in all_tool_calls if call.get("correct", False))
+            tue_valid_param_calls = sum(1 for call in all_tool_calls if call.get("params_valid", False))
+            tue_tool_correctness = tue_correct_calls / len(all_tool_calls) if all_tool_calls else 0.0
+            tue_param_accuracy = tue_valid_param_calls / len(all_tool_calls) if all_tool_calls else 0.0
+            tue_by_task = {}
         else:
             tcrr = 0.0
             tue = 0.0
@@ -754,6 +798,24 @@ def compute_metrics(results: Results) -> AgentMetrics:
             gsrt_transfer_rate=gsrt_transfer_rate,
             gsrt_never_recovered_rate=gsrt_never_recovered_rate,
             gsrt_by_task=gsrt_by_task,
+            # Coverage Statistics - compute from tasks and simulations
+            tasks_with_communicate_info=sum(1 for task in results.tasks if task.evaluation_criteria and task.evaluation_criteria.communicate_info),
+            tasks_with_actions=sum(1 for task in results.tasks if task.evaluation_criteria and (task.evaluation_criteria.actions or task.evaluation_criteria.action_sets)),
+            tasks_with_nl_assertions=sum(1 for task in results.tasks if task.evaluation_criteria and task.evaluation_criteria.nl_assertions),
+            tasks_with_goal_shifts=gsrt_num_shifts,
+            # Component Breakdown - use TSR/TUE component scores
+            communicate_info_avg_score=tsr_communicate_info if tsr_communicate_info > 0 else None,
+            communicate_info_exact_matches=tsr_communicate_info if tsr_communicate_info > 0 else None,
+            total_communicate_info_checks=sum(len(task.evaluation_criteria.communicate_info or []) for task in results.tasks if task.evaluation_criteria and task.evaluation_criteria.communicate_info),
+            action_avg_score=tsr_action if tsr_action > 0 else None,
+            action_tool_correctness=tue_tool_correctness if tue_tool_correctness > 0 else None,
+            action_param_correctness=tue_param_accuracy if tue_param_accuracy > 0 else None,
+            total_action_checks=sum(len(task.evaluation_criteria.actions or []) + len(task.evaluation_criteria.action_sets or []) for task in results.tasks if task.evaluation_criteria),
+            nl_assertion_avg_score=tsr_nl_assertion if tsr_nl_assertion > 0 else None,
+            total_nl_assertions=sum(len(task.evaluation_criteria.nl_assertions or []) for task in results.tasks if task.evaluation_criteria and task.evaluation_criteria.nl_assertions),
+            # Partial Scoring Impact - simplified calculation
+            tasks_benefiting_from_partial=len([sim for sim in results.simulations if sim.reward_info and 0 < sim.reward_info.reward < 1]),
+            avg_reward_increase=0.0,  # Would need old vs new comparison
         )
     except Exception as e:
         logger.warning(
@@ -767,7 +829,20 @@ def get_tasks_pass_hat_k(results: Results) -> pd.DataFrame:
     Compute the pass^k for each k from 1 to the maximum number of trials.
     """
     df, max_k = get_metrics_df(results)
-    df_pass_hat_k = get_tasks_pass_hat_k(results)
+    
+    # Compute pass^k metrics for each task
+    pass_hat_k_data = []
+    for task_id in df.task_id.unique():
+        task_df = df[df.task_id == task_id]
+        num_trials = len(task_df)
+        success_count = task_df.success.sum()
+        
+        task_row = {"task_id": task_id}
+        for k in range(1, min(max_k + 1, num_trials + 1)):
+            task_row[f"pass^{k}"] = pass_hat_k(num_trials, success_count, k)
+        pass_hat_k_data.append(task_row)
+    
+    df_pass_hat_k = pd.DataFrame(pass_hat_k_data)
     df_pass_hat_k["num_actions"] = df.groupby("task_id").first()["task_num_actions"]
     df_pass_hat_k = df_pass_hat_k.sort_values(by="num_actions")
     return df_pass_hat_k

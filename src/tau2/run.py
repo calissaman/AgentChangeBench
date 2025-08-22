@@ -369,7 +369,7 @@ def run_tasks(
             except Exception as e:
                 logger.warning(f"GSRT v2 judge failed for task {task.id}: {e}")
             if console_display:
-                ConsoleDisplay.display_simulation(simulation, show_details=False)
+                ConsoleDisplay.display_simulation(simulation, show_details=False, task=task)
             _save(simulation)
         except Exception as e:
             logger.error(f"Error running task {task.id}, trial {trial}: {e}")
@@ -526,13 +526,43 @@ def run_task(
             reward_breakdown[RewardType.ACTION] = tsr_result['action']
         if tsr_result.get('has_nl_assertions', False):
             reward_breakdown[RewardType.NL_ASSERTION] = tsr_result['nl_assertion']
-        reward_breakdown[RewardType.COMMUNICATE] = tsr_result['communicate_info']
+        if tsr_result.get('has_communicate_info', False):
+            reward_breakdown[RewardType.COMMUNICATE] = tsr_result['communicate_info']
         
-        # Create reward_info with TSR data
+        # Create reward_info with TSR data and NL assertions for display
+        nl_assertions_for_display = []
+        if tsr_result.get('has_nl_assertions', False) and task.evaluation_criteria and task.evaluation_criteria.nl_assertions:
+            # Re-evaluate NL assertions for display purposes
+            try:
+                from tau2.evaluator.evaluator_nl_assertions import NLAssertionsEvaluator
+                
+                # Use the proper evaluation method that returns detailed justifications
+                nl_assertion_checks = NLAssertionsEvaluator.evaluate_nl_assertions(
+                    simulation.messages, task.evaluation_criteria.nl_assertions
+                )
+                
+                # Convert to display format
+                for check in nl_assertion_checks:
+                    nl_assertions_for_display.append({
+                        'nl_assertion': check.nl_assertion,
+                        'met': check.met,
+                        'justification': check.justification  # This contains the detailed reasoning from LLM
+                    })
+            except ImportError:
+                # If NL evaluator not available, create placeholder with better explanation
+                nl_score = tsr_result.get('nl_assertion', 0.5)
+                for assertion in task.evaluation_criteria.nl_assertions:
+                    nl_assertions_for_display.append({
+                        'nl_assertion': assertion,
+                        'met': nl_score >= 0.5,
+                        'justification': f"Evaluated using TSR fallback method. Overall NL assertion score: {nl_score:.2f}. {'Passed' if nl_score >= 0.5 else 'Failed'} based on 0.5 threshold."
+                    })
+        
         simulation.reward_info = RewardInfo(
             reward=reward,
             reward_breakdown=reward_breakdown,
-            info={}
+            nl_assertions=nl_assertions_for_display,
+            info={"tsr_details": tsr_result}
         )
         
     except Exception as e:

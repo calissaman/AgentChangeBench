@@ -11,7 +11,7 @@ from .agent_metrics import (
 )
 
 # Enhanced metrics modules
-from .tsr import compute_tsr_enhanced, compute_new_reward_from_tsr
+from .tsr import compute_tsr_enhanced, compute_reward_from_tsr
 from .tue import compute_tue_enhanced, compute_tue_enhanced_for_simulations
 from .tcrr import compute_tcrr_enhanced, compute_tcrr_by_task
 from .gsrt import compute_gsrt_enhanced_metrics
@@ -31,7 +31,7 @@ __all__ = [
     "extract_tool_calls_from_messages",
     # Enhanced metrics exports
     "compute_tsr_enhanced",
-    "compute_new_reward_from_tsr",
+    "compute_reward_from_tsr",
     "compute_tue_enhanced",
     "compute_tue_enhanced_for_simulations",
     "compute_tcrr_enhanced",
