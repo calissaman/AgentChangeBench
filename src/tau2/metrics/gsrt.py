@@ -218,7 +218,7 @@ def compute_gsrt_for_task(
         transferred = shift_data.get("transferred_to_human", False)
 
         recovery_successful = False
-        if ack_turn is not None and ack_turn > shift_turn:
+        if ack_turn is not None and ack_turn > shift_turn and not transferred:
             recovery_times_ack.append(ack_turn - shift_turn)
             recovery_successful = True
 
