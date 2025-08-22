@@ -185,18 +185,21 @@ def _params_match(actual_params: dict, expected_params: dict) -> bool:
 
 def evaluate_nl_assertions_for_task(
     task: Task, sim: SimulationRun
-) -> tuple[float, bool]:
+) -> tuple[float, bool, list]:
     """Evaluate NL assertions component for a single task.
 
     Returns:
-        tuple: (score, has_nl_assertions) where has_nl_assertions indicates if task has NL requirements
+        tuple: (score, has_nl_assertions, detailed_checks) where:
+        - score: fraction of assertions that passed
+        - has_nl_assertions: indicates if task has NL requirements  
+        - detailed_checks: list of NLAssertionCheck objects with justifications
     """
     if not task.evaluation_criteria or not task.evaluation_criteria.nl_assertions:
-        return 0.0, False  # No NL assertions to evaluate
+        return 0.0, False, []  # No NL assertions to evaluate
 
     nl_assertions = task.evaluation_criteria.nl_assertions
     if not nl_assertions:
-        return 0.0, False
+        return 0.0, False, []
 
     # Use NLAssertionsEvaluator to evaluate assertions
     try:
@@ -207,7 +210,7 @@ def evaluate_nl_assertions_for_task(
             [msg for msg in sim.messages], nl_assertions
         )
         passed_count = sum(1 for check in nl_checks if check.met)
-        return passed_count / len(nl_assertions), True
+        return passed_count / len(nl_assertions), True, nl_checks
 
     except Exception as e:
         # If NL evaluation fails, exclude from scoring rather than guessing
@@ -216,7 +219,7 @@ def evaluate_nl_assertions_for_task(
         logging.warning(
             f"NL assertion evaluation failed for task, excluding from TSR: {e}"
         )
-        return 0.0, False  # Exclude from scoring to maintain data integrity
+        return 0.0, False, []  # Exclude from scoring to maintain data integrity
 
 
 def compute_tsr_for_task(
@@ -227,7 +230,7 @@ def compute_tsr_for_task(
         task, sim
     )
     action_score, has_actions = evaluate_actions_for_task(task, sim)
-    nl_score, has_nl_assertions = evaluate_nl_assertions_for_task(task, sim)
+    nl_score, has_nl_assertions, nl_assertion_details = evaluate_nl_assertions_for_task(task, sim)
 
     # Dynamic reweighting: exclude components that don't exist
     active_weights = {}
@@ -264,6 +267,7 @@ def compute_tsr_for_task(
         "has_actions": has_actions,
         "has_nl_assertions": has_nl_assertions,
         "has_communicate_info": has_communicate_info,
+        "nl_assertion_details": nl_assertion_details,
     }
 
 
