@@ -42,6 +42,7 @@ dependencies = [
     "openai>=1.99.6",
     "vllm>=0.9.1",
     "transformers==4.53.3",
+    "numpy>=2.2.6",
 ]
 [project.scripts]
 tau2 = "tau2.cli:main"

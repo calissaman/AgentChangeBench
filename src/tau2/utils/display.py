@@ -282,9 +282,9 @@ class ConsoleDisplay:
             gsrt_markers = {}
             if simulation.reward_info and simulation.reward_info.info:
                 info = simulation.reward_info.info
-                if isinstance(info, dict) and "gsrt_v2" in info:
+                if isinstance(info, dict) and ("gsrt_v2" in info or "gsrt_enhanced" in info):
                     try:
-                        data = info["gsrt_v2"]
+                        data = info.get("gsrt_v2") or info.get("gsrt_enhanced")
                         start_goal = data.get("start_goal") or {}
                         if isinstance(start_goal, dict) and isinstance(
                             start_goal.get("turn"), int

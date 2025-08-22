@@ -125,95 +125,13 @@ def extract_tool_calls_from_messages(messages: list[Message]) -> list[dict]:
     return tool_calls
 
 
-def compute_tsr(sim_runs: list[SimulationRun]) -> float:
-    """Calculate Task Success Rate from simulation runs."""
-    if not sim_runs:
-        return 0.0
-
-    success_count = 0
-    for run in sim_runs:
-        if run.reward_info and safe_float(run.reward_info.reward) > 0:
-            success_count += 1
-
-    return success_count / len(sim_runs)
+# Old compute_tsr function removed - now using enhanced TSR implementation
 
 
-def compute_tcrr(tool_calls: list[dict]) -> float:
-    """Compute Tool-Call Redundancy Ratio."""
-    if not tool_calls:
-        return 0.0
-
-    seen_calls = set()
-    duplicate_count = 0
-
-    for call in tool_calls:
-        try:
-            params_norm = normalized_params(call["params"])
-            identity = (call["name"], params_norm)
-            if identity in seen_calls:
-                duplicate_count += 1
-            else:
-                seen_calls.add(identity)
-        except Exception as e:
-            logger.warning(f"Error normalizing params for TCRR: {e}")
-            # Fallback: string representation
-            identity = (call["name"], str(call["params"]))
-            if identity in seen_calls:
-                duplicate_count += 1
-            else:
-                seen_calls.add(identity)
-
-    return duplicate_count / len(tool_calls)
+# Old compute_tcrr function removed - now using enhanced TCRR implementation
 
 
-def compute_tue(tool_calls: list[dict], cost_cap: float, latency_cap: float) -> float:
-    """
-    Compute Tool Usage Efficiency according to AgentChangeBench specification.
-
-    TUE = wT·Tcorrect + wP·Pparams + wC·Ccost + wL·Llatency
-    Weights: wT=0.4, wP=0.25, wC=0.2, wL=0.15
-
-    Args:
-        tool_calls: List of tool call dictionaries with keys: correct, params_valid, cost, latency
-        cost_cap: 95th percentile cost cap for normalization
-        latency_cap: 95th percentile latency cap for normalization
-    """
-    if not tool_calls:
-        return 0.0
-
-    num_total = len(tool_calls)
-
-    # T_correct: Fraction of correct tool calls
-    num_correct = sum(1 for call in tool_calls if call.get("correct", False))
-    T_correct = num_correct / num_total
-
-    # P_params: Fraction of tool calls with valid parameters
-    num_valid_params = sum(1 for call in tool_calls if call.get("params_valid", False))
-    P_params = num_valid_params / num_total
-
-    # C_cost: Cost efficiency = 1 - actual_cost/cost_cap
-    total_cost = sum(call.get("cost", 0.0) for call in tool_calls)
-    if cost_cap > 0:
-        C_cost = max(0.0, min(1.0, 1.0 - (total_cost / cost_cap)))
-    else:
-        C_cost = 1.0  # If no cost cap, assume perfect efficiency
-
-    # L_latency: Latency efficiency = 1 - min(avg_latency, latency_cap)/latency_cap
-    valid_latencies = [
-        call.get("latency", 0.0) for call in tool_calls if call.get("latency", 0.0) > 0
-    ]
-    if valid_latencies and latency_cap > 0:
-        avg_latency = sum(valid_latencies) / len(valid_latencies)
-        # Use min(avg_latency, latency_cap) as per spec
-        capped_latency = min(avg_latency, latency_cap)
-        L_latency = max(0.0, min(1.0, 1.0 - (capped_latency / latency_cap)))
-    else:
-        L_latency = 1.0  # If no latency data, assume perfect efficiency
-
-    # Weighted TUE formula with exact AgentChangeBench weights
-    tue = 0.4 * T_correct + 0.25 * P_params + 0.2 * C_cost + 0.15 * L_latency
-
-    return tue
+# Old compute_tue function removed - now using enhanced TUE implementation
 
 
 def extract_domain_from_task_id(task_id: str) -> str:
@@ -233,10 +151,32 @@ class AgentMetrics(BaseModel):
     tue: float  # Tool Usage Efficiency
     tcrr: float  # Tool-Call Redundancy Ratio
     num_tool_calls: int
-    # GSRT metrics
-    gsrt_median: Optional[float] = None
-    gsrt_worst_case: Optional[int] = None
+    # Enhanced TSR metrics (multi-channel breakdown)
+    tsr_communicate_info: float = 0.0
+    tsr_action: float = 0.0
+    tsr_nl_assertion: float = 0.0
+    tsr_weights: dict = {}  # Weights used in TSR calculation
+    tsr_by_task: dict = {}  # Task-level TSR breakdown
+    # Enhanced TUE metrics
+    tue_tool_correctness: float = 0.0
+    tue_param_accuracy: float = 0.0
+    tue_correct_calls: int = 0
+    tue_valid_param_calls: int = 0
+    tue_by_task: dict = {}  # Task-level TUE breakdown
+    # Enhanced TCRR metrics
+    tcrr_window_size: int = 3
+    tcrr_total_calls: int = 0
+    tcrr_redundant_calls: int = 0
+    tcrr_by_task: dict = {}  # Task-level TCRR breakdown
+    # Enhanced GSRT metrics
+    gsrt_median_ack: Optional[float] = None
+    gsrt_median_tool: Optional[float] = None
+    gsrt_median_outcome: Optional[float] = None
     gsrt_num_shifts: int = 0
+    gsrt_recovery_rate: float = 0.0
+    gsrt_transfer_rate: float = 0.0
+    gsrt_never_recovered_rate: float = 0.0
+    gsrt_by_task: dict = {}  # Task-level breakdown
 
     def as_dict(self) -> dict:
         data = {
@@ -246,9 +186,28 @@ class AgentMetrics(BaseModel):
             "tue": self.tue,
             "tcrr": self.tcrr,
             "num_tool_calls": self.num_tool_calls,
-            "gsrt_median": self.gsrt_median,
-            "gsrt_worst_case": self.gsrt_worst_case,
+            "tsr_communicate_info": self.tsr_communicate_info,
+            "tsr_action": self.tsr_action,
+            "tsr_nl_assertion": self.tsr_nl_assertion,
+            "tsr_weights": self.tsr_weights,
+            "tsr_by_task": self.tsr_by_task,
+            "tue_tool_correctness": self.tue_tool_correctness,
+            "tue_param_accuracy": self.tue_param_accuracy,
+            "tue_correct_calls": self.tue_correct_calls,
+            "tue_valid_param_calls": self.tue_valid_param_calls,
+            "tue_by_task": self.tue_by_task,
+            "tcrr_window_size": self.tcrr_window_size,
+            "tcrr_total_calls": self.tcrr_total_calls,
+            "tcrr_redundant_calls": self.tcrr_redundant_calls,
+            "tcrr_by_task": self.tcrr_by_task,
+            "gsrt_median_ack": self.gsrt_median_ack,
+            "gsrt_median_tool": self.gsrt_median_tool,
+            "gsrt_median_outcome": self.gsrt_median_outcome,
             "gsrt_num_shifts": self.gsrt_num_shifts,
+            "gsrt_recovery_rate": self.gsrt_recovery_rate,
+            "gsrt_transfer_rate": self.gsrt_transfer_rate,
+            "gsrt_never_recovered_rate": self.gsrt_never_recovered_rate,
+            "gsrt_by_task": self.gsrt_by_task,
         }
         for k, v in self.pass_hat_ks.items():
             data[f"pass_hat_{k}"] = v
@@ -339,9 +298,29 @@ def compute_metrics_simple(results: Results) -> AgentMetrics:
                 task_success_rates.append(success_rate)
             pass_hat_ks[1] = np.mean(task_success_rates)
 
-    # Compute AgentChangeBench metrics
-    # Calculate TSR
-    tsr = compute_tsr(results.simulations)
+    # Compute enhanced TSR metrics with multi-channel breakdown
+    try:
+        from tau2.metrics.tsr import compute_tsr_enhanced
+        
+        tsr_result = compute_tsr_enhanced(results.tasks, results.simulations)
+        tsr = tsr_result.overall_tsr
+        tsr_communicate_info = tsr_result.communicate_info.success_rate
+        tsr_action = tsr_result.action.success_rate
+        tsr_nl_assertion = tsr_result.nl_assertion.success_rate
+        tsr_weights = tsr_result.weights
+        tsr_by_task = tsr_result.by_task
+        
+    except Exception as e:
+        logger.warning(f"Enhanced TSR computation failed, falling back to simple: {e}")
+        # Fallback to simple TSR calculation
+        success_count = sum(1 for sim in results.simulations 
+                          if sim.reward_info and safe_float(sim.reward_info.reward) > 0)
+        tsr = success_count / len(results.simulations) if results.simulations else 0.0
+        tsr_communicate_info = 0.0
+        tsr_action = 0.0
+        tsr_nl_assertion = 0.0
+        tsr_weights = {"communicate_info": 0.5, "action": 0.3, "nl_assertion": 0.2}
+        tsr_by_task = {}
 
     # Extract all tool calls
     all_tool_calls = []
@@ -352,75 +331,157 @@ def compute_metrics_simple(results: Results) -> AgentMetrics:
     num_tool_calls = len(all_tool_calls)
 
     if all_tool_calls:
-        # Calculate TCRR
-        tcrr = compute_tcrr(all_tool_calls)
+        # Calculate enhanced TCRR with window-based approach
+        try:
+            from tau2.metrics.tcrr import compute_tcrr_enhanced, compute_tcrr_by_task
+            
+            tcrr_result = compute_tcrr_enhanced(results.simulations, window_size=3)
+            tcrr = tcrr_result.redundancy_ratio
+            tcrr_window_size = tcrr_result.window_size
+            tcrr_total_calls = tcrr_result.total_calls
+            tcrr_redundant_calls = tcrr_result.redundant_calls
+            
+            # Get task-level breakdown
+            tcrr_by_task_results = compute_tcrr_by_task(results.simulations, window_size=3)
+            tcrr_by_task = {
+                task_id: {
+                    "redundancy_ratio": result.redundancy_ratio,
+                    "total_calls": result.total_calls,
+                    "redundant_calls": result.redundant_calls,
+                }
+                for task_id, result in tcrr_by_task_results.items()
+            }
+        except Exception as e:
+            logger.warning(f"Enhanced TCRR computation failed, falling back to simple: {e}")
+            # Fallback to simple TCRR calculation
+            seen_calls = set()
+            duplicate_count = 0
+            for call in all_tool_calls:
+                try:
+                    params_norm = normalized_params(call["params"])
+                    identity = (call["name"], params_norm)
+                    if identity in seen_calls:
+                        duplicate_count += 1
+                    else:
+                        seen_calls.add(identity)
+                except Exception:
+                    identity = (call["name"], str(call["params"]))
+                    if identity in seen_calls:
+                        duplicate_count += 1
+                    else:
+                        seen_calls.add(identity)
+            tcrr = duplicate_count / len(all_tool_calls) if all_tool_calls else 0.0
+            tcrr_window_size = 3
+            tcrr_total_calls = len(all_tool_calls)
+            tcrr_redundant_calls = int(tcrr * len(all_tool_calls))
+            tcrr_by_task = {}
 
-        # Calculate TUE (need cost and latency caps)
-        all_costs = [call["cost"] for call in all_tool_calls if call["cost"] > 0]
-        all_latencies = [
-            call["latency"] for call in all_tool_calls if call["latency"] > 0
-        ]
-
-        cost_cap = np.percentile(all_costs, 95) if all_costs else 1.0
-        latency_cap = np.percentile(all_latencies, 95) if all_latencies else 1.0
-        cost_cap = max(cost_cap, 0.001)  # prevent division by zero
-        latency_cap = max(latency_cap, 0.001)
-
-        tue = compute_tue(all_tool_calls, cost_cap, latency_cap)
+        # Calculate enhanced TUE without latency component
+        try:
+            from tau2.metrics.tue import compute_tue_enhanced_for_simulations, compute_tue_by_task
+            
+            tue_result = compute_tue_enhanced_for_simulations(results.simulations)
+            tue = tue_result.overall_tue
+            tue_tool_correctness = tue_result.tool_correctness
+            tue_param_accuracy = tue_result.param_accuracy
+            tue_correct_calls = tue_result.correct_calls
+            tue_valid_param_calls = tue_result.valid_param_calls
+            
+            # Get task-level breakdown
+            tue_by_task_results = compute_tue_by_task(results.simulations)
+            tue_by_task = {
+                task_id: {
+                    "overall_tue": result.overall_tue,
+                    "tool_correctness": result.tool_correctness,
+                    "param_accuracy": result.param_accuracy,
+                    "total_calls": result.total_calls,
+                    "correct_calls": result.correct_calls,
+                    "valid_param_calls": result.valid_param_calls,
+                }
+                for task_id, result in tue_by_task_results.items()
+            }
+        except Exception as e:
+            logger.warning(f"Enhanced TUE computation failed, falling back to simple: {e}")
+            # Fallback to original TUE calculation
+            all_costs = [call["cost"] for call in all_tool_calls if call["cost"] > 0]
+            all_latencies = [call["latency"] for call in all_tool_calls if call["latency"] > 0]
+            cost_cap = np.percentile(all_costs, 95) if all_costs else 1.0
+            latency_cap = np.percentile(all_latencies, 95) if all_latencies else 1.0
+            cost_cap = max(cost_cap, 0.001)
+            latency_cap = max(latency_cap, 0.001)
+            # Fallback to simple TUE calculation
+            num_total = len(all_tool_calls)
+            num_correct = sum(1 for call in all_tool_calls if call.get("correct", False))
+            num_valid_params = sum(1 for call in all_tool_calls if call.get("params_valid", False))
+            T_correct = num_correct / num_total
+            P_params = num_valid_params / num_total
+            total_cost = sum(call.get("cost", 0.0) for call in all_tool_calls)
+            C_cost = max(0.0, min(1.0, 1.0 - (total_cost / cost_cap))) if cost_cap > 0 else 1.0
+            valid_latencies = [call.get("latency", 0.0) for call in all_tool_calls if call.get("latency", 0.0) > 0]
+            if valid_latencies and latency_cap > 0:
+                avg_latency = sum(valid_latencies) / len(valid_latencies)
+                capped_latency = min(avg_latency, latency_cap)
+                L_latency = max(0.0, min(1.0, 1.0 - (capped_latency / latency_cap)))
+            else:
+                L_latency = 1.0
+            tue = 0.4 * T_correct + 0.25 * P_params + 0.2 * C_cost + 0.15 * L_latency
+            
+            # Extract basic metrics for fallback
+            tue_correct_calls = sum(1 for call in all_tool_calls if call.get("correct", False))
+            tue_valid_param_calls = sum(1 for call in all_tool_calls if call.get("params_valid", False))
+            tue_tool_correctness = tue_correct_calls / len(all_tool_calls) if all_tool_calls else 0.0
+            tue_param_accuracy = tue_valid_param_calls / len(all_tool_calls) if all_tool_calls else 0.0
+            tue_by_task = {}
     else:
         tcrr = 0.0
         tue = 0.0
+        tcrr_window_size = 3
+        tcrr_total_calls = 0
+        tcrr_redundant_calls = 0
+        tcrr_by_task = {}
+        tue_tool_correctness = 0.0
+        tue_param_accuracy = 0.0
+        tue_correct_calls = 0
+        tue_valid_param_calls = 0
+        tue_by_task = {}
 
-    # Compute GSRT using v2 judge unconditionally
+    # Compute enhanced GSRT metrics
     try:
-        from tau2.metrics.gsrt_v2 import detect_gsrt_v2
+        from tau2.metrics.gsrt import compute_gsrt_enhanced_metrics
 
-        gsrt_counts = 0
-        recovery_turns: list[int] = []
-        judge_model = getattr(results.info, "gsrt_judge_llm", None) or "gpt-5"
+        judge_model = getattr(results.info, "gsrt_judge_llm", None) or "gpt-4o-mini"
         judge_args = getattr(results.info, "gsrt_judge_llm_args", None) or {
             "temperature": 0.0
         }
-        for sim in results.simulations:
-            task = None
-            for t in results.tasks:
-                if t.id == sim.task_id:
-                    task = t
-                    break
-            if not task:
-                continue
-            # Try to reuse cached judge output if present
-            res = None
-            if (
-                sim.reward_info
-                and sim.reward_info.info
-                and isinstance(sim.reward_info.info, dict)
-            ):
-                res = sim.reward_info.info.get("gsrt_v2")
-            if not res:
-                res = detect_gsrt_v2(task, sim, model=judge_model, llm_args=judge_args)
-                # persist back into reward_info.info
-                try:
-                    if sim.reward_info is not None:
-                        if sim.reward_info.info is None:
-                            sim.reward_info.info = {}
-                        if isinstance(sim.reward_info.info, dict):
-                            sim.reward_info.info["gsrt_v2"] = res
-                except Exception:
-                    pass
-            shifts = res.get("user_goal_shifts", [])
-            gsrt_counts += len(shifts)
-            for s in shifts:
-                agent_turn = s.get("agent_turn")
-                if isinstance(agent_turn, int):
-                    dt = max(0, agent_turn - int(s.get("turn", 0)))
-                    recovery_turns.append(dt)
-        gsrt_median = statistics.median(recovery_turns) if recovery_turns else None
-        gsrt_worst_case = max(recovery_turns) if recovery_turns else None
-        gsrt_num_shifts = gsrt_counts
+        
+        gsrt_aggregate = compute_gsrt_enhanced_metrics(
+            results.tasks, results.simulations, judge_model, judge_args
+        )
+        
+        gsrt_median_ack = gsrt_aggregate.aggregate_median_ack
+        gsrt_median_tool = gsrt_aggregate.aggregate_median_tool
+        gsrt_median_outcome = gsrt_aggregate.aggregate_median_outcome
+        gsrt_num_shifts = gsrt_aggregate.total_shifts
+        gsrt_recovery_rate = gsrt_aggregate.overall_recovery_rate
+        gsrt_transfer_rate = gsrt_aggregate.overall_transfer_rate
+        gsrt_never_recovered_rate = gsrt_aggregate.never_recovered_rate
+        gsrt_by_task = {
+            task_id: {
+                "median_ack": task_result.median_gsrt_ack,
+                "median_tool": task_result.median_gsrt_tool,
+                "median_outcome": task_result.median_gsrt_outcome,
+                "total_shifts": task_result.total_shifts,
+                "recovery_rate": task_result.recovery_rate,
+                "transfer_rate": task_result.transfer_rate,
+            }
+            for task_id, task_result in gsrt_aggregate.by_task.items()
+        }
     except Exception as e:
-        logger.warning(f"GSRT computation failed: {e}")
-        gsrt_median, gsrt_worst_case, gsrt_num_shifts = None, None, 0
+        logger.warning(f"Enhanced GSRT computation failed: {e}")
+        gsrt_median_ack, gsrt_median_tool, gsrt_median_outcome = None, None, None
+        gsrt_num_shifts = 0
+        gsrt_recovery_rate, gsrt_transfer_rate, gsrt_never_recovered_rate = 0.0, 0.0, 0.0
+        gsrt_by_task = {}
 
     return AgentMetrics(
         avg_reward=avg_reward,
@@ -430,9 +491,28 @@ def compute_metrics_simple(results: Results) -> AgentMetrics:
         tue=tue,
         tcrr=tcrr,
         num_tool_calls=num_tool_calls,
-        gsrt_median=gsrt_median,
-        gsrt_worst_case=gsrt_worst_case,
+        tsr_communicate_info=tsr_communicate_info,
+        tsr_action=tsr_action,
+        tsr_nl_assertion=tsr_nl_assertion,
+        tsr_weights=tsr_weights,
+        tsr_by_task=tsr_by_task,
+        tcrr_window_size=tcrr_window_size,
+        tcrr_total_calls=tcrr_total_calls,
+        tcrr_redundant_calls=tcrr_redundant_calls,
+        tcrr_by_task=tcrr_by_task,
+        tue_tool_correctness=tue_tool_correctness,
+        tue_param_accuracy=tue_param_accuracy,
+        tue_correct_calls=tue_correct_calls,
+        tue_valid_param_calls=tue_valid_param_calls,
+        tue_by_task=tue_by_task,
+        gsrt_median_ack=gsrt_median_ack,
+        gsrt_median_tool=gsrt_median_tool,
+        gsrt_median_outcome=gsrt_median_outcome,
         gsrt_num_shifts=gsrt_num_shifts,
+        gsrt_recovery_rate=gsrt_recovery_rate,
+        gsrt_transfer_rate=gsrt_transfer_rate,
+        gsrt_never_recovered_rate=gsrt_never_recovered_rate,
+        gsrt_by_task=gsrt_by_task,
     )
 
 
@@ -459,8 +539,29 @@ def compute_metrics(results: Results) -> AgentMetrics:
                 pass_hat_ks[k] = df_pass_hat_k[column].mean()
         avg_agent_cost = df.agent_cost.mean()
 
-        # Compute AgentChangeBench metrics
-        tsr = compute_tsr(results.simulations)
+        # Compute enhanced TSR metrics with multi-channel breakdown
+        try:
+            from tau2.metrics.tsr import compute_tsr_enhanced
+            
+            tsr_result = compute_tsr_enhanced(results.tasks, results.simulations)
+            tsr = tsr_result.overall_tsr
+            tsr_communicate_info = tsr_result.communicate_info.success_rate
+            tsr_action = tsr_result.action.success_rate
+            tsr_nl_assertion = tsr_result.nl_assertion.success_rate
+            tsr_weights = tsr_result.weights
+            tsr_by_task = tsr_result.by_task
+            
+        except Exception as e:
+            logger.warning(f"Enhanced TSR computation failed, falling back to simple: {e}")
+            # Fallback to simple TSR calculation
+            success_count = sum(1 for sim in results.simulations 
+                              if sim.reward_info and safe_float(sim.reward_info.reward) > 0)
+            tsr = success_count / len(results.simulations) if results.simulations else 0.0
+            tsr_communicate_info = 0.0
+            tsr_action = 0.0
+            tsr_nl_assertion = 0.0
+            tsr_weights = {"communicate_info": 0.5, "action": 0.3, "nl_assertion": 0.2}
+            tsr_by_task = {}
 
         # Extract all tool calls
         all_tool_calls = []
@@ -471,71 +572,157 @@ def compute_metrics(results: Results) -> AgentMetrics:
         num_tool_calls = len(all_tool_calls)
 
         if all_tool_calls:
-            tcrr = compute_tcrr(all_tool_calls)
+            # Calculate enhanced TCRR with window-based approach
+            try:
+                from tau2.metrics.tcrr import compute_tcrr_enhanced, compute_tcrr_by_task
+                
+                tcrr_result = compute_tcrr_enhanced(results.simulations, window_size=3)
+                tcrr = tcrr_result.redundancy_ratio
+                tcrr_window_size = tcrr_result.window_size
+                tcrr_total_calls = tcrr_result.total_calls
+                tcrr_redundant_calls = tcrr_result.redundant_calls
+                
+                # Get task-level breakdown
+                tcrr_by_task_results = compute_tcrr_by_task(results.simulations, window_size=3)
+                tcrr_by_task = {
+                    task_id: {
+                        "redundancy_ratio": result.redundancy_ratio,
+                        "total_calls": result.total_calls,
+                        "redundant_calls": result.redundant_calls,
+                    }
+                    for task_id, result in tcrr_by_task_results.items()
+                }
+            except Exception as e:
+                logger.warning(f"Enhanced TCRR computation failed, falling back to simple: {e}")
+                # Fallback to simple TCRR calculation
+                seen_calls = set()
+                duplicate_count = 0
+                for call in all_tool_calls:
+                    try:
+                        params_norm = normalized_params(call["params"])
+                        identity = (call["name"], params_norm)
+                        if identity in seen_calls:
+                            duplicate_count += 1
+                        else:
+                            seen_calls.add(identity)
+                    except Exception:
+                        identity = (call["name"], str(call["params"]))
+                        if identity in seen_calls:
+                            duplicate_count += 1
+                        else:
+                            seen_calls.add(identity)
+                tcrr = duplicate_count / len(all_tool_calls) if all_tool_calls else 0.0
+                tcrr_window_size = 3
+                tcrr_total_calls = len(all_tool_calls)
+                tcrr_redundant_calls = int(tcrr * len(all_tool_calls))
+                tcrr_by_task = {}
 
-            all_costs = [call["cost"] for call in all_tool_calls if call["cost"] > 0]
-            all_latencies = [
-                call["latency"] for call in all_tool_calls if call["latency"] > 0
-            ]
-
-            cost_cap = np.percentile(all_costs, 95) if all_costs else 1.0
-            latency_cap = np.percentile(all_latencies, 95) if all_latencies else 1.0
-            cost_cap = max(cost_cap, 0.001)
-            latency_cap = max(latency_cap, 0.001)
-
-            tue = compute_tue(all_tool_calls, cost_cap, latency_cap)
+            # Calculate enhanced TUE without latency component
+            try:
+                from tau2.metrics.tue import compute_tue_enhanced_for_simulations, compute_tue_by_task
+                
+                tue_result = compute_tue_enhanced_for_simulations(results.simulations)
+                tue = tue_result.overall_tue
+                tue_tool_correctness = tue_result.tool_correctness
+                tue_param_accuracy = tue_result.param_accuracy
+                tue_correct_calls = tue_result.correct_calls
+                tue_valid_param_calls = tue_result.valid_param_calls
+                
+                # Get task-level breakdown
+                tue_by_task_results = compute_tue_by_task(results.simulations)
+                tue_by_task = {
+                    task_id: {
+                        "overall_tue": result.overall_tue,
+                        "tool_correctness": result.tool_correctness,
+                        "param_accuracy": result.param_accuracy,
+                        "total_calls": result.total_calls,
+                        "correct_calls": result.correct_calls,
+                        "valid_param_calls": result.valid_param_calls,
+                    }
+                    for task_id, result in tue_by_task_results.items()
+                }
+            except Exception as e:
+                logger.warning(f"Enhanced TUE computation failed, falling back to simple: {e}")
+                # Fallback to original TUE calculation
+                all_costs = [call["cost"] for call in all_tool_calls if call["cost"] > 0]
+                all_latencies = [call["latency"] for call in all_tool_calls if call["latency"] > 0]
+                cost_cap = np.percentile(all_costs, 95) if all_costs else 1.0
+                latency_cap = np.percentile(all_latencies, 95) if all_latencies else 1.0
+                cost_cap = max(cost_cap, 0.001)
+                latency_cap = max(latency_cap, 0.001)
+                # Fallback to simple TUE calculation
+                num_total = len(all_tool_calls)
+                num_correct = sum(1 for call in all_tool_calls if call.get("correct", False))
+                num_valid_params = sum(1 for call in all_tool_calls if call.get("params_valid", False))
+                T_correct = num_correct / num_total
+                P_params = num_valid_params / num_total
+                total_cost = sum(call.get("cost", 0.0) for call in all_tool_calls)
+                C_cost = max(0.0, min(1.0, 1.0 - (total_cost / cost_cap))) if cost_cap > 0 else 1.0
+                valid_latencies = [call.get("latency", 0.0) for call in all_tool_calls if call.get("latency", 0.0) > 0]
+                if valid_latencies and latency_cap > 0:
+                    avg_latency = sum(valid_latencies) / len(valid_latencies)
+                    capped_latency = min(avg_latency, latency_cap)
+                    L_latency = max(0.0, min(1.0, 1.0 - (capped_latency / latency_cap)))
+                else:
+                    L_latency = 1.0
+                tue = 0.4 * T_correct + 0.25 * P_params + 0.2 * C_cost + 0.15 * L_latency
+                
+                # Extract basic metrics for fallback
+                tue_correct_calls = sum(1 for call in all_tool_calls if call.get("correct", False))
+                tue_valid_param_calls = sum(1 for call in all_tool_calls if call.get("params_valid", False))
+                tue_tool_correctness = tue_correct_calls / len(all_tool_calls) if all_tool_calls else 0.0
+                tue_param_accuracy = tue_valid_param_calls / len(all_tool_calls) if all_tool_calls else 0.0
+                tue_by_task = {}
         else:
             tcrr = 0.0
             tue = 0.0
+            tcrr_window_size = 3
+            tcrr_total_calls = 0
+            tcrr_redundant_calls = 0
+            tcrr_by_task = {}
+            tue_tool_correctness = 0.0
+            tue_param_accuracy = 0.0
+            tue_correct_calls = 0
+            tue_valid_param_calls = 0
+            tue_by_task = {}
 
-        # Compute GSRT using v2 judge unconditionally
+        # Compute enhanced GSRT metrics
         try:
-            from tau2.metrics.gsrt_v2 import detect_gsrt_v2
+            from tau2.metrics.gsrt import compute_gsrt_enhanced_metrics
 
-            gsrt_counts = 0
-            recovery_turns: list[int] = []
-            judge_model = getattr(results.info, "gsrt_judge_llm", None) or "gpt-5"
+            judge_model = getattr(results.info, "gsrt_judge_llm", None) or "gpt-4o-mini"
             judge_args = getattr(results.info, "gsrt_judge_llm_args", None) or {
                 "temperature": 0.0
             }
-            for sim in results.simulations:
-                task = next((t for t in results.tasks if t.id == sim.task_id), None)
-                if not task:
-                    continue
-                # Try to reuse cached judge output if present
-                res = None
-                if (
-                    sim.reward_info
-                    and sim.reward_info.info
-                    and isinstance(sim.reward_info.info, dict)
-                ):
-                    res = sim.reward_info.info.get("gsrt_v2")
-                if not res:
-                    res = detect_gsrt_v2(
-                        task, sim, model=judge_model, llm_args=judge_args
-                    )
-                    # persist back into reward_info.info
-                    try:
-                        if sim.reward_info is not None:
-                            if sim.reward_info.info is None:
-                                sim.reward_info.info = {}
-                            if isinstance(sim.reward_info.info, dict):
-                                sim.reward_info.info["gsrt_v2"] = res
-                    except Exception:
-                        pass
-                shifts = res.get("user_goal_shifts", [])
-                gsrt_counts += len(shifts)
-                for s in shifts:
-                    agent_turn = s.get("agent_turn")
-                    if isinstance(agent_turn, int):
-                        dt = max(0, agent_turn - int(s.get("turn", 0)))
-                        recovery_turns.append(dt)
-            gsrt_median = statistics.median(recovery_turns) if recovery_turns else None
-            gsrt_worst_case = max(recovery_turns) if recovery_turns else None
-            gsrt_num_shifts = gsrt_counts
+            
+            gsrt_aggregate = compute_gsrt_enhanced_metrics(
+                results.tasks, results.simulations, judge_model, judge_args
+            )
+            
+            gsrt_median_ack = gsrt_aggregate.aggregate_median_ack
+            gsrt_median_tool = gsrt_aggregate.aggregate_median_tool
+            gsrt_median_outcome = gsrt_aggregate.aggregate_median_outcome
+            gsrt_num_shifts = gsrt_aggregate.total_shifts
+            gsrt_recovery_rate = gsrt_aggregate.overall_recovery_rate
+            gsrt_transfer_rate = gsrt_aggregate.overall_transfer_rate
+            gsrt_never_recovered_rate = gsrt_aggregate.never_recovered_rate
+            gsrt_by_task = {
+                task_id: {
+                    "median_ack": task_result.median_gsrt_ack,
+                    "median_tool": task_result.median_gsrt_tool,
+                    "median_outcome": task_result.median_gsrt_outcome,
+                    "total_shifts": task_result.total_shifts,
+                    "recovery_rate": task_result.recovery_rate,
+                    "transfer_rate": task_result.transfer_rate,
+                }
+                for task_id, task_result in gsrt_aggregate.by_task.items()
+            }
         except Exception as e:
-            logger.warning(f"GSRT computation failed: {e}")
-            gsrt_median, gsrt_worst_case, gsrt_num_shifts = None, None, 0
+            logger.warning(f"Enhanced GSRT computation failed: {e}")
+            gsrt_median_ack, gsrt_median_tool, gsrt_median_outcome = None, None, None
+            gsrt_num_shifts = 0
+            gsrt_recovery_rate, gsrt_transfer_rate, gsrt_never_recovered_rate = 0.0, 0.0, 0.0
+            gsrt_by_task = {}
 
         return AgentMetrics(
             avg_reward=avg_reward,
@@ -545,9 +732,28 @@ def compute_metrics(results: Results) -> AgentMetrics:
             tue=tue,
             tcrr=tcrr,
             num_tool_calls=num_tool_calls,
-            gsrt_median=gsrt_median,
-            gsrt_worst_case=gsrt_worst_case,
+            tsr_communicate_info=tsr_communicate_info,
+            tsr_action=tsr_action,
+            tsr_nl_assertion=tsr_nl_assertion,
+            tsr_weights=tsr_weights,
+            tsr_by_task=tsr_by_task,
+            tcrr_window_size=tcrr_window_size,
+            tcrr_total_calls=tcrr_total_calls,
+            tcrr_redundant_calls=tcrr_redundant_calls,
+            tcrr_by_task=tcrr_by_task,
+            tue_tool_correctness=tue_tool_correctness,
+            tue_param_accuracy=tue_param_accuracy,
+            tue_correct_calls=tue_correct_calls,
+            tue_valid_param_calls=tue_valid_param_calls,
+            tue_by_task=tue_by_task,
+            gsrt_median_ack=gsrt_median_ack,
+            gsrt_median_tool=gsrt_median_tool,
+            gsrt_median_outcome=gsrt_median_outcome,
             gsrt_num_shifts=gsrt_num_shifts,
+            gsrt_recovery_rate=gsrt_recovery_rate,
+            gsrt_transfer_rate=gsrt_transfer_rate,
+            gsrt_never_recovered_rate=gsrt_never_recovered_rate,
+            gsrt_by_task=gsrt_by_task,
         )
     except Exception as e:
         logger.warning(
@@ -584,16 +790,37 @@ def display_metrics(metrics: AgentMetrics) -> None:
     print()
     print("🎯 AgentChangeBench Metrics:")
     print(f"  📊 TSR (Task Success Rate): {metrics.tsr:.2%}")
+    print(f"    💬 Communicate Info: {metrics.tsr_communicate_info:.2%} (weight: {metrics.tsr_weights.get('communicate_info', 0.5):.0%})")
+    print(f"    ⚙️  Actions: {metrics.tsr_action:.2%} (weight: {metrics.tsr_weights.get('action', 0.3):.0%})")
+    print(f"    📝 NL Assertions: {metrics.tsr_nl_assertion:.2%} (weight: {metrics.tsr_weights.get('nl_assertion', 0.2):.0%})")
+    if metrics.tsr_by_task:
+        print(f"    📋 Task-Level Breakdown: {len(metrics.tsr_by_task)} tasks")
     print(f"  ⚙️  TUE (Tool Usage Efficiency): {metrics.tue:.2%}")
+    print(f"    🎯 Tool Correctness: {metrics.tue_tool_correctness:.2%} ({metrics.tue_correct_calls}/{metrics.num_tool_calls})")
+    print(f"    📝 Parameter Accuracy: {metrics.tue_param_accuracy:.2%} ({metrics.tue_valid_param_calls}/{metrics.num_tool_calls})")
+    if metrics.tue_by_task:
+        print(f"    📋 Task-Level Breakdown: {len(metrics.tue_by_task)} tasks")
     print(f"  🔄 TCRR (Tool-Call Redundancy Ratio): {metrics.tcrr:.2%}")
+    print(f"    📊 Redundant Calls: {metrics.tcrr_redundant_calls}/{metrics.tcrr_total_calls}")
+    print(f"    🪟 Window Size: {metrics.tcrr_window_size} assistant turns")
+    if metrics.tcrr_by_task:
+        print(f"    📋 Task-Level Breakdown: {len(metrics.tcrr_by_task)} tasks")
     print(f"  🛠️  Total Tool Calls: {metrics.num_tool_calls}")
     print(f"  🔀 GSRT (Goal Shift Recovery Time):")
     if metrics.gsrt_num_shifts > 0:
         print(f"    📊 Goal Shifts Detected: {metrics.gsrt_num_shifts}")
-        if metrics.gsrt_median is not None:
-            print(f"    📈 Median Recovery Time: {metrics.gsrt_median:.1f} turns")
-        if metrics.gsrt_worst_case is not None:
-            print(f"    📉 Worst Case Recovery: {metrics.gsrt_worst_case} turns")
+        print(f"    📈 Recovery Rate: {metrics.gsrt_recovery_rate:.1%}")
+        print(f"    🔄 Transfer Rate: {metrics.gsrt_transfer_rate:.1%}")
+        print(f"    ❌ Never Recovered Rate: {metrics.gsrt_never_recovered_rate:.1%}")
+        print(f"    Recovery Times by Variant:")
+        if metrics.gsrt_median_ack is not None:
+            print(f"      🎯 Acknowledgment: {metrics.gsrt_median_ack:.1f} turns (median)")
+        if metrics.gsrt_median_tool is not None:
+            print(f"      🛠️  Tool Usage: {metrics.gsrt_median_tool:.1f} turns (median)")
+        if metrics.gsrt_median_outcome is not None:
+            print(f"      ✅ Outcome Success: {metrics.gsrt_median_outcome:.1f} turns (median)")
+        if metrics.gsrt_by_task:
+            print(f"    📋 Task-Level Breakdown: {len(metrics.gsrt_by_task)} tasks with shifts")
     else:
         print(f"    ❌ No goal shifts detected")
 

@@ -354,7 +354,7 @@ def run_tasks(
             simulation.trial = trial
             # Compute and persist GSRT v2 judge output so it's saved in JSON
             try:
-                from tau2.metrics.gsrt_v2 import detect_gsrt_v2
+                from tau2.metrics.gsrt import detect_gsrt_enhanced as detect_gsrt_v2
 
                 judge_model = gsrt_judge_llm or "gpt-5"
                 judge_args = gsrt_judge_llm_args or {"temperature": 0.0}
@@ -508,18 +508,49 @@ def run_task(
     )
     simulation = orchestrator.run()
 
-    reward_info = evaluate_simulation(
-        domain=domain,
-        task=task,
-        simulation=simulation,
-        evaluation_type=evaluation_type,
-        solo_mode=solo_mode,
-    )
-
-    simulation.reward_info = reward_info
+    # Use TSR-based reward system
+    try:
+        from tau2.metrics.tsr import compute_tsr_for_task
+        from tau2.metrics.config import get_tsr_weights
+        from tau2.data_model.tasks import RewardType
+        from tau2.data_model.simulation import RewardInfo
+        
+        # Compute TSR directly
+        weights = get_tsr_weights()
+        tsr_result = compute_tsr_for_task(task, simulation, weights)
+        reward = tsr_result['overall_tsr']
+        
+        # Create reward_breakdown based on TSR components
+        reward_breakdown = {}
+        if tsr_result.get('has_actions', False):
+            reward_breakdown[RewardType.ACTION] = tsr_result['action']
+        if tsr_result.get('has_nl_assertions', False):
+            reward_breakdown[RewardType.NL_ASSERTION] = tsr_result['nl_assertion']
+        reward_breakdown[RewardType.COMMUNICATE] = tsr_result['communicate_info']
+        
+        # Create reward_info with TSR data
+        simulation.reward_info = RewardInfo(
+            reward=reward,
+            reward_breakdown=reward_breakdown,
+            info={}
+        )
+        
+    except Exception as e:
+        import traceback
+        logger.warning(f"TSR reward computation failed, falling back to legacy system: {e}")
+        logger.warning(f"Full traceback: {traceback.format_exc()}")
+        # Fallback to legacy tau2 system
+        tau2_legacy_reward_info = evaluate_simulation(
+            domain=domain,
+            task=task,
+            simulation=simulation,
+            evaluation_type=evaluation_type,
+            solo_mode=solo_mode,
+        )
+        simulation.reward_info = tau2_legacy_reward_info
 
     logger.info(
-        f"FINISHED SIMULATION: Domain: {domain}, Task: {task.id}, Agent: {agent.__class__.__name__}, User: {user.__class__.__name__}. Reward: {reward_info.reward}"
+        f"FINISHED SIMULATION: Domain: {domain}, Task: {task.id}, Agent: {agent.__class__.__name__}, User: {user.__class__.__name__}. Reward: {simulation.reward_info.reward}"
     )
     return simulation
 
