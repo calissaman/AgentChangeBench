@@ -524,14 +524,14 @@ def _compute_gsrt_metrics(
                                 if ack_time != float("inf"):
                                     task_ack_times.append(ack_time)
 
-                        if shift.get("transfer_to_human"):
+                        if shift.get("transferred_to_human"):
                             task_transfers += 1
 
-                        if (
-                            shift.get("agent_responses")
-                            or shift.get("tool_usage")
-                            or shift.get("outcome_success")
-                        ):
+                        ack_turn = shift.get("acknowledgment_turn")
+                        shift_turn = shift.get("turn", 0)
+                        transferred = shift.get("transferred_to_human", False)
+                        
+                        if ack_turn is not None and ack_turn > shift_turn and not transferred:
                             task_recovered += 1
 
                 all_ack_times.extend(task_ack_times)
