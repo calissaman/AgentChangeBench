@@ -1,48 +1,66 @@
-# Actions Guide
+# Action Sets Guide
 
 ## Overview
 
-Actions define the tool usage expectations for agents in a task. They specify which tools the agent should use and with what parameters to successfully complete the task objectives.
+Action sets define the tool usage expectations for agents in a task. They specify which tools the agent should use and with what parameters to successfully complete the task objectives.
+
+**Current Format**: Tasks use `action_sets` in `evaluation_criteria.action_sets` (not the legacy `actions` format).
+
+> **Migration Note**: The evaluation system prioritizes `action_sets` when present, but falls back to legacy `actions` format for backward compatibility. All new tasks should use `action_sets`.
 
 ## What's Changing and Why
 
 ### Old Format Problems
-The previous action format was rigid and brittle:
+The previous action format in `evaluation_criteria.actions` was rigid and brittle:
 
 ```json
 {
-  "action_id": "get_user_details_1",
-  "requestor": "assistant",
-  "name": "get_user_details",
-  "arguments": {"user_id": "sophia_silva_7557"},
-  "compare_args": ["user_id"]
+  "evaluation_criteria": {
+    "actions": [
+      {
+        "action_id": "get_user_details_1",
+        "requestor": "assistant",
+        "name": "get_user_details",
+        "arguments": {"user_id": "sophia_silva_7557"},
+        "compare_args": ["user_id"]
+      }
+    ]
+  }
 }
 ```
 
 Issues: path-dependent, brittle parameter matching, single solution bias, poor failure signal.
 
 ### New Format Benefits
-The new format is flexible and path-agnostic:
+The new `action_sets` format in `evaluation_criteria.action_sets` is flexible and path-agnostic:
 
 ```json
 {
-  "action_id": "lookup_customer",
-  "allowed_tools": [
-    {
-      "function_name": "get_user_details",
-      "params": {"user_id": "sophia_silva_7557"}
-    },
-    {
-      "function_name": "get_customer_by_phone",
-      "params": {"phone_number": "+1234567890"}
-    }
-  ]
+  "evaluation_criteria": {
+    "action_sets": [
+      {
+        "action_id": "lookup_customer",
+        "allowed_tools": [
+          {
+            "function_name": "get_user_details",
+            "params": {"user_id": "sophia_silva_7557"}
+          },
+          {
+            "function_name": "get_customer_by_phone",
+            "params": {"phone_number": "+1234567890"}
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 
 Benefits: multiple valid approaches, partial credit scoring, realistic flexibility, clearer failure analysis.
 
-## Metrics That Use Actions
+**Backward Compatibility**: The system still supports legacy `actions` format but prioritizes `action_sets` when both are present.
+
+## Metrics That Use Action Sets
 
 ### TSR v2 (Task Success Rate)
 ```
@@ -64,18 +82,26 @@ param_score = 0.5 if tool_called_with_correct_params else 0.0
 ACTION_reward = sum(per_action_scores) / total_action_ids
 ```
 
-## How to Write Actions
+## How to Write Action Sets
 
 ### Basic Structure
+Action sets are defined in `evaluation_criteria.action_sets`:
+
 ```json
 {
-  "action_id": "descriptive_step_name",
-  "allowed_tools": [
-    {
-      "function_name": "tool_name",
-      "params": {"required_param": "expected_value"}
-    }
-  ]
+  "evaluation_criteria": {
+    "action_sets": [
+      {
+        "action_id": "descriptive_step_name",
+        "allowed_tools": [
+          {
+            "function_name": "tool_name",
+            "params": {"required_param": "expected_value"}
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 
@@ -152,40 +178,48 @@ ACTION_reward = sum(per_action_scores) / total_action_ids
 ```
 
 ### Complete Task Example
-Banking dispute task:
+Banking dispute task showing proper `action_sets` structure:
 
 ```json
-"actions": [
-  {
-    "action_id": "identify_customer",
-    "allowed_tools": [
+{
+  "id": "banking_dispute_001",
+  "user_scenario": { /* ... */ },
+  "evaluation_criteria": {
+    "action_sets": [
       {
-        "function_name": "get_customer_by_phone",
-        "params": {"phone_number": "+1555123456"}
+        "action_id": "identify_customer",
+        "allowed_tools": [
+          {
+            "function_name": "get_customer_by_phone",
+            "params": {"phone_number": "+1555123456"}
+          },
+          {
+            "function_name": "get_customer_by_id",
+            "params": {"customer_id": "cust_789"}
+          }
+        ]
       },
       {
-        "function_name": "get_customer_by_id",
-        "params": {"customer_id": "cust_789"}
-      }
-    ]
-  },
-  {
-    "action_id": "locate_disputed_transaction",
-    "allowed_tools": [
+        "action_id": "locate_disputed_transaction",
+        "allowed_tools": [
+          {
+            "function_name": "get_transaction_by_id",
+            "params": {"transaction_id": "tx_12345"}
+          }
+        ]
+      },
       {
-        "function_name": "get_transaction_by_id",
-        "params": {"transaction_id": "tx_12345"}
+        "action_id": "create_dispute_case",
+        "allowed_tools": [
+          {
+            "function_name": "file_dispute",
+            "params": {"transaction_id": "tx_12345", "reason": "unauthorized"}
+          }
+        ]
       }
-    ]
-  },
-  {
-    "action_id": "create_dispute_case",
-    "allowed_tools": [
-      {
-        "function_name": "file_dispute",
-        "params": {"transaction_id": "tx_12345", "reason": "unauthorized"}
-      }
-    ]
+    ],
+    "nl_assertions": ["Agent should confirm dispute details"],
+    "communicate_info": ["$10.12", "unauthorized"]
   }
-]
+}
 ``` 
