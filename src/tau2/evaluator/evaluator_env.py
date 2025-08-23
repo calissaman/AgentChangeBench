@@ -138,10 +138,13 @@ class EnvironmentEvaluator(EvaluatorBase):
 
         reward = 1.0
         reward_breakdown = {}
-        if RewardType.DB in task.evaluation_criteria.reward_basis:
+        # Handle deprecated reward_basis field - use global TSR weights instead
+        reward_basis = task.evaluation_criteria.reward_basis or []
+        
+        if RewardType.DB in reward_basis:
             reward_breakdown[RewardType.DB] = db_reward
             reward *= db_reward
-        if RewardType.ENV_ASSERTION in task.evaluation_criteria.reward_basis:
+        if RewardType.ENV_ASSERTION in reward_basis:
             reward_breakdown[RewardType.ENV_ASSERTION] = env_assertion_reward
             reward *= env_assertion_reward
 

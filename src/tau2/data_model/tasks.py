@@ -286,10 +286,10 @@ class EvaluationCriteria(BaseModel):
     ]
 
     reward_basis: Annotated[
-        list[RewardType],
+        Optional[list[RewardType]],
         Field(
-            description="The basis of the reward. This will be used to determine the reward for the task.",
-            default_factory=lambda: [RewardType.DB, RewardType.COMMUNICATE],
+            description="[DEPRECATED] The basis of the reward. No longer used - TSR weights are now applied globally.",
+            default=None,
         ),
     ]
 

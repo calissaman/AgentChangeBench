@@ -86,7 +86,7 @@ def display_simulation_with_task(
 
     ConsoleDisplay.console.print("\n" + "=" * 80)  # Separator
     ConsoleDisplay.console.print("[bold blue]Simulation Details:[/]")
-    ConsoleDisplay.display_simulation(simulation, show_details=show_details)
+    ConsoleDisplay.display_simulation(simulation, show_details=show_details, task=task)
 
     # Prompt for notes
     ConsoleDisplay.console.print("\n" + "=" * 80)  # Separator

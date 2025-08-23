@@ -90,7 +90,8 @@ def evaluate_simulation(
         action_bases = {RewardType.ACTION}
         nl_bases = {RewardType.NL_ASSERTION}
         comm_bases = {RewardType.COMMUNICATE}
-        task_reward_basis = set(task.evaluation_criteria.reward_basis)
+        # Handle deprecated reward_basis field - use global TSR weights instead
+        task_reward_basis = set(task.evaluation_criteria.reward_basis or [])
 
         reward_breakdown = {}
         if task_reward_basis & env_bases:

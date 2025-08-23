@@ -169,7 +169,7 @@ class ConsoleDisplay:
     @classmethod
     def _display_tsr_actions(cls, sim_info, task, simulation):
         """Display actions based on TSR evaluation criteria."""
-        from tau2.metrics.tsr import extract_action_sets_from_task
+        from tau2.metrics.tsr import extract_action_sets_from_task, _params_match
 
         # Check for new action_sets format first
         action_sets = extract_action_sets_from_task(task)
@@ -198,10 +198,9 @@ class ConsoleDisplay:
                     func_name = tool.get("function_name", "")
                     params = tool.get("params", {})
 
-                    # Check if this tool was called
-                    tool_called = any(
-                        tc["name"] == func_name
-                        and all(tc["arguments"].get(k) == v for k, v in params.items())
+                    tool_correct = any(tc["name"] == func_name for tc in tool_calls)
+                    param_correct = any(
+                        tc["name"] == func_name and _params_match(tc["arguments"], params)
                         for tc in tool_calls
                     )
 
@@ -210,22 +209,20 @@ class ConsoleDisplay:
                     display_name = f"{func_name}({param_str})"
 
                     sim_info.append(
-                        f"- {i}: {display_name} {'✅' if tool_called else '❌'}\n"
+                        f"- {action_id}: {display_name} {'✅' if tool_correct else '❌'}{'✅' if param_correct else '❌'}\n"
                     )
 
                 else:
-                    # Multiple tools allowed - show list
-                    sim_info.append(f"- {i}: {action_id}\n")
+
+                    sim_info.append(f"- {action_id}:\n")
                     for tool in allowed_tools:
                         func_name = tool.get("function_name", "")
                         params = tool.get("params", {})
 
-                        # Check if this specific tool was called
-                        tool_called = any(
-                            tc["name"] == func_name
-                            and all(
-                                tc["arguments"].get(k) == v for k, v in params.items()
-                            )
+                        # Check tool correctness and parameter correctness separately
+                        tool_correct = any(tc["name"] == func_name for tc in tool_calls)
+                        param_correct = any(
+                            tc["name"] == func_name and _params_match(tc["arguments"], params)
                             for tc in tool_calls
                         )
 
@@ -236,7 +233,7 @@ class ConsoleDisplay:
                         display_name = f"{func_name}({param_str})"
 
                         sim_info.append(
-                            f"    • {display_name} {'✅' if tool_called else '❌'}\n"
+                            f"    • {display_name} {'✅' if tool_correct else '❌'}{'✅' if param_correct else '❌'}\n"
                         )
 
         # Fallback to old actions format if no action_sets
@@ -263,12 +260,10 @@ class ConsoleDisplay:
                 func_name = action.get("name", "")
                 expected_args = action.get("arguments", {})
 
-                # Check if this action was performed
-                action_performed = any(
-                    tc["name"] == func_name
-                    and all(
-                        tc["arguments"].get(k) == v for k, v in expected_args.items()
-                    )
+                # Check tool correctness and parameter correctness separately
+                tool_correct = any(tc["name"] == func_name for tc in tool_calls)
+                param_correct = any(
+                    tc["name"] == func_name and _params_match(tc["arguments"], expected_args)
                     for tc in tool_calls
                 )
 
@@ -279,7 +274,7 @@ class ConsoleDisplay:
                 display_name = f"{func_name}({param_str})"
 
                 sim_info.append(
-                    f"- {i}: {display_name} {'✅' if action_performed else '❌'}\n"
+                    f"- {i}: {display_name} {'✅' if tool_correct else '❌'}{'✅' if param_correct else '❌'}\n"
                 )
 
     @classmethod
@@ -352,8 +347,9 @@ class ConsoleDisplay:
             if simulation.reward_info.action_checks:
                 sim_info.append("\nAction Checks:\n", style="bold magenta")
                 for i, check in enumerate(simulation.reward_info.action_checks):
+                    # For legacy action checks, we only show single tick/cross since we don't have separate tool/param info
                     sim_info.append(
-                        f"- {i}: {check.action.name} {'✅' if check.action_match else '❌'} {check.action_reward}\n"
+                        f"- {i}: {check.action.name} {'✅' if check.action_match else '❌'}\n"
                     )
             elif task:
                 cls._display_tsr_actions(sim_info, task, simulation)
@@ -370,8 +366,12 @@ class ConsoleDisplay:
             if simulation.reward_info.nl_assertions:
                 sim_info.append("\nNL Assertions:\n", style="bold magenta")
                 for i, assertion in enumerate(simulation.reward_info.nl_assertions):
-                    # Format: id: score then task + reason
-                    score = "1.0" if assertion.met else "0.0"
+                    # Use actual score if available, otherwise fallback to met/not met
+                    if hasattr(assertion, 'score') and assertion.score is not None:
+                        score = f"{assertion.score:.1f}"
+                    else:
+                        score = "1.0" if assertion.met else "0.0"
+                    
                     score_color = "green" if assertion.met else "red"
                     sim_info.append("- ", style="white")
                     sim_info.append(f"{i}", style="bold cyan")
@@ -381,9 +381,11 @@ class ConsoleDisplay:
                         f" {assertion.nl_assertion} {'✅' if assertion.met else '❌'}\n",
                         style="white",
                     )
-                    sim_info.append(
-                        f"        {assertion.justification}\n", style="dim white"
-                    )
+                    # Show justification if available
+                    if hasattr(assertion, 'justification') and assertion.justification:
+                        sim_info.append(
+                            f"        {assertion.justification}\n", style="dim white"
+                        )
 
             # Add task-based metrics if present
             if simulation.reward_info.info:
