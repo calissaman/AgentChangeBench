@@ -38,54 +38,50 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant successfully helped Maria Santos resolve their login issues and authenticate their identity.",
-        "The assistant properly handled Maria Santos's dispute request for the suspicious charge and provided appropriate next steps."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "auth_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551234567"
-          },
-          "compare_args": [
-            "phone_number"
+          "action_id": "identify_customer",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15551234567"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_101"}
+            }
           ]
         },
         {
-          "action_id": "trans_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "review_transactions",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {"customer_id": "cust_101"}
+            }
           ]
         },
         {
-          "action_id": "dispute_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_101",
-            "transaction_id": "tx_101",
-            "reason": "unauthorized"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
+          "action_id": "file_dispute",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "customer_id": "cust_101",
+                "transaction_id": "tx_101",
+                "reason": "unauthorized"
+              }
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent verified customer identity before accessing account information",
+        "Agent reviewed recent transactions with the customer to identify suspicious activity",
+        "Agent initiated a dispute for the unauthorized transaction and explained next steps"
+      ],
+      "communicate_info": ["tx_101", "unauthorized", "dispute case"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -125,50 +121,50 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant successfully helped Jordan Smith complete their pending bill payment.",
-        "The assistant provided clear guidance to Jordan Smith on accessing and understanding their account statements."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "customer_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "verify_customer",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15558675309"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_202"}
+            }
           ]
         },
         {
-          "action_id": "account_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_202"
-          },
-          "compare_args": [
-            "account_id"
+          "action_id": "complete_payment",
+          "allowed_tools": [
+            {
+              "function_name": "process_payment",
+              "params": {"payment_request_id": "req_001"}
+            },
+            {
+              "function_name": "get_payment_status",
+              "params": {"payment_request_id": "req_001"}
+            }
           ]
         },
         {
-          "action_id": "statements_1",
-          "requestor": "assistant",
-          "name": "get_statements",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "provide_statements",
+          "allowed_tools": [
+            {
+              "function_name": "get_statements",
+              "params": {"customer_id": "cust_202"}
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent confirmed payment details before processing the transaction",
+        "Agent provided clear instructions for accessing and understanding statements",
+        "Agent maintained focus on the task when customer became distracted"
+      ],
+      "communicate_info": ["payment completed", "statement access", "transaction confirmation"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -208,54 +204,63 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful budgeting insights and tools to Taylor Johnson in an understandable way.",
-        "The assistant took Taylor Johnson's fraud report seriously and implemented immediate security measures to protect their account."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "customer_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "identify_customer",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15551230987"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_303"}
+            }
           ]
         },
         {
-          "action_id": "trans_insights_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "investigate_fraud",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {"customer_id": "cust_303"}
+            },
+            {
+              "function_name": "get_transaction_details",
+              "params": {"transaction_id": "tx_001"}
+            }
           ]
         },
         {
-          "action_id": "fraud_report_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_303",
-            "transaction_id": "tx_001",
-            "reason": "fraudulent"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
+          "action_id": "secure_account",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {"card_id": "card_001"}
+            }
+          ]
+        },
+        {
+          "action_id": "file_fraud_dispute",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "customer_id": "cust_303",
+                "transaction_id": "tx_001",
+                "reason": "fraudulent"
+              }
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent took the fraud report seriously and acted with urgency",
+        "Agent explained each security action being taken to protect the account",
+        "Agent provided clear next steps for the fraud resolution process"
+      ],
+      "communicate_info": ["tx_001", "fraudulent", "card locked", "dispute filed"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -297,54 +302,63 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant successfully verified Taylor Johnson's identity through proper authentication.",
-        "The assistant took immediate action on Taylor Johnson's fraud report and secured their card."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "auth_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551230987"
-          },
-          "compare_args": [
-            "phone_number"
+          "action_id": "authenticate_customer",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15551230987"}
+            },
+            {
+              "function_name": "verify_2fa",
+              "params": {"customer_id": "cust_303"}
+            }
           ]
         },
         {
-          "action_id": "fraud_check_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "review_transactions",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {"customer_id": "cust_303"}
+            },
+            {
+              "function_name": "get_transaction_details",
+              "params": {"transaction_id": "tx_001"}
+            }
           ]
         },
         {
-          "action_id": "fraud_file_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_303",
-            "transaction_id": "tx_001",
-            "reason": "suspicious"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
+          "action_id": "secure_account",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {"card_id": "card_001"}
+            }
+          ]
+        },
+        {
+          "action_id": "file_dispute",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "customer_id": "cust_303",
+                "transaction_id": "tx_001",
+                "reason": "suspicious"
+              }
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent completed multi-factor authentication before accessing account information",
+        "Agent reviewed the suspicious transaction details with the customer",
+        "Agent explained the dispute process and next steps clearly"
+      ],
+      "communicate_info": ["tx_001", "suspicious", "dispute filed", "card locked"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -383,50 +397,50 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant made the authentication process easy and straightforward for Casey Williams.",
-        "The assistant provided Casey Williams with a clear summary of their account balances."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "auth_confirm_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551234590"
-          },
-          "compare_args": [
-            "phone_number"
+          "action_id": "authenticate_customer",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15551234590"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_401"}
+            }
           ]
         },
         {
-          "action_id": "balance_check_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_401"
-          },
-          "compare_args": [
-            "account_id"
+          "action_id": "retrieve_balances",
+          "allowed_tools": [
+            {
+              "function_name": "get_account_summary",
+              "params": {"customer_id": "cust_401"}
+            },
+            {
+              "function_name": "get_account_balance",
+              "params": {"account_id": "acc_001"}
+            }
           ]
         },
         {
-          "action_id": "accounts_overview_1",
-          "requestor": "assistant",
-          "name": "get_accounts",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "provide_transaction_history",
+          "allowed_tools": [
+            {
+              "function_name": "get_recent_transactions",
+              "params": {"account_id": "acc_001"}
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent provided clear authentication instructions for the customer",
+        "Agent presented account balances in a clear and organized manner",
+        "Agent offered to explain any unfamiliar terms or concepts"
+      ],
+      "communicate_info": ["account balance", "checking", "savings", "recent transactions"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -464,50 +478,54 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant clearly explained Riley Brown's account balances.",
-        "The assistant educated Riley Brown on how to access and understand their statements."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "customer_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "verify_identity",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15559876543"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_505"}
+            }
           ]
         },
         {
-          "action_id": "balance_view_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_505"
-          },
-          "compare_args": [
-            "account_id"
+          "action_id": "retrieve_balances",
+          "allowed_tools": [
+            {
+              "function_name": "get_account_summary",
+              "params": {"customer_id": "cust_505"}
+            },
+            {
+              "function_name": "get_account_balance",
+              "params": {"account_id": "acc_001"}
+            }
           ]
         },
         {
-          "action_id": "statements_view_1",
-          "requestor": "assistant",
-          "name": "get_statements",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "provide_statements",
+          "allowed_tools": [
+            {
+              "function_name": "get_statements",
+              "params": {"customer_id": "cust_505"}
+            },
+            {
+              "function_name": "explain_statement_terms",
+              "params": {}
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent provided a clear and organized view of account balances",
+        "Agent explained how to access and interpret account statements clearly",
+        "Agent offered to answer follow-up questions about account details"
+      ],
+      "communicate_info": ["account balance", "statements", "transaction history", "fees"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -545,54 +563,54 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant thoroughly reviewed Alex Morgan's account activity.",
-        "The assistant supported Alex Morgan's dispute request with professionalism."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "balance_inquiry_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_001"
-          },
-          "compare_args": [
-            "account_id"
+          "action_id": "verify_customer_identity",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "555-123-7890"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_001"}
+            }
           ]
         },
         {
-          "action_id": "trans_review_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_001"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "review_account_activity",
+          "allowed_tools": [
+            {
+              "function_name": "get_account_balance",
+              "params": {"account_id": "acc_001"}
+            },
+            {
+              "function_name": "get_transactions",
+              "params": {"customer_id": "cust_001"}
+            }
           ]
         },
         {
-          "action_id": "dispute_charge_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_001",
-            "transaction_id": "tx_001",
-            "reason": "unauthorized"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
+          "action_id": "initiate_dispute",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "customer_id": "cust_001",
+                "transaction_id": "tx_001",
+                "reason": "unauthorized"
+              }
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent thoroughly reviewed Alex Morgan's account activity",
+        "Agent handled the dispute request professionally and efficiently",
+        "Agent explained the dispute process and next steps clearly"
+      ],
+      "communicate_info": ["tx_001", "unauthorized", "dispute process", "temporary credit"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -631,60 +649,68 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant handled Maria Santos's large payment with appropriate security measures.",
-        "The assistant proactively protected Maria Santos's card when fraud concerns were raised."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "large_payment_1",
-          "requestor": "assistant",
-          "name": "create_payment_request",
-          "arguments": {
-            "customer_id": "cust_101",
-            "from_account_id": "acc_101",
-            "to_payee_id": "payee_001",
-            "amount": 2500.0
-          },
-          "compare_args": [
-            "customer_id",
-            "from_account_id",
-            "to_payee_id",
-            "amount"
+          "action_id": "verify_customer",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15551234567"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_101"}
+            }
           ]
         },
         {
-          "action_id": "security_check_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "process_payment",
+          "allowed_tools": [
+            {
+              "function_name": "create_payment_request",
+              "params": {
+                "customer_id": "cust_101",
+                "from_account_id": "acc_001",
+                "to_payee_id": "payee_001",
+                "amount": 2500.0
+              }
+            }
           ]
         },
         {
-          "action_id": "fraud_secure_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_101",
-            "transaction_id": "tx_101",
-            "reason": "fraudulent"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
+          "action_id": "review_security",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {"customer_id": "cust_101"}
+            },
+            {
+              "function_name": "lock_card",
+              "params": {"card_id": "card_001"}
+            }
+          ]
+        },
+        {
+          "action_id": "handle_fraud",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "customer_id": "cust_101",
+                "transaction_id": "tx_101",
+                "reason": "fraudulent"
+              }
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent handled the large payment request with appropriate security measures",
+        "Agent proactively addressed potential fraud concerns and took protective actions",
+        "Agent clearly explained the security measures and next steps"
+      ],
+      "communicate_info": ["payment status", "fraud alert", "card locked", "next steps"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -723,50 +749,50 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant quickly locked Jordan Smith's misplaced card for security.",
-        "The assistant clearly communicated the card status to Jordan Smith."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "card_lock_1",
-          "requestor": "assistant",
-          "name": "lock_card",
-          "arguments": {
-            "card_id": "card_202"
-          },
-          "compare_args": [
-            "card_id"
+          "action_id": "verify_identity",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15558675309"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_202"}
+            }
           ]
         },
         {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "lock_card_request",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {"card_id": "card_001"}
+            }
           ]
         },
         {
-          "action_id": "account_verify_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_202"
-          },
-          "compare_args": [
-            "account_id"
+          "action_id": "verify_card_status",
+          "allowed_tools": [
+            {
+              "function_name": "get_card_status",
+              "params": {"card_id": "card_001"}
+            },
+            {
+              "function_name": "get_account_summary",
+              "params": {"customer_id": "cust_202"}
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent quickly processed the card lock request",
+        "Agent clearly communicated the current card status and next steps",
+        "Agent provided reassurance about the security of the locked card"
+      ],
+      "communicate_info": ["card locked", "card status", "next steps", "security measures"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -805,50 +831,58 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant efficiently unlocked Taylor Johnson's card.",
-        "The assistant guided Taylor Johnson through the dispute filing process."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "card_unlock_1",
-          "requestor": "assistant",
-          "name": "unlock_card",
-          "arguments": {
-            "card_id": "card_303"
-          },
-          "compare_args": [
-            "card_id"
+          "action_id": "verify_identity",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15551230987"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_303"}
+            }
           ]
         },
         {
-          "action_id": "dispute_unauth_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_303",
-            "transaction_id": "tx_001",
-            "reason": "unauthorized"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
+          "action_id": "unlock_card_request",
+          "allowed_tools": [
+            {
+              "function_name": "unlock_card",
+              "params": {"card_id": "card_001"}
+            }
+          ]
+        },
+        {
+          "action_id": "file_unauthorized_dispute",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "customer_id": "cust_303",
+                "transaction_id": "tx_001",
+                "reason": "unauthorized"
+              }
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent verified customer identity before processing card unlock",
+        "Agent clearly explained the card unlock process and timing",
+        "Agent guided through the dispute filing process for the unauthorized transaction"
+      ],
+      "communicate_info": ["card unlocked", "dispute filed", "temporary credit", "next steps"],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
     "id": "11_banking_fraud_easy1_status_001_converted",
     "description": {
       "purpose": "File dispute then check status - EASY_1 persona (polite, detail-oriented)",
-      "relevant_policies": "Dispute filing process; status tracking."
+      "relevant_policies": "Dispute filing process; status tracking.",
+      "notes": "User needs to file a dispute for an unauthorized charge and check its status"
     },
     "user_scenario": {
       "persona": "EASY_1",
@@ -861,10 +895,7 @@
       },
       "goal_shifts": {
         "required_shifts": 1,
-        "goals": [
-          "dispute",
-          "account_info"
-        ]
+        "goals": ["dispute", "account_info"]
       }
     },
     "initial_state": {
@@ -879,54 +910,66 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant guided Casey Williams through the dispute filing process clearly.",
-        "The assistant provided Casey Williams with clear information about tracking their dispute progress."
-      ],
-      "reward_basis": [
-        "ACTION",
-        "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
+      "action_sets": [
         {
-          "action_id": "fraud_check_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
+          "action_id": "verify_identity",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {"phone_number": "+15551234590"}
+            },
+            {
+              "function_name": "verify_identity",
+              "params": {"customer_id": "cust_401"}
+            }
           ]
         },
         {
-          "action_id": "fraud_file_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_101",
-            "transaction_id": "tx_101",
-            "reason": "fraudulent"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
+          "action_id": "review_transactions",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {"customer_id": "cust_401"}
+            }
           ]
         },
         {
-          "action_id": "account_status_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_101"
-          },
-          "compare_args": [
-            "account_id"
+          "action_id": "file_dispute",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "customer_id": "cust_401",
+                "transaction_id": "tx_101",
+                "reason": "unauthorized"
+              }
+            }
+          ]
+        },
+        {
+          "action_id": "check_account_status",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {"customer_id": "cust_401"}
+            }
           ]
         }
-      ]
+      ],
+      "nl_assertions": [
+        "Agent verified customer identity before accessing account information",
+        "Agent reviewed the unauthorized transaction with the customer",
+        "Agent clearly explained the dispute filing process and timeline",
+        "Agent provided the dispute case number and next steps",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "dispute filed",
+        "case number",
+        "temporary credit",
+        "10-14 business days"
+      ],
+      "reward_basis": ["ACTION", "ENV_ASSERTION", "NL_ASSERTION", "COMMUNICATE"]
     }
   },
   {
@@ -965,53 +1008,67 @@
       "message_history": []
     },
     "evaluation_criteria": {
+      "action_sets": [
+        {
+          "id": "fraud_initial_1",
+          "allowed_tools": ["get_transactions"],
+          "required_parameters": ["customer_id"],
+          "max_score": 0.2,
+          "scoring_rules": {
+            "parameter_accuracy": 0.8,
+            "tool_usage": 0.2
+          }
+        },
+        {
+          "id": "fraud_secure_1",
+          "allowed_tools": ["lock_card"],
+          "required_parameters": ["card_id"],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 0.7,
+            "tool_usage": 0.3
+          }
+        },
+        {
+          "id": "fraud_dispute_1",
+          "allowed_tools": ["file_dispute"],
+          "required_parameters": ["customer_id", "transaction_id", "reason"],
+          "max_score": 0.5,
+          "scoring_rules": {
+            "parameter_accuracy": 0.7,
+            "tool_usage": 0.3
+          }
+        }
+      ],
       "nl_assertions": [
-        "The assistant efficiently handled Riley Brown's dispute for the suspicious charge.",
-        "The assistant educated Riley Brown about account protection and implemented security measures."
+        {
+          "assertion": "The assistant should identify and acknowledge the suspicious charge and explain the dispute process",
+          "weight": 0.2
+        },
+        {
+          "assertion": "The assistant should explain the steps being taken to secure the account",
+          "weight": 0.3
+        },
+        {
+          "assertion": "The assistant should provide clear instructions for monitoring the account and recognizing fraud",
+          "weight": 0.3
+        },
+        {
+          "assertion": "The assistant should confirm the dispute has been filed and provide a reference number",
+          "weight": 0.2
+        }
+      ],
+      "communicate_info": [
+        "Your dispute for the unauthorized charge has been filed",
+        "Your card has been locked for security",
+        "You'll receive a confirmation email with your dispute details",
+        "The dispute process typically takes 7-10 business days"
       ],
       "reward_basis": [
         "ACTION",
         "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
-        {
-          "action_id": "fraud_initial_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_secure_1",
-          "requestor": "assistant",
-          "name": "lock_card",
-          "arguments": {
-            "card_id": "card_202"
-          },
-          "compare_args": [
-            "card_id"
-          ]
-        },
-        {
-          "action_id": "fraud_dispute_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_202",
-            "transaction_id": "tx_001",
-            "reason": "fraudulent"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
+        "NL_ASSERTION",
+        "COMMUNICATE"
       ]
     }
   },
@@ -1050,49 +1107,67 @@
       "message_history": []
     },
     "evaluation_criteria": {
+      "action_sets": [
+        {
+          "id": "trans_lookup_1",
+          "allowed_tools": ["get_transactions"],
+          "required_parameters": ["customer_id"],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 0.7,
+            "tool_usage": 0.3
+          }
+        },
+        {
+          "id": "account_details_1",
+          "allowed_tools": ["get_account"],
+          "required_parameters": ["account_id"],
+          "max_score": 0.2,
+          "scoring_rules": {
+            "parameter_accuracy": 0.8,
+            "tool_usage": 0.2
+          }
+        },
+        {
+          "id": "statements_view_1",
+          "allowed_tools": ["get_statements"],
+          "required_parameters": ["customer_id"],
+          "max_score": 0.5,
+          "scoring_rules": {
+            "parameter_accuracy": 0.6,
+            "tool_usage": 0.4
+          }
+        }
+      ],
       "nl_assertions": [
-        "The assistant provided Alex Morgan with a thorough review of all recent transactions.",
-        "The assistant promptly provided Alex Morgan with the official written statements they demanded."
+        {
+          "assertion": "The assistant should thoroughly review recent transactions with Alex Morgan, explaining each one clearly",
+          "weight": 0.3
+        },
+        {
+          "assertion": "The assistant should acknowledge Alex's concerns about potential hidden transactions and address them professionally",
+          "weight": 0.3
+        },
+        {
+          "assertion": "The assistant should explain how to access and interpret the official statements",
+          "weight": 0.2
+        },
+        {
+          "assertion": "The assistant should provide information about statement frequency and availability",
+          "weight": 0.2
+        }
+      ],
+      "communicate_info": [
+        "Your most recent transactions include...",
+        "You can access your official statements through...",
+        "Statements are typically available within 3-5 business days after the statement period ends",
+        "You can view up to 24 months of statements online"
       ],
       "reward_basis": [
         "ACTION",
         "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
-        {
-          "action_id": "trans_lookup_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_303"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "statements_view_1",
-          "requestor": "assistant",
-          "name": "get_statements",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
+        "NL_ASSERTION",
+        "COMMUNICATE"
       ]
     }
   },
@@ -1131,53 +1206,67 @@
       "message_history": []
     },
     "evaluation_criteria": {
+      "action_sets": [
+        {
+          "id": "trans_review_1",
+          "allowed_tools": ["get_transactions"],
+          "required_parameters": ["customer_id"],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 0.8,
+            "tool_usage": 0.2
+          }
+        },
+        {
+          "id": "dispute_suspicious_1",
+          "allowed_tools": ["file_dispute"],
+          "required_parameters": ["customer_id", "transaction_id", "reason"],
+          "max_score": 0.5,
+          "scoring_rules": {
+            "parameter_accuracy": 0.7,
+            "tool_usage": 0.3
+          }
+        },
+        {
+          "id": "dispute_status_1",
+          "allowed_tools": ["get_dispute"],
+          "required_parameters": ["dispute_id"],
+          "max_score": 0.2,
+          "scoring_rules": {
+            "parameter_accuracy": 0.9,
+            "tool_usage": 0.1
+          }
+        }
+      ],
       "nl_assertions": [
-        "The assistant clearly explained Maria Santos's recent transactions.",
-        "The assistant supported Maria Santos's dispute for the unfamiliar charge."
+        {
+          "assertion": "The assistant should clearly explain each transaction to Maria in a way that helps her understand her spending",
+          "weight": 0.3
+        },
+        {
+          "assertion": "The assistant should help Maria identify potentially unauthorized transactions and explain why they might be suspicious",
+          "weight": 0.3
+        },
+        {
+          "assertion": "The assistant should clearly explain the dispute process and what Maria can expect",
+          "weight": 0.2
+        },
+        {
+          "assertion": "The assistant should provide Maria with a dispute reference number and next steps",
+          "weight": 0.2
+        }
+      ],
+      "communicate_info": [
+        "I can see a transaction you don't recognize for...",
+        "To dispute this charge, I'll need to...",
+        "Your dispute has been filed with reference number...",
+        "You should receive an email confirmation within..."
       ],
       "reward_basis": [
         "ACTION",
         "ENV_ASSERTION",
-        "NL_ASSERTION"
-      ],
-      "actions": [
-        {
-          "action_id": "trans_review_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "dispute_suspicious_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_401",
-            "transaction_id": "tx_001",
-            "reason": "unauthorized"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        },
-        {
-          "action_id": "dispute_status_1",
-          "requestor": "assistant",
-          "name": "get_dispute",
-          "arguments": {
-            "dispute_id": "disp_001"
-          },
-          "compare_args": [
-            "dispute_id"
-          ]
-        }
+        "NL_ASSERTION",
+        "COMMUNICATE"
       ]
     }
   },
