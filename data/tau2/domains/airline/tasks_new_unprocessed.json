@@ -1,0 +1,3662 @@
+[
+  {
+    "id": "51_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - EASY_1 persona soft shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "2-goal soft shift: cancellation \u2192 booking with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel original trip then book replacement",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_051. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_051",
+          "has_existing_reservation": true,
+          "reservation_id": "RES051"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: cancellation, booking",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_051"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "52_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - EASY_2 persona soft shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "2-goal soft shift: cancellation \u2192 booking with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel family vacation then book new dates",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_052. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_052",
+          "has_existing_reservation": true,
+          "reservation_id": "RES052"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: cancellation, booking",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_052"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "53_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - MEDIUM_1 persona soft shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "2-goal soft shift: cancellation \u2192 booking with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel business trip then efficiently book alternative",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_053. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_053",
+          "has_existing_reservation": true,
+          "reservation_id": "RES053"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: cancellation, booking",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_053"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "54_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - HARD_1 persona soft shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "2-goal soft shift: cancellation \u2192 booking with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel nervously then anxiously book replacement",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_054. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_054",
+          "has_existing_reservation": true,
+          "reservation_id": "RES054"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: cancellation, booking",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_054"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "55_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - MEDIUM_2 persona soft shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "2-goal soft shift: cancellation \u2192 booking with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel for refund then find better deal",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_055. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_055",
+          "has_existing_reservation": true,
+          "reservation_id": "RES055"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: cancellation, booking",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_055"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "56_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - EASY_1 persona soft shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "2-goal soft shift: baggage_services \u2192 payment_support with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Add checked bags then resolve payment issue",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_056. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific baggage_services and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "baggage_services",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_056",
+          "needs_checked_bags": true,
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: baggage_services, payment_support",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_056"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "57_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - EASY_2 persona soft shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "2-goal soft shift: baggage_services \u2192 payment_support with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Arrange family baggage then handle payment coordination",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_057. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific baggage_services and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "baggage_services",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_057",
+          "needs_checked_bags": true,
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: baggage_services, payment_support",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_057"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "58_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - MEDIUM_1 persona soft shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "2-goal soft shift: baggage_services \u2192 payment_support with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Add business baggage then process payment efficiently",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_058. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific baggage_services and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "baggage_services",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_058",
+          "needs_checked_bags": true,
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: baggage_services, payment_support",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_058"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "59_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - HARD_1 persona soft shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "2-goal soft shift: baggage_services \u2192 payment_support with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Add bags nervously then worry about payment",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_059. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific baggage_services and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "baggage_services",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_059",
+          "needs_checked_bags": true,
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: baggage_services, payment_support",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_059"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "60_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - MEDIUM_2 persona soft shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "2-goal soft shift: baggage_services \u2192 payment_support with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Optimize baggage then minimize payment fees",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_060. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific baggage_services and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "baggage_services",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_060",
+          "needs_checked_bags": true,
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: baggage_services, payment_support",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_060"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "61_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - EASY_1 persona soft shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "2-goal soft shift: payment_support \u2192 booking with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Resolve payment issue then complete booking",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_061. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific payment_support and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "payment_support",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_061",
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: payment_support, booking",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_061"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "62_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - EASY_2 persona soft shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "2-goal soft shift: payment_support \u2192 booking with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Fix family payment then finalize trip booking",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_062. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific payment_support and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "payment_support",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_062",
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: payment_support, booking",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_062"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "63_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - MEDIUM_1 persona soft shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "2-goal soft shift: payment_support \u2192 booking with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Resolve business payment then efficiently complete booking",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_063. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific payment_support and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "payment_support",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_063",
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: payment_support, booking",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_063"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "64_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - HARD_1 persona soft shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "2-goal soft shift: payment_support \u2192 booking with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Fix payment nervously then anxiously finish booking",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_064. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific payment_support and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "payment_support",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_064",
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: payment_support, booking",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_064"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "65_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - MEDIUM_2 persona soft shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "2-goal soft shift: payment_support \u2192 booking with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Resolve payment then find best booking deal",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_065. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific payment_support and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "payment_support",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_065",
+          "has_payment_issue": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: payment_support, booking",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_065"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "66_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - EASY_1 persona soft shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "2-goal soft shift: customer_support \u2192 reservation_lookup with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Ask general questions then check specific reservation",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_066. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific customer_support and reservation_lookup procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "customer_support",
+          "reservation_lookup"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_066"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: customer_support, reservation_lookup",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_066"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "67_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - EASY_2 persona soft shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "2-goal soft shift: customer_support \u2192 reservation_lookup with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Inquire about family policies then review booking",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_067. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific customer_support and reservation_lookup procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "customer_support",
+          "reservation_lookup"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_067"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: customer_support, reservation_lookup",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_067"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "68_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - MEDIUM_1 persona soft shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "2-goal soft shift: customer_support \u2192 reservation_lookup with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Clarify business policies then check reservation efficiently",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_068. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific customer_support and reservation_lookup procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "customer_support",
+          "reservation_lookup"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_068"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: customer_support, reservation_lookup",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_068"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "69_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - HARD_1 persona soft shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "2-goal soft shift: customer_support \u2192 reservation_lookup with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Seek reassurance then nervously check reservation",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_069. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific customer_support and reservation_lookup procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "customer_support",
+          "reservation_lookup"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_069"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: customer_support, reservation_lookup",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_069"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "70_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - MEDIUM_2 persona soft shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "2-goal soft shift: customer_support \u2192 reservation_lookup with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Compare costs then review booking for savings",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_070. You have two related travel needs that you'll discuss in sequence.",
+        "unknown_info": "Specific customer_support and reservation_lookup procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 1,
+        "goals": [
+          "customer_support",
+          "reservation_lookup"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_070"
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle soft shift pattern effectively",
+        "Agent should address all goals: customer_support, reservation_lookup",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_070"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "71_systematic",
+    "description": {
+      "purpose": "Flight search and booking - EASY_1 persona hard shift",
+      "relevant_policies": "Flight search and booking procedures and policies",
+      "notes": "3-goal hard shift: booking \u2192 payment_support \u2192 modification with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Book flight, encounter payment issue, then need to modify dates",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_071. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific booking and payment_support and modification procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "booking",
+          "payment_support",
+          "modification"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_071",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: booking, payment_support, modification",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_071"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        },
+        {
+          "action_id": "search_flights_2",
+          "requestor": "assistant",
+          "name": "search_flights",
+          "arguments": {
+            "origin": "any",
+            "destination": "any"
+          },
+          "compare_args": []
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "72_systematic",
+    "description": {
+      "purpose": "Flight search and booking - EASY_2 persona hard shift",
+      "relevant_policies": "Flight search and booking procedures and policies",
+      "notes": "3-goal hard shift: booking \u2192 payment_support \u2192 modification with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Book family trip, payment declines, then change passenger details",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_072. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific booking and payment_support and modification procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "booking",
+          "payment_support",
+          "modification"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_072",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: booking, payment_support, modification",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_072"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        },
+        {
+          "action_id": "search_flights_2",
+          "requestor": "assistant",
+          "name": "search_flights",
+          "arguments": {
+            "origin": "any",
+            "destination": "any"
+          },
+          "compare_args": []
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "73_systematic",
+    "description": {
+      "purpose": "Flight search and booking - MEDIUM_1 persona hard shift",
+      "relevant_policies": "Flight search and booking procedures and policies",
+      "notes": "3-goal hard shift: booking \u2192 payment_support \u2192 modification with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Book business flight, payment problem, then reschedule efficiently",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_073. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific booking and payment_support and modification procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "booking",
+          "payment_support",
+          "modification"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_073",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: booking, payment_support, modification",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_073"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        },
+        {
+          "action_id": "search_flights_2",
+          "requestor": "assistant",
+          "name": "search_flights",
+          "arguments": {
+            "origin": "any",
+            "destination": "any"
+          },
+          "compare_args": []
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "74_systematic",
+    "description": {
+      "purpose": "Flight search and booking - HARD_1 persona hard shift",
+      "relevant_policies": "Flight search and booking procedures and policies",
+      "notes": "3-goal hard shift: booking \u2192 payment_support \u2192 modification with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Book first flight, payment fails, then panic about date changes",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_074. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific booking and payment_support and modification procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "booking",
+          "payment_support",
+          "modification"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_074",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: booking, payment_support, modification",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_074"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        },
+        {
+          "action_id": "search_flights_2",
+          "requestor": "assistant",
+          "name": "search_flights",
+          "arguments": {
+            "origin": "any",
+            "destination": "any"
+          },
+          "compare_args": []
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "75_systematic",
+    "description": {
+      "purpose": "Flight search and booking - MEDIUM_2 persona hard shift",
+      "relevant_policies": "Flight search and booking procedures and policies",
+      "notes": "3-goal hard shift: booking \u2192 payment_support \u2192 modification with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Book budget flight, payment issue, then find cheaper alternative",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_075. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific booking and payment_support and modification procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "booking",
+          "payment_support",
+          "modification"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_075",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: booking, payment_support, modification",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_075"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        },
+        {
+          "action_id": "search_flights_2",
+          "requestor": "assistant",
+          "name": "search_flights",
+          "arguments": {
+            "origin": "any",
+            "destination": "any"
+          },
+          "compare_args": []
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "76_systematic",
+    "description": {
+      "purpose": "Reservation management and lookup - EASY_1 persona hard shift",
+      "relevant_policies": "Reservation management and lookup procedures and policies",
+      "notes": "3-goal hard shift: reservation_lookup \u2192 cancellation \u2192 customer_support with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Check reservation, discover issue, then file complaint",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_076. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific reservation_lookup and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "reservation_lookup",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_076",
+          "has_existing_reservation": true,
+          "reservation_id": "RES076",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: reservation_lookup, cancellation, customer_support",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_076"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "77_systematic",
+    "description": {
+      "purpose": "Reservation management and lookup - EASY_2 persona hard shift",
+      "relevant_policies": "Reservation management and lookup procedures and policies",
+      "notes": "3-goal hard shift: reservation_lookup \u2192 cancellation \u2192 customer_support with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Review family booking, find error, then escalate concern",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_077. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific reservation_lookup and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "reservation_lookup",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_077",
+          "has_existing_reservation": true,
+          "reservation_id": "RES077",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: reservation_lookup, cancellation, customer_support",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_077"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "78_systematic",
+    "description": {
+      "purpose": "Reservation management and lookup - MEDIUM_1 persona hard shift",
+      "relevant_policies": "Reservation management and lookup procedures and policies",
+      "notes": "3-goal hard shift: reservation_lookup \u2192 cancellation \u2192 customer_support with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Check business reservation, find problem, then demand resolution",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_078. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific reservation_lookup and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "reservation_lookup",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_078",
+          "has_existing_reservation": true,
+          "reservation_id": "RES078",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: reservation_lookup, cancellation, customer_support",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_078"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "79_systematic",
+    "description": {
+      "purpose": "Reservation management and lookup - HARD_1 persona hard shift",
+      "relevant_policies": "Reservation management and lookup procedures and policies",
+      "notes": "3-goal hard shift: reservation_lookup \u2192 cancellation \u2192 customer_support with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Find reservation, panic about issue, then seek help desperately",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_079. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific reservation_lookup and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "reservation_lookup",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_079",
+          "has_existing_reservation": true,
+          "reservation_id": "RES079",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: reservation_lookup, cancellation, customer_support",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_079"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "80_systematic",
+    "description": {
+      "purpose": "Reservation management and lookup - MEDIUM_2 persona hard shift",
+      "relevant_policies": "Reservation management and lookup procedures and policies",
+      "notes": "3-goal hard shift: reservation_lookup \u2192 cancellation \u2192 customer_support with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Review booking, find overcharge, then dispute fees aggressively",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_080. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific reservation_lookup and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "reservation_lookup",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_080",
+          "has_existing_reservation": true,
+          "reservation_id": "RES080",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: reservation_lookup, cancellation, customer_support",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_080"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "81_systematic",
+    "description": {
+      "purpose": "Flight date and passenger changes - EASY_1 persona hard shift",
+      "relevant_policies": "Flight date and passenger changes procedures and policies",
+      "notes": "3-goal hard shift: modification \u2192 cancellation \u2192 booking with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Try to modify, hit restrictions, then cancel and rebook",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_081. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific modification and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "modification",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_081",
+          "has_existing_reservation": true,
+          "reservation_id": "RES081",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: modification, cancellation, booking",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_081"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "82_systematic",
+    "description": {
+      "purpose": "Flight date and passenger changes - EASY_2 persona hard shift",
+      "relevant_policies": "Flight date and passenger changes procedures and policies",
+      "notes": "3-goal hard shift: modification \u2192 cancellation \u2192 booking with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Modify family trip, face issues, then cancel and start over",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_082. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific modification and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "modification",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_082",
+          "has_existing_reservation": true,
+          "reservation_id": "RES082",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: modification, cancellation, booking",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_082"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "83_systematic",
+    "description": {
+      "purpose": "Flight date and passenger changes - MEDIUM_1 persona hard shift",
+      "relevant_policies": "Flight date and passenger changes procedures and policies",
+      "notes": "3-goal hard shift: modification \u2192 cancellation \u2192 booking with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Reschedule business flight, blocked, then cancel and book new",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_083. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific modification and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "modification",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_083",
+          "has_existing_reservation": true,
+          "reservation_id": "RES083",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: modification, cancellation, booking",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_083"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "84_systematic",
+    "description": {
+      "purpose": "Flight date and passenger changes - HARD_1 persona hard shift",
+      "relevant_policies": "Flight date and passenger changes procedures and policies",
+      "notes": "3-goal hard shift: modification \u2192 cancellation \u2192 booking with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Try to change, get confused, then panic-cancel and rebook",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_084. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific modification and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "modification",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_084",
+          "has_existing_reservation": true,
+          "reservation_id": "RES084",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: modification, cancellation, booking",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_084"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "85_systematic",
+    "description": {
+      "purpose": "Flight date and passenger changes - MEDIUM_2 persona hard shift",
+      "relevant_policies": "Flight date and passenger changes procedures and policies",
+      "notes": "3-goal hard shift: modification \u2192 cancellation \u2192 booking with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Modify for cheaper option, blocked, then cancel and find deals",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_085. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific modification and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "modification",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_085",
+          "has_existing_reservation": true,
+          "reservation_id": "RES085",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: modification, cancellation, booking",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_085"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "86_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - EASY_1 persona hard shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "3-goal hard shift: cancellation \u2192 customer_support \u2192 payment_support with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel trip, dispute refund amount, then file complaint",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_086. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific cancellation and customer_support and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "cancellation",
+          "customer_support",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_086",
+          "has_existing_reservation": true,
+          "reservation_id": "RES086",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: cancellation, customer_support, payment_support",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_086"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "87_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - EASY_2 persona hard shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "3-goal hard shift: cancellation \u2192 customer_support \u2192 payment_support with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel family vacation, refund issues, then escalate",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_087. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific cancellation and customer_support and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "cancellation",
+          "customer_support",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_087",
+          "has_existing_reservation": true,
+          "reservation_id": "RES087",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: cancellation, customer_support, payment_support",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_087"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "88_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - MEDIUM_1 persona hard shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "3-goal hard shift: cancellation \u2192 customer_support \u2192 payment_support with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel business trip, refund problem, then demand resolution",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_088. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific cancellation and customer_support and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "cancellation",
+          "customer_support",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_088",
+          "has_existing_reservation": true,
+          "reservation_id": "RES088",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: cancellation, customer_support, payment_support",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_088"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "89_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - HARD_1 persona hard shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "3-goal hard shift: cancellation \u2192 customer_support \u2192 payment_support with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel flight, panic about refund, then desperately seek help",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_089. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific cancellation and customer_support and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "cancellation",
+          "customer_support",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_089",
+          "has_existing_reservation": true,
+          "reservation_id": "RES089",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: cancellation, customer_support, payment_support",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_089"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "90_systematic",
+    "description": {
+      "purpose": "Flight cancellation and refunds - MEDIUM_2 persona hard shift",
+      "relevant_policies": "Flight cancellation and refunds procedures and policies",
+      "notes": "3-goal hard shift: cancellation \u2192 customer_support \u2192 payment_support with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Cancel trip, dispute fees, then aggressively pursue refund",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_090. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific cancellation and customer_support and payment_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "cancellation",
+          "customer_support",
+          "payment_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_090",
+          "has_existing_reservation": true,
+          "reservation_id": "RES090",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: cancellation, customer_support, payment_support",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_090"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "91_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - EASY_1 persona hard shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "3-goal hard shift: baggage_services \u2192 modification \u2192 customer_support with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Add baggage, discover weight limits, then modify flight details",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_091. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific baggage_services and modification and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "baggage_services",
+          "modification",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_091",
+          "needs_checked_bags": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: baggage_services, modification, customer_support",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_091"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "92_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - EASY_2 persona hard shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "3-goal hard shift: baggage_services \u2192 modification \u2192 customer_support with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Arrange family bags, hit restrictions, then file complaint",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_092. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific baggage_services and modification and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "baggage_services",
+          "modification",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_092",
+          "needs_checked_bags": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: baggage_services, modification, customer_support",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_092"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "93_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - MEDIUM_1 persona hard shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "3-goal hard shift: baggage_services \u2192 modification \u2192 customer_support with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Add business baggage, face issues, then escalate concern",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_093. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific baggage_services and modification and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "baggage_services",
+          "modification",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_093",
+          "needs_checked_bags": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: baggage_services, modification, customer_support",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_093"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "94_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - HARD_1 persona hard shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "3-goal hard shift: baggage_services \u2192 modification \u2192 customer_support with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Add bags, get confused about rules, then panic about flight changes",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_094. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific baggage_services and modification and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "baggage_services",
+          "modification",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_094",
+          "needs_checked_bags": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: baggage_services, modification, customer_support",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_094"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "95_systematic",
+    "description": {
+      "purpose": "Baggage services and policies - MEDIUM_2 persona hard shift",
+      "relevant_policies": "Baggage services and policies procedures and policies",
+      "notes": "3-goal hard shift: baggage_services \u2192 modification \u2192 customer_support with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Optimize baggage, hit limits, then aggressively dispute policies",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_095. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific baggage_services and modification and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "baggage_services",
+          "modification",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_095",
+          "needs_checked_bags": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: baggage_services, modification, customer_support",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_095"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "96_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - EASY_1 persona hard shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "3-goal hard shift: payment_support \u2192 cancellation \u2192 customer_support with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Payment fails repeatedly, cancel frustrated, then file complaint",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_096. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific payment_support and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "payment_support",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_096",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: payment_support, cancellation, customer_support",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_096"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "97_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - EASY_2 persona hard shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "3-goal hard shift: payment_support \u2192 cancellation \u2192 customer_support with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Family payment issues, cancel trip, then escalate concern",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_097. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific payment_support and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "payment_support",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_097",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: payment_support, cancellation, customer_support",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_097"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "98_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - MEDIUM_1 persona hard shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "3-goal hard shift: payment_support \u2192 cancellation \u2192 customer_support with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Business payment blocked, cancel efficiently, then demand resolution",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_098. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific payment_support and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "payment_support",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_098",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: payment_support, cancellation, customer_support",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_098"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "99_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - HARD_1 persona hard shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "3-goal hard shift: payment_support \u2192 cancellation \u2192 customer_support with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Payment problem, panic cancel, then desperately seek help",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_099. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific payment_support and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "payment_support",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_099",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: payment_support, cancellation, customer_support",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_099"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "100_systematic",
+    "description": {
+      "purpose": "Payment issues and billing - MEDIUM_2 persona hard shift",
+      "relevant_policies": "Payment issues and billing procedures and policies",
+      "notes": "3-goal hard shift: payment_support \u2192 cancellation \u2192 customer_support with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Payment dispute, cancel aggressively, then pursue resolution",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_100. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific payment_support and cancellation and customer_support procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "payment_support",
+          "cancellation",
+          "customer_support"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_100",
+          "has_payment_issue": true,
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: payment_support, cancellation, customer_support",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_100"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "101_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - EASY_1 persona hard shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "3-goal hard shift: customer_support \u2192 cancellation \u2192 booking with EASY 1 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "File complaint, get frustrated, then cancel and rebook elsewhere",
+        "known_info": "You are a EASY 1 traveler with user ID easy_1_user_101. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific customer_support and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "customer_support",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_1_user_101",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: customer_support, cancellation, booking",
+        "Agent should provide appropriate service for EASY 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_1_user_101"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "102_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - EASY_2 persona hard shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "3-goal hard shift: customer_support \u2192 cancellation \u2192 booking with EASY 2 user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Complain about family service, escalate, then cancel trip",
+        "known_info": "You are a EASY 2 traveler with user ID easy_2_user_102. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific customer_support and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "customer_support",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "easy_2_user_102",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: customer_support, cancellation, booking",
+        "Agent should provide appropriate service for EASY 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "easy_2_user_102"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "103_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - MEDIUM_1 persona hard shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "3-goal hard shift: customer_support \u2192 cancellation \u2192 booking with MEDIUM 1 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Business complaint, demand resolution, then cancel and switch airlines",
+        "known_info": "You are a MEDIUM 1 traveler with user ID medium_1_user_103. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific customer_support and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "customer_support",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_1_user_103",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: customer_support, cancellation, booking",
+        "Agent should provide appropriate service for MEDIUM 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_1_user_103"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "104_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - HARD_1 persona hard shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "3-goal hard shift: customer_support \u2192 cancellation \u2192 booking with HARD 1 user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Panic about service, complain desperately, then cancel everything",
+        "known_info": "You are a HARD 1 traveler with user ID hard_1_user_104. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific customer_support and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "customer_support",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "hard_1_user_104",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: customer_support, cancellation, booking",
+        "Agent should provide appropriate service for HARD 1 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "hard_1_user_104"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "105_systematic",
+    "description": {
+      "purpose": "Customer service and complaints - MEDIUM_2 persona hard shift",
+      "relevant_policies": "Customer service and complaints procedures and policies",
+      "notes": "3-goal hard shift: customer_support \u2192 cancellation \u2192 booking with MEDIUM 2 user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "airline",
+        "reason_for_call": "Dispute charges aggressively, cancel, then find competitor deals",
+        "known_info": "You are a MEDIUM 2 traveler with user ID medium_2_user_105. You're facing a complex multi-step situation that will require handling several issues.",
+        "unknown_info": "Specific customer_support and cancellation and booking procedures and policies",
+        "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
+      },
+      "goal_shifts": {
+        "required_shifts": 2,
+        "goals": [
+          "customer_support",
+          "cancellation",
+          "booking"
+        ]
+      }
+    },
+    "ticket": null,
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": {
+          "authenticated": false,
+          "user_id": "medium_2_user_105",
+          "complex_situation": true
+        }
+      },
+      "initialization_actions": [],
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "nl_assertions": [
+        "Agent should handle hard shift pattern effectively",
+        "Agent should address all goals: customer_support, cancellation, booking",
+        "Agent should provide appropriate service for MEDIUM 2 user",
+        "Agent should follow airline policies throughout the interaction"
+      ],
+      "actions": [
+        {
+          "action_id": "check_user_1",
+          "requestor": "assistant",
+          "name": "get_user_details",
+          "arguments": {
+            "user_id": "medium_2_user_105"
+          },
+          "compare_args": [
+            "user_id"
+          ]
+        }
+      ],
+      "reward_basis": [
+        "ACTION",
+        "ENV_ASSERTION",
+        "NL_ASSERTION"
+      ]
+    }
+  }
+]

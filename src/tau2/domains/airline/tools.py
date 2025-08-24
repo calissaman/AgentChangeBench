@@ -97,6 +97,24 @@ class AirlineTools(ToolKitBase):  # Tools
         """
         return [3221322, 3221323, 3221324]
 
+    def _find_user_payment_method(self, user: User, payment_id: str):
+        """Find a payment method by its ID in the user's payment methods.
+        
+        Args:
+            user: The user to search
+            payment_id: The payment method ID to find
+            
+        Returns:
+            The payment method object
+            
+        Raises:
+            ValueError: If payment method not found
+        """
+        for pm in user.payment_methods.values():
+            if pm.id == payment_id:
+                return pm
+        raise ValueError(f"Payment method {payment_id} not found")
+
     def _get_datetime(self) -> str:
         """Get the current datetime."""
         return "2024-05-15T15:00:00"
@@ -160,9 +178,7 @@ class AirlineTools(ToolKitBase):  # Tools
             ValueError: If the gift card balance is not enough.
         """
         # Check payment
-        if payment_id not in user.payment_methods:
-            raise ValueError("Payment method not found")
-        payment_method = user.payment_methods[payment_id]
+        payment_method = self._find_user_payment_method(user, payment_id)
         if payment_method.source == "certificate":
             raise ValueError("Certificate cannot be used to update reservation")
         elif (
@@ -284,10 +300,7 @@ class AirlineTools(ToolKitBase):  # Tools
         for payment_method in payment_methods:
             payment_id = payment_method.payment_id
             amount = payment_method.amount
-            if payment_id not in user.payment_methods:
-                raise ValueError(f"Payment method {payment_id} not found")
-
-            user_payment_method = user.payment_methods[payment_id]
+            user_payment_method = self._find_user_payment_method(user, payment_id)
             if user_payment_method.source in {"gift_card", "certificate"}:
                 if user_payment_method.amount < amount:
                     raise ValueError(
@@ -304,11 +317,15 @@ class AirlineTools(ToolKitBase):  # Tools
         for payment_method in payment_methods:
             payment_id = payment_method.payment_id
             amount = payment_method.amount
-            user_payment_method = user.payment_methods[payment_id]
+            user_payment_method = self._find_user_payment_method(user, payment_id)
             if user_payment_method.source == "gift_card":
                 user_payment_method.amount -= amount
             elif user_payment_method.source == "certificate":
-                user.payment_methods.pop(payment_id)
+                # Find and remove the certificate payment method
+                for key, pm in user.payment_methods.items():
+                    if pm.id == payment_id:
+                        user.payment_methods.pop(key)
+                        break
 
         # Update DB
         for flight_date_data in all_flights_date_data:
@@ -503,7 +520,9 @@ class AirlineTools(ToolKitBase):  # Tools
 
         # add a certificate, assume at most 3 cases per task
         for payment_id in [f"certificate_{id}" for id in self._get_new_payment_id()]:
-            if payment_id not in user.payment_methods:
+            # Check if payment method with this ID already exists
+            payment_exists = any(pm.id == payment_id for pm in user.payment_methods.values())
+            if not payment_exists:
                 new_payment = Certificate(
                     id=payment_id,
                     amount=amount,
