@@ -942,7 +942,7 @@
           "action_id": "process_payment",
           "allowed_tools": [
             {
-              "function_name": "create_payment_request",
+              "function_name": "customer_detailsrequest",
               "params": {
                 "customer_id": "cust_101",
                 "from_account_id": "acc_001",
@@ -1613,7 +1613,7 @@
           }
         },
         {
-          "action_id": "account_details_1",
+          "action_id": "account_details",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -1632,7 +1632,7 @@
           }
         },
         {
-          "action_id": "statements_view_1",
+          "action_id": "statements_view",
           "allowed_tools": [
             {
               "function_name": "get_statements",
@@ -1701,7 +1701,7 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "trans_review_1",
+          "action_id": "trans_review",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -1720,7 +1720,7 @@
           }
         },
         {
-          "action_id": "dispute_suspicious_1",
+          "action_id": "dispute_suspicious",
           "allowed_tools": [
             {
               "function_name": "file_dispute",
@@ -1743,7 +1743,7 @@
           }
         },
         {
-          "action_id": "dispute_status_1",
+          "action_id": "dispute_status",
           "allowed_tools": [
             {
               "function_name": "get_dispute",
@@ -1831,7 +1831,7 @@
           }
         },
         {
-          "action_id": "spending_data_1",
+          "action_id": "spending_data",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -1919,7 +1919,7 @@
           }
         },
         {
-          "action_id": "customer_verify_1",
+          "action_id": "customer_verify",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_id",
@@ -2026,7 +2026,7 @@
           }
         },
         {
-          "action_id": "account_overview_1",
+          "action_id": "account_overview",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -2118,7 +2118,7 @@
           }
         },
         {
-          "action_id": "customer_verify_1",
+          "action_id": "customer_verify",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_id",
@@ -2137,7 +2137,7 @@
           }
         },
         {
-          "action_id": "transactions_review_1",
+          "action_id": "transactions_review",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -2156,7 +2156,7 @@
           }
         },
         {
-          "action_id": "fraud_response_1",
+          "action_id": "fraud_response",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -2256,7 +2256,7 @@
           }
         },
         {
-          "action_id": "customer_verify_1",
+          "action_id": "customer_verify",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_id",
@@ -2362,7 +2362,7 @@
           }
         },
         {
-          "action_id": "account_overview_1",
+          "action_id": "account_overview",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -2460,7 +2460,7 @@
           }
         },
         {
-          "action_id": "trans_check_1",
+          "action_id": "trans_check",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -2479,7 +2479,7 @@
           }
         },
         {
-          "action_id": "fraud_response_1",
+          "action_id": "fraud_response",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -2650,7 +2650,7 @@
           }
         },
         {
-          "action_id": "account_info_1",
+          "action_id": "account_info",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -2753,7 +2753,7 @@
           }
         },
         {
-          "action_id": "trans_review_1",
+          "action_id": "trans_review",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -2772,7 +2772,7 @@
           }
         },
         {
-          "action_id": "fraud_file_1",
+          "action_id": "fraud_file",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -2941,7 +2941,7 @@
           }
         },
         {
-          "action_id": "account_overview_1",
+          "action_id": "account_overview",
           "allowed_tools": [
             {
               "function_name": "get_accounts",
@@ -3043,7 +3043,7 @@
           }
         },
         {
-          "action_id": "trans_check_1",
+          "action_id": "trans_check",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -3062,7 +3062,7 @@
           }
         },
         {
-          "action_id": "fraud_response_1",
+          "action_id": "fraud_response",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -3231,7 +3231,7 @@
           }
         },
         {
-          "action_id": "account_info_1",
+          "action_id": "account_info",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -3333,7 +3333,7 @@
           }
         },
         {
-          "action_id": "trans_review_1",
+          "action_id": "trans_review",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -3352,7 +3352,7 @@
           }
         },
         {
-          "action_id": "fraud_secure_1",
+          "action_id": "fraud_secure",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -3443,7 +3443,7 @@
           }
         },
         {
-          "action_id": "account_info_1",
+          "action_id": "account_info",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -3534,7 +3534,7 @@
           }
         },
         {
-          "action_id": "account_details_1",
+          "action_id": "account_details",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -3553,7 +3553,7 @@
           }
         },
         {
-          "action_id": "statements_view_1",
+          "action_id": "statements_view",
           "allowed_tools": [
             {
               "function_name": "get_statements",
@@ -3645,7 +3645,7 @@
           }
         },
         {
-          "action_id": "account_details_1",
+          "action_id": "account_details",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -3664,7 +3664,7 @@
           }
         },
         {
-          "action_id": "trans_history_1",
+          "action_id": "trans_history",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -3683,7 +3683,7 @@
           }
         },
         {
-          "action_id": "fraud_secure_1",
+          "action_id": "fraud_secure",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -3774,7 +3774,7 @@
           }
         },
         {
-          "action_id": "account_info_1",
+          "action_id": "account_info",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -3865,7 +3865,7 @@
           }
         },
         {
-          "action_id": "account_details_1",
+          "action_id": "account_details",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -3884,7 +3884,7 @@
           }
         },
         {
-          "action_id": "statements_view_1",
+          "action_id": "statements_view",
           "allowed_tools": [
             {
               "function_name": "get_statements",
@@ -3977,7 +3977,7 @@
           }
         },
         {
-          "action_id": "account_details_1",
+          "action_id": "account_details",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -3996,7 +3996,7 @@
           }
         },
         {
-          "action_id": "trans_review_1",
+          "action_id": "trans_review",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -4015,7 +4015,7 @@
           }
         },
         {
-          "action_id": "fraud_secure_1",
+          "action_id": "fraud_secure",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -4106,7 +4106,7 @@
           }
         },
         {
-          "action_id": "account_balance_1",
+          "action_id": "account_balance",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -4197,7 +4197,7 @@
           }
         },
         {
-          "action_id": "account_details_1",
+          "action_id": "account_details",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -4216,7 +4216,7 @@
           }
         },
         {
-          "action_id": "account_summary_1",
+          "action_id": "account_summary",
           "allowed_tools": [
             {
               "function_name": "get_statements",
@@ -4308,7 +4308,7 @@
           }
         },
         {
-          "action_id": "account_details_1",
+          "action_id": "account_details",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -4327,7 +4327,7 @@
           }
         },
         {
-          "action_id": "trans_analysis_1",
+          "action_id": "trans_analysis",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -4346,7 +4346,7 @@
           }
         },
         {
-          "action_id": "fraud_response_1",
+          "action_id": "fraud_response",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -4437,7 +4437,7 @@
           }
         },
         {
-          "action_id": "account_info_1",
+          "action_id": "account_info",
           "allowed_tools": [
             {
               "function_name": "get_account",
@@ -4463,6 +4463,542 @@
         "$1,850.25",
         "card_303",
         "\u2022\u2022\u2022\u20223456"
+      ]
+    }
+  },
+  {
+    "id": "41_banking_account_medium_2_soft_001_systematic",
+    "description": {
+      "purpose": "Account Overview soft shift - MEDIUM_2 persona information flow",
+      "relevant_policies": "Account Overview policies and procedures.",
+      "notes": "2-goal soft shift with curious learner, asks questions, enthusiastic user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Check account information - soft pattern",
+        "known_info": "You are Casey Williams with phone number +15551234590, date of birth 1982-03-09, and email user.004@example.com.",
+        "unknown_info": "Specifics about account status and balances",
+        "task_instructions": "Check account balances, then request recent statements."
+      },
+      "goal_shifts": { "required_shifts": 1, "goals": ["account_info", "statements"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "+15551234590", "customer_id": "cust_401" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
+            { "function_name": "get_customer_by_id", "params": { "customer_id": "cust_401" } },
+            { "function_name": "get_customer_by_phone", "params": { "phone_number": "+15551234590" } }
+          ]
+        },
+        {
+          "action_id": "account_details",
+          "allowed_tools": [
+            { "function_name": "get_account", "params": { "account_id": "acc_401" } }
+          ]
+        },
+        {
+          "action_id": "statements_view",
+          "allowed_tools": [
+            { "function_name": "get_statements", "params": { "account_id": "acc_401" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided comprehensive account information and statements to Casey Williams.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "$5,420.75",
+        "••••2345"
+      ]
+    }
+  },
+  {
+    "id": "42_banking_account_medium_2_hard_001_systematic",
+    "description": {
+      "purpose": "Account Overview hard shift - MEDIUM_2 persona security escalation",
+      "relevant_policies": "Account Overview policies and procedures.",
+      "notes": "3-goal hard shift with curious learner, asks questions, enthusiastic user."
+    },
+    "user_scenario": {
+      "persona": "MEDIUM_2",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Check account information - hard pattern",
+        "known_info": "You are Riley Brown with phone number +15559876543, date of birth 1989-10-21, and email user.005@example.com.",
+        "unknown_info": "Specifics about account status and balances",
+        "task_instructions": "Check account info, then review transactions, then file dispute for suspicious charge."
+      },
+      "goal_shifts": { "required_shifts": 2, "goals": ["account_info", "transactions", "dispute"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "+15559876543", "customer_id": "cust_505" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
+            { "function_name": "get_customer_by_id", "params": { "customer_id": "cust_505" } },
+            { "function_name": "get_customer_by_phone", "params": { "phone_number": "+15559876543" } }
+          ]
+        },
+        {
+          "action_id": "account_details",
+          "allowed_tools": [
+            { "function_name": "get_account", "params": { "account_id": "acc_505" } }
+          ]
+        },
+        {
+          "action_id": "trans_check",
+          "allowed_tools": [
+            { "function_name": "get_transactions", "params": { "account_id": "acc_505" } }
+          ]
+        },
+        {
+          "action_id": "fraud_lock_only",
+          "allowed_tools": [
+            { "function_name": "lock_card", "params": { "card_id": "card_505" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided helpful account service to Riley Brown.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "$15,750.40",
+        "••••9876"
+      ]
+    }
+  },
+  {
+    "id": "43_banking_account_hard_1_single_001_systematic",
+    "description": {
+      "purpose": "Account Overview only - HARD_1 persona baseline test",
+      "relevant_policies": "Account Overview policies and procedures.",
+      "notes": "No goal shift - tests core competency with suspicious, questioning, demands proof user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Check account information - single pattern",
+        "known_info": "You are Alex Morgan with phone number 555-123-7890, date of birth 1980-04-15, and email alex.morgan@email.com.",
+        "unknown_info": "Specifics about account status and balances",
+        "task_instructions": "Check your account balances and status."
+      },
+      "goal_shifts": { "required_shifts": 0, "goals": ["account_info"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "555-123-7890", "customer_id": "cust_001" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
+            { "function_name": "get_customer_by_id", "params": { "customer_id": "cust_001" } },
+            { "function_name": "get_customer_by_phone", "params": { "phone_number": "555-123-7890" } }
+          ]
+        },
+        {
+          "action_id": "account_balance",
+          "allowed_tools": [
+            { "function_name": "get_account", "params": { "account_id": "acc_001" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided clear account information to Alex Morgan."
+      ],
+      "communicate_info": [
+        "$1,423.75",
+        "••••6789"
+      ]
+    }
+  },
+  {
+    "id": "44_banking_account_hard_1_soft_001_systematic",
+    "description": {
+      "purpose": "Account Overview soft shift - HARD_1 persona information flow",
+      "relevant_policies": "Account Overview policies and procedures.",
+      "notes": "2-goal soft shift with suspicious, questioning, demands proof user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Check account information - soft pattern",
+        "known_info": "You are Maria Santos with phone number +15551234567, date of birth 1986-02-11, and email user.001@example.com.",
+        "unknown_info": "Specifics about account status and balances",
+        "task_instructions": "Check account balances, then request recent statements."
+      },
+      "goal_shifts": { "required_shifts": 1, "goals": ["account_info", "statements"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "+15551234567", "customer_id": "cust_101" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
+            { "function_name": "get_customer_by_id", "params": { "customer_id": "cust_101" } },
+            { "function_name": "get_customer_by_phone", "params": { "phone_number": "+15551234567" } }
+          ]
+        },
+        {
+          "action_id": "account_details",
+          "allowed_tools": [
+            { "function_name": "get_account", "params": { "account_id": "acc_101" } }
+          ]
+        },
+        {
+          "action_id": "statements_view",
+          "allowed_tools": [
+            { "function_name": "get_statements", "params": { "account_id": "acc_101" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided comprehensive account information and statements to Maria Santos.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "$45,230.18"
+      ]
+    }
+  },
+  {
+    "id": "45_banking_account_hard_1_hard_001_systematic",
+    "description": {
+      "purpose": "Account Overview hard shift - HARD_1 persona security escalation",
+      "relevant_policies": "Account Overview policies and procedures.",
+      "notes": "3-goal hard shift with suspicious, questioning, demands proof user."
+    },
+    "user_scenario": {
+      "persona": "HARD_1",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Check account information - hard pattern",
+        "known_info": "You are Jordan Smith with phone number +15558675309, date of birth 1994-09-02, and email user.002@example.com.",
+        "unknown_info": "Specifics about account status and balances",
+        "task_instructions": "Check account info, then review transactions, then file dispute for suspicious charge."
+      },
+      "goal_shifts": { "required_shifts": 2, "goals": ["account_info", "transactions", "dispute"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "+15558675309", "customer_id": "cust_202" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
+            { "function_name": "get_customer_by_id", "params": { "customer_id": "cust_202" } },
+            { "function_name": "get_customer_by_phone", "params": { "phone_number": "+15558675309" } }
+          ]
+        },
+        {
+          "action_id": "account_details",
+          "allowed_tools": [
+            { "function_name": "get_account", "params": { "account_id": "acc_202" } }
+          ]
+        },
+        {
+          "action_id": "trans_review",
+          "allowed_tools": [
+            { "function_name": "get_transactions", "params": { "account_id": "acc_202" } }
+          ]
+        },
+        {
+          "action_id": "fraud_lock_only",
+          "allowed_tools": [
+            { "function_name": "lock_card", "params": { "card_id": "card_202" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided helpful account service to Jordan Smith.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "$3,250.50",
+        "••••4567"
+      ]
+    }
+  },
+  {
+    "id": "46_banking_billpay_easy_1_single_001_systematic",
+    "description": {
+      "purpose": "Bill Pay only - EASY_1 persona baseline test",
+      "relevant_policies": "Bill Pay policies and procedures.",
+      "notes": "No goal shift - tests core competency with polite, detail-oriented, step-by-step user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Make bill payment - single pattern",
+        "known_info": "You are Taylor Johnson with phone number +15551230987, date of birth 1991-05-06, and email user.003@example.com.",
+        "unknown_info": "Specifics about payment processing",
+        "task_instructions": "Create a bill payment request from your account."
+      },
+      "goal_shifts": { "required_shifts": 0, "goals": ["payments"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "+15551230987", "customer_id": "cust_303", "primary_account_id": "acc_303" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "payment_create",
+          "allowed_tools": [
+            { "function_name": "customer_detailsrequest", "params": { "customer_id": "cust_303", "from_account_id": "acc_303", "to_payee_id": "payee_001", "amount": 150.0 } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided helpful account service to Taylor Johnson."
+      ],
+      "communicate_info": [
+        "$150.00"
+      ]
+    }
+  },
+  {
+    "id": "47_banking_billpay_easy_1_soft_001_systematic",
+    "description": {
+      "purpose": "Bill Pay soft shift - EASY_1 persona information flow",
+      "relevant_policies": "Bill Pay policies and procedures.",
+      "notes": "2-goal soft shift with polite, detail-oriented, step-by-step user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Make bill payment - soft pattern",
+        "known_info": "You are Casey Williams with phone number +15551234590, date of birth 1982-03-09, and email user.004@example.com.",
+        "unknown_info": "Specifics about payment processing",
+        "task_instructions": "Create a bill payment request, then verify account balance."
+      },
+      "goal_shifts": { "required_shifts": 1, "goals": ["payments", "account_info"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "+15551234590", "customer_id": "cust_401", "primary_account_id": "acc_401" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "payment_create",
+          "allowed_tools": [
+            { "function_name": "customer_detailsrequest", "params": { "customer_id": "cust_401", "from_account_id": "acc_401", "to_payee_id": "payee_001", "amount": 200.0 } }
+          ]
+        },
+        {
+          "action_id": "account_verify",
+          "allowed_tools": [
+            { "function_name": "get_account", "params": { "account_id": "acc_401" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided helpful account service to Casey Williams.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "$5,420.75",
+        "$200.00"
+      ]
+    }
+  },
+  {
+    "id": "48_banking_billpay_easy_1_hard_001_systematic",
+    "description": {
+      "purpose": "Bill Pay hard shift - EASY_1 persona security escalation",
+      "relevant_policies": "Bill Pay policies and procedures.",
+      "notes": "3-goal hard shift with polite, detail-oriented, step-by-step user."
+    },
+    "user_scenario": {
+      "persona": "EASY_1",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Make bill payment - hard pattern",
+        "known_info": "You are Riley Brown with phone number +15559876543, date of birth 1989-10-21, and email user.005@example.com.",
+        "unknown_info": "Specifics about payment processing",
+        "task_instructions": "Create a bill payment request, then lock your card for safety."
+      },
+      "goal_shifts": { "required_shifts": 2, "goals": ["payments", "fraud_response", "cards"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "+15559876543", "customer_id": "cust_505", "primary_account_id": "acc_505", "primary_card_id": "card_505" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "payment_create",
+          "allowed_tools": [
+            { "function_name": "customer_detailsrequest", "params": { "customer_id": "cust_505", "from_account_id": "acc_505", "to_payee_id": "payee_001", "amount": 300.0 } }
+          ]
+        },
+        {
+          "action_id": "fraud_secure",
+          "allowed_tools": [
+            { "function_name": "lock_card", "params": { "card_id": "card_505" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided helpful account service to Riley Brown.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "$300.00",
+        "••••9876"
+      ]
+    }
+  },
+  {
+    "id": "49_banking_billpay_easy_2_single_001_systematic",
+    "description": {
+      "purpose": "Bill Pay only - EASY_2 persona baseline test",
+      "relevant_policies": "Bill Pay policies and procedures.",
+      "notes": "No goal shift - tests core competency with easily distracted, casual, confused user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Make bill payment - single pattern",
+        "known_info": "You are Alex Morgan with phone number 555-123-7890, date of birth 1980-04-15, and email alex.morgan@email.com.",
+        "unknown_info": "Specifics about payment processing",
+        "task_instructions": "Authorize and settle an existing payment request."
+      },
+      "goal_shifts": { "required_shifts": 0, "goals": ["payments"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "555-123-7890", "customer_id": "cust_001", "payment_request_id": "req_001" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "payment_auth",
+          "allowed_tools": [
+            { "function_name": "authorize_payment_request", "params": { "request_id": "req_001" } }
+          ]
+        },
+        {
+          "action_id": "payment_make",
+          "allowed_tools": [
+            { "function_name": "make_payment", "params": { "request_id": "req_001" } }
+          ]
+        },
+        {
+          "action_id": "payment_check",
+          "allowed_tools": [
+            { "function_name": "check_payment_request", "params": { "request_id": "req_001" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided helpful account service to Alex Morgan."
+      ],
+      "communicate_info": [
+        "Electric Co.",
+        "$65.00"
+      ]
+    }
+  },
+  {
+    "id": "50_banking_billpay_easy_2_soft_001_systematic",
+    "description": {
+      "purpose": "Bill Pay soft shift - EASY_2 persona information flow",
+      "relevant_policies": "Bill Pay policies and procedures.",
+      "notes": "2-goal soft shift with easily distracted, casual, confused user."
+    },
+    "user_scenario": {
+      "persona": "EASY_2",
+      "instructions": {
+        "domain": "banking",
+        "reason_for_call": "Make bill payment - soft pattern",
+        "known_info": "You are Maria Santos with phone number +15551234567, date of birth 1986-02-11, and email user.001@example.com.",
+        "unknown_info": "Specifics about payment processing",
+        "task_instructions": "Create a payment request and then verify your account."
+      },
+      "goal_shifts": { "required_shifts": 1, "goals": ["payments", "account_info"] }
+    },
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": null,
+        "user_data": { "phone_number": "+15551234567", "customer_id": "cust_101", "primary_account_id": "acc_101" }
+      },
+      "message_history": []
+    },
+    "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
+            { "function_name": "customer_detailsrequest", "params": { "customer_id": "cust_101", "from_account_id": "acc_101", "to_payee_id": "payee_001", "amount": 120.0 } }
+          ]
+        },
+        {
+          "action_id": "account_verify",
+          "allowed_tools": [
+            { "function_name": "get_account", "params": { "account_id": "acc_101" } }
+          ]
+        }
+      ],
+      "nl_assertions": [
+        "The assistant provided helpful account service to Maria Santos.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "$45,230.18",
+        "$120.00"
       ]
     }
   }
