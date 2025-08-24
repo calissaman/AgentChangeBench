@@ -265,6 +265,16 @@ merchant_or_payee = "UNKNOWN MERCHANT XYZ"
 status = "Posted"
 reference = "SUSPICIOUS_CHARGE"
 
+[[transactions]]
+tx_id = "tx_303"
+account_id = "acc_303"
+timestamp = "2025-06-18T16:25:00"
+type = "card_purchase"
+amount = -149.99
+merchant_or_payee = "SUSPICIOUS MERCHANT 123"
+status = "Posted"
+reference = "UNAUTHORIZED_TX_303"
+
 [[payees]]
 payee_id = "payee_001"
 customer_id = "cust_001"

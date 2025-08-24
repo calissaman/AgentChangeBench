@@ -32,7 +32,8 @@
           "authenticated": false,
           "has_2fa_enabled": true,
           "phone_number": "+15551234567",
-          "customer_id": "cust_101"
+          "customer_id": "cust_101",
+          "primary_account_id": "acc_001"
         }
       },
       "message_history": []
@@ -40,7 +41,7 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "identify_customer",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -54,7 +55,15 @@
                 "customer_id": "cust_101"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
           "action_id": "review_transactions",
@@ -62,34 +71,52 @@
             {
               "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_101"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "handle_disputes",
+          "action_id": "file_dispute",
           "allowed_tools": [
             {
               "function_name": "file_dispute",
               "params": {
-                "customer_id": "cust_101",
-                "transaction_id": "tx_101",
-                "reason": "unauthorized"
+                "account_id": "acc_001",
+                "tx_id": "tx_101",
+                "reason_code": "unauthorized"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent verified customer identity before accessing account information",
         "Agent reviewed recent transactions with the customer to identify suspicious activity",
-        "Agent initiated a dispute for the unauthorized transaction and explained next steps"
+        "Agent initiated a dispute for the unauthorized transaction and explained next steps",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_101",
-        "+15551234567",
-        "Maria Santos"
+        "tx_101",
+        "$89.99"
       ]
     }
   },
@@ -132,7 +159,7 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "verify_customer",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -146,11 +173,25 @@
                 "customer_id": "cust_202"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "manage_payments",
+          "action_id": "complete_payment",
           "allowed_tools": [
+            {
+              "function_name": "authorize_payment_request",
+              "params": {
+                "request_id": "req_001"
+              }
+            },
             {
               "function_name": "make_payment",
               "params": {
@@ -163,29 +204,44 @@
                 "request_id": "req_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "request_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_transactions",
+          "action_id": "provide_statements",
           "allowed_tools": [
             {
               "function_name": "get_statements",
               "params": {
-                "customer_id": "cust_202"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent confirmed payment details before processing the transaction",
         "Agent provided clear instructions for accessing and understanding statements",
-        "Agent maintained focus on the task when customer became distracted"
+        "Agent maintained focus on the task when customer became distracted",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_202",
-        "$65.0",
-        "+15558675309"
+        "$129.99"
       ]
     }
   },
@@ -228,7 +284,7 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "identify_customer",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -242,21 +298,37 @@
                 "customer_id": "cust_303"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_transactions",
+          "action_id": "investigate_fraud",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_303"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "manage_cards",
+          "action_id": "secure_account",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -264,31 +336,48 @@
                 "card_id": "card_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "handle_disputes",
+          "action_id": "file_fraud_dispute",
           "allowed_tools": [
             {
               "function_name": "file_dispute",
               "params": {
-                "customer_id": "cust_303",
-                "transaction_id": "tx_001",
-                "reason": "fraudulent"
+                "account_id": "acc_001",
+                "tx_id": "tx_001",
+                "reason_code": "fraudulent"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent took the fraud report seriously and acted with urgency",
         "Agent explained each security action being taken to protect the account",
-        "Agent provided clear next steps for the fraud resolution process"
+        "Agent provided clear next steps for the fraud resolution process",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_303",
-        "+15551230987",
-        "Taylor Johnson"
+        "$249.99"
       ]
     }
   },
@@ -297,7 +386,7 @@
     "description": {
       "purpose": "Template conversion: Authentication to fraud response using declarative goal shifts",
       "relevant_policies": "Banking authentication and fraud response policies",
-      "notes": "Converted from action-based to declarative system. Tests standard persona with auth\u2192fraud shift."
+      "notes": "Converted from action-based to declarative system. Tests MEDIUM_1 persona with auth\u2192fraud shift."
     },
     "user_scenario": {
       "persona": "MEDIUM_1",
@@ -333,15 +422,29 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "authenticate_customer",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
               "params": {
                 "phone_number": "+15551230987"
               }
+            },
+            {
+              "function_name": "get_customer_by_id",
+              "params": {
+                "customer_id": "cust_303"
+              }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
           "action_id": "review_transactions",
@@ -349,13 +452,21 @@
             {
               "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_303"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "manage_cards",
+          "action_id": "secure_account",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -363,31 +474,48 @@
                 "card_id": "card_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "handle_disputes",
+          "action_id": "file_dispute",
           "allowed_tools": [
             {
               "function_name": "file_dispute",
               "params": {
-                "customer_id": "cust_303",
-                "transaction_id": "tx_001",
-                "reason": "suspicious"
+                "account_id": "acc_001",
+                "tx_id": "tx_001",
+                "reason_code": "suspicious"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent completed multi-factor authentication before accessing account information",
         "Agent reviewed the suspicious transaction details with the customer",
-        "Agent explained the dispute process and next steps clearly"
+        "Agent explained the dispute process and next steps clearly",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_303",
-        "+15551230987",
-        "Taylor Johnson"
+        "$199.99"
       ]
     }
   },
@@ -429,7 +557,7 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "authenticate_customer",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -443,10 +571,18 @@
                 "customer_id": "cust_401"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "retrieve_balances",
           "allowed_tools": [
             {
               "function_name": "get_accounts",
@@ -460,10 +596,18 @@
                 "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_transactions",
+          "action_id": "provide_transaction_history",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
@@ -471,18 +615,25 @@
                 "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent provided clear authentication instructions for the customer",
         "Agent presented account balances in a clear and organized manner",
-        "Agent offered to explain any unfamiliar terms or concepts"
+        "Agent offered to explain any unfamiliar terms or concepts",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_401",
-        "acc_401",
-        "$5420.75"
+        "acc_001"
       ]
     }
   },
@@ -537,10 +688,18 @@
                 "customer_id": "cust_505"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "retrieve_balances",
           "allowed_tools": [
             {
               "function_name": "get_accounts",
@@ -554,29 +713,45 @@
                 "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_transactions",
+          "action_id": "provide_statements",
           "allowed_tools": [
             {
               "function_name": "get_statements",
               "params": {
-                "customer_id": "cust_505"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent provided a clear and organized view of account balances",
         "Agent explained how to access and interpret account statements clearly",
-        "Agent offered to answer follow-up questions about account details"
+        "Agent offered to answer follow-up questions about account details",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_505",
-        "acc_505",
-        "$15750.4"
+        "$3,456.78",
+        "$12,345.67"
       ]
     }
   },
@@ -617,7 +792,7 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "verify_customer_identity",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -631,53 +806,73 @@
                 "customer_id": "cust_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "review_account_activity",
           "allowed_tools": [
             {
               "function_name": "get_account",
               "params": {
                 "account_id": "acc_001"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_transactions",
-          "allowed_tools": [
+            },
             {
               "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_001"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "handle_disputes",
+          "action_id": "initiate_dispute",
           "allowed_tools": [
             {
               "function_name": "file_dispute",
               "params": {
-                "customer_id": "cust_001",
-                "transaction_id": "tx_001",
-                "reason": "unauthorized"
+                "account_id": "acc_001",
+                "tx_id": "tx_001",
+                "reason_code": "unauthorized"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent thoroughly reviewed Alex Morgan's account activity",
         "Agent handled the dispute request professionally and efficiently",
-        "Agent explained the dispute process and next steps clearly"
+        "Agent explained the dispute process and next steps clearly",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_001",
-        "acc_001",
-        "$1423.75"
+        "$89.99"
       ]
     }
   },
@@ -719,7 +914,7 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "verify_customer",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -733,10 +928,18 @@
                 "customer_id": "cust_101"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "manage_payments",
+          "action_id": "process_payment",
           "allowed_tools": [
             {
               "function_name": "create_payment_request",
@@ -747,53 +950,79 @@
                 "amount": 2500.0
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id",
+            "from_account_id",
+            "to_payee_id",
+            "amount"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_transactions",
+          "action_id": "review_security",
           "allowed_tools": [
             {
               "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_101"
+                "account_id": "acc_001"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "manage_cards",
-          "allowed_tools": [
+            },
             {
               "function_name": "lock_card",
               "params": {
                 "card_id": "card_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "handle_disputes",
+          "action_id": "handle_fraud",
           "allowed_tools": [
             {
               "function_name": "file_dispute",
               "params": {
-                "customer_id": "cust_101",
-                "transaction_id": "tx_101",
-                "reason": "fraudulent"
+                "account_id": "acc_001",
+                "tx_id": "tx_101",
+                "reason_code": "fraudulent"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent handled the large payment request with appropriate security measures",
         "Agent proactively addressed potential fraud concerns and took protective actions",
-        "Agent clearly explained the security measures and next steps"
+        "Agent clearly explained the security measures and next steps",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_101",
-        "+15551234567",
-        "Maria Santos"
+        "$2,500",
+        "Suspicious activity",
+        "Card locked",
+        "New card"
       ]
     }
   },
@@ -849,10 +1078,18 @@
                 "customer_id": "cust_202"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "manage_cards",
+          "action_id": "lock_card_request",
           "allowed_tools": [
             {
               "function_name": "lock_card",
@@ -860,34 +1097,55 @@
                 "card_id": "card_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "verify_card_status",
           "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_001"
+              }
+            },
             {
               "function_name": "get_accounts",
               "params": {
                 "customer_id": "cust_202"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent quickly processed the card lock request",
         "Agent clearly communicated the current card status and next steps",
-        "Agent provided reassurance about the security of the locked card"
+        "Agent provided reassurance about the security of the locked card",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_202",
-        "acc_202",
-        "$3250.5"
+        "$3,456.78"
       ]
     }
   },
   {
-    "id": "10_banking_cards_medium1_dispute_001_converted",
+    "id": "10_banking_cards_medium_1_dispute_001_converted",
     "description": {
       "purpose": "Card unlock request to dispute filing - MEDIUM_1 persona (business-focused)",
       "relevant_policies": "Security protocols before unlock; dispute handling."
@@ -897,9 +1155,9 @@
       "instructions": {
         "domain": "banking",
         "reason_for_call": "Unlock card, then file dispute for unauthorized charge",
-        "known_info": "You are Taylor Johnson with phone number +15551230987, date of birth 1991-05-06, and email user.003@example.com.",
-        "unknown_info": "Dispute process details",
-        "task_instructions": "Request card unlock, then immediately file a dispute for an unauthorized transaction."
+        "known_info": "You are Taylor Johnson with phone number +15551230987, date of birth 1991-05-06, and email user.003@example.com. You noticed an unauthorized transaction on your card: $149.99 at 'SUSPICIOUS MERCHANT 123' on 2025-06-18 at 16:25 (Transaction ID: tx_303).",
+        "unknown_info": "Dispute process details and resolution timeline",
+        "task_instructions": "1. Request to unlock your card. 2. File a dispute for the unauthorized transaction (tx_303) for $149.99 at 'SUSPICIOUS MERCHANT 123' from 2025-06-18."
       },
       "goal_shifts": {
         "required_shifts": 1,
@@ -915,8 +1173,9 @@
         "user_data": {
           "phone_number": "+15551230987",
           "customer_id": "cust_303",
-          "primary_card_id": "card_001",
-          "primary_card_active": false
+          "primary_card_id": "card_303",
+          "primary_card_active": false,
+          "primary_account_id": "acc_303"
         }
       },
       "message_history": []
@@ -938,42 +1197,69 @@
                 "customer_id": "cust_303"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "manage_cards",
+          "action_id": "unlock_card_request",
           "allowed_tools": [
             {
               "function_name": "unlock_card",
               "params": {
-                "card_id": "card_001"
+                "card_id": "card_303"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "handle_disputes",
+          "action_id": "file_unauthorized_dispute",
           "allowed_tools": [
             {
               "function_name": "file_dispute",
               "params": {
-                "customer_id": "cust_303",
-                "transaction_id": "tx_001",
-                "reason": "unauthorized"
+                "account_id": "acc_303",
+                "tx_id": "tx_303",
+                "reason_code": "unauthorized"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
       "nl_assertions": [
         "Agent verified customer identity before processing card unlock",
         "Agent clearly explained the card unlock process and timing",
-        "Agent guided through the dispute filing process for the unauthorized transaction"
+        "Agent guided through the dispute filing process for the unauthorized transaction",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_303",
-        "+15551230987",
-        "Taylor Johnson"
+        "$149.99",
+        "acc_303",
+        "tx_303"
       ]
     }
   },
@@ -1029,7 +1315,14 @@
                 "customer_id": "cust_401"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 20,
+          "scoring_rules": {
+            "base_score": 10
+          }
         },
         {
           "action_id": "review_transactions",
@@ -1037,46 +1330,71 @@
             {
               "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_401"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 20,
+          "scoring_rules": {
+            "base_score": 10
+          }
         },
         {
-          "action_id": "handle_disputes",
+          "action_id": "file_dispute",
           "allowed_tools": [
             {
               "function_name": "file_dispute",
               "params": {
-                "customer_id": "cust_401",
-                "transaction_id": "tx_101",
-                "reason": "unauthorized"
+                "account_id": "acc_001",
+                "tx_id": "tx_101",
+                "reason_code": "unauthorized"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 40,
+          "scoring_rules": {
+            "base_score": 20
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "check_account_status",
           "allowed_tools": [
             {
               "function_name": "get_account",
               "params": {
-                "account_id": "acc_401"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 20,
+          "scoring_rules": {
+            "base_score": 10
+          }
         }
       ],
       "nl_assertions": [
         "Agent verified customer identity before accessing account information",
         "Agent reviewed the unauthorized transaction with the customer",
         "Agent clearly explained the dispute filing process and timeline",
-        "Agent provided the dispute case number and next steps"
+        "Agent provided the dispute case number and next steps",
+        "Agent explained the temporary credit process and timeline",
+        "Agent confirmed customer's understanding of the next steps",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_401",
-        "+15551234590",
-        "Casey Williams"
+        "tx_102",
+        "DISP-2025-08-23-001"
       ]
     }
   },
@@ -1132,31 +1450,87 @@
                 "customer_id": "cust_505"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 20,
+          "scoring_rules": {
+            "base_score": 10
+          }
+        },
+        {
+          "action_id": "review_transactions",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 20,
+          "scoring_rules": {
+            "base_score": 10
+          }
+        },
+        {
+          "action_id": "secure_account",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 30,
+          "scoring_rules": {
+            "base_score": 15
+          }
+        },
+        {
+          "action_id": "file_dispute",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "account_id": "acc_001",
+                "tx_id": "tx_102",
+                "reason_code": "unauthorized"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 30,
+          "scoring_rules": {
+            "base_score": 15
+          }
         }
       ],
       "nl_assertions": [
-        {
-          "assertion": "The assistant should identify and acknowledge the suspicious charge and explain the dispute process",
-          "weight": 0.2
-        },
-        {
-          "assertion": "The assistant should explain the steps being taken to secure the account",
-          "weight": 0.3
-        },
-        {
-          "assertion": "The assistant should provide clear instructions for monitoring the account and recognizing fraud",
-          "weight": 0.3
-        },
-        {
-          "assertion": "The assistant should confirm the dispute has been filed and provide a reference number",
-          "weight": 0.2
-        }
+        "Agent verified customer identity before accessing account information",
+        "Agent identified and acknowledged the suspicious charge",
+        "Agent explained the dispute process and timeline",
+        "Agent took immediate action to secure the account",
+        "Agent provided clear instructions for monitoring the account",
+        "Agent explained how to recognize potential fraud in the future",
+        "Agent confirmed the dispute was filed and provided a reference number",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_505",
-        "+15559876543",
-        "verified"
+        "$189.99",
+        "DISP-2025-08-23-002"
       ]
     }
   },
@@ -1211,31 +1585,82 @@
                 "customer_id": "cust_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 20,
+          "scoring_rules": {
+            "base_score": 10
+          }
+        },
+        {
+          "action_id": "review_transactions",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 30,
+          "scoring_rules": {
+            "base_score": 15
+          }
+        },
+        {
+          "action_id": "account_details_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 0.2,
+          "scoring_rules": {
+            "parameter_accuracy": 0.8,
+            "tool_usage": 0.2
+          }
+        },
+        {
+          "action_id": "statements_view_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_statements",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 0.5,
+          "scoring_rules": {
+            "parameter_accuracy": 0.6,
+            "tool_usage": 0.4
+          }
         }
       ],
       "nl_assertions": [
-        {
-          "assertion": "The assistant should thoroughly review recent transactions with Alex Morgan, explaining each one clearly",
-          "weight": 0.3
-        },
-        {
-          "assertion": "The assistant should acknowledge Alex's concerns about potential hidden transactions and address them professionally",
-          "weight": 0.3
-        },
-        {
-          "assertion": "The assistant should explain how to access and interpret the official statements",
-          "weight": 0.2
-        },
-        {
-          "assertion": "The assistant should provide information about statement frequency and availability",
-          "weight": 0.2
-        }
+        "The assistant should thoroughly review recent transactions with Alex Morgan, explaining each one clearly",
+        "The assistant should help Alex identify any unauthorized or suspicious transactions",
+        "The assistant should explain how to access and review statements for future reference",
+        "The assistant should provide clear next steps for disputing any unauthorized transactions",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_001",
-        "555-123-7890",
-        "verified"
+        "$45.67",
+        "STMT-2025-08-001"
       ]
     }
   },
@@ -1276,45 +1701,77 @@
     "evaluation_criteria": {
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "trans_review_1",
           "allowed_tools": [
             {
-              "function_name": "get_customer_by_phone",
+              "function_name": "get_transactions",
               "params": {
-                "phone_number": "+15551234567"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_101"
+                "account_id": "acc_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 0.8,
+            "tool_usage": 0.2
+          }
+        },
+        {
+          "action_id": "dispute_suspicious_1",
+          "allowed_tools": [
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "account_id": "acc_001",
+                "tx_id": "tx_001",
+                "reason_code": "unauthorized"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code"
+          ],
+          "max_score": 0.5,
+          "scoring_rules": {
+            "parameter_accuracy": 0.7,
+            "tool_usage": 0.3
+          }
+        },
+        {
+          "action_id": "dispute_status_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_dispute",
+              "params": {
+                "dispute_id": "DISP-2025-08-23-003"
+              }
+            }
+          ],
+          "required_parameters": [
+            "dispute_id"
+          ],
+          "max_score": 0.2,
+          "scoring_rules": {
+            "parameter_accuracy": 0.9,
+            "tool_usage": 0.1
+          }
         }
       ],
       "nl_assertions": [
-        {
-          "assertion": "The assistant should clearly explain each transaction to Maria in a way that helps her understand her spending",
-          "weight": 0.3
-        },
-        {
-          "assertion": "The assistant should help Maria identify potentially unauthorized transactions and explain why they might be suspicious",
-          "weight": 0.3
-        },
-        {
-          "assertion": "The assistant should clearly explain the dispute process and what Maria can expect",
-          "weight": 0.2
-        },
-        {
-          "assertion": "The assistant should provide Maria with a dispute reference number and next steps",
-          "weight": 0.2
-        }
+        "The assistant should clearly explain each transaction to Maria in a way that helps her understand her spending",
+        "The assistant should help Maria identify potentially unauthorized transactions and explain why they might be suspicious",
+        "The assistant should clearly explain the dispute process and what Maria can expect",
+        "The assistant should provide Maria with a dispute reference number and next steps",
+        "Agent did not transfer the customer to a human agent when the goal changed"
       ],
       "communicate_info": [
-        "cust_101",
-        "+15551234567",
-        "verified"
+        "$89.99",
+        "DISP-2025-08-23-003"
       ]
     }
   },
@@ -1353,68 +1810,56 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided Jordan Smith with helpful spending insights.",
-        "The assistant smoothly transitioned to help Jordan Smith access their statements."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "spending_data_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "statements_insights_1",
-          "requestor": "assistant",
-          "name": "get_statements",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_202",
-        "+15558675309",
-        "verified"
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15558675309"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_202"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 0.2,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "spending_data_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 0.4,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
         }
+      ],
+      "nl_assertions": [
+        "Agent provided spending insights based on transaction history",
+        "Agent explained how to interpret the spending data",
+        "Agent offered to provide more detailed breakdowns if needed",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "$1,234.56",
+        "$345.67",
+        "ACC-7890-1234"
       ]
     }
   },
@@ -1453,56 +1898,54 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided smooth and efficient authentication for Taylor Johnson."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551234567"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_303",
-        "+15551230987",
-        "verified"
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
               "params": {
                 "phone_number": "+15551230987"
               }
-            },
+            }
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 0.4,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "customer_verify_1",
+          "allowed_tools": [
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_303"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 0.6,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
         }
+      ],
+      "nl_assertions": [
+        "The assistant should clearly explain each step of the authentication process to Taylor",
+        "The assistant should verify Taylor's identity using multiple factors",
+        "The assistant should provide clear instructions if additional verification is needed",
+        "The assistant should confirm successful authentication and explain next steps"
+      ],
+      "communicate_info": [
+        "+1 (555) 123-0987"
       ]
     }
   },
@@ -1536,62 +1979,82 @@
         "user_data": {
           "phone_number": "+15551234590",
           "customer_id": "cust_401",
-          "authenticated": false
+          "authenticated": false,
+          "primary_account_id": "acc_001"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant authenticated Casey Williams and then provided a helpful account overview."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551234567"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_details_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_401",
-        "+15551234590",
-        "verified"
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
               "params": {
                 "phone_number": "+15551234590"
               }
-            },
+            }
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_401"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "account_overview_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 0.4,
+          "scoring_rules": {
+            "parameter_accuracy": 0.8,
+            "tool_usage": 0.2
+          }
         }
+      ],
+      "nl_assertions": [
+        "The assistant should guide Casey through the authentication process clearly and patiently",
+        "The assistant should verify Casey's identity using appropriate security measures",
+        "The assistant should provide a clear and organized account overview after successful authentication",
+        "The assistant should offer to help with specific account details or next steps",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "+1 (555) 123-4590",
+        "$3,456.78"
       ]
     }
   },
@@ -1627,62 +2090,113 @@
           "phone_number": "+15559876543",
           "customer_id": "cust_505",
           "authenticated": false,
-          "primary_card_id": "card_001"
+          "primary_card_id": "card_001",
+          "primary_account_id": "acc_001"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided comprehensive help to Riley Brown from login through fraud reporting."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551234567"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_505",
-        "+15559876543",
-        "verified"
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
               "params": {
                 "phone_number": "+15559876543"
               }
-            },
+            }
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 0.2,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "customer_verify_1",
+          "allowed_tools": [
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_505"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 0.2,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "transactions_review_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 0.8,
+            "tool_usage": 0.2
+          }
+        },
+        {
+          "action_id": "fraud_response_1",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_001"
+              }
+            },
+            {
+              "function_name": "file_dispute",
+              "params": {
+                "account_id": "acc_001",
+                "tx_id": "tx_001",
+                "reason_code": "unauthorized"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id",
+            "tx_id",
+            "reason_code",
+            "card_id"
+          ],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 0.7,
+            "tool_usage": 0.3
+          }
         }
+      ],
+      "nl_assertions": [
+        "The assistant should guide Riley through the authentication process clearly and thoroughly",
+        "The assistant should help Riley review transactions and identify any suspicious activity",
+        "The assistant should take appropriate security measures when fraud is reported",
+        "The assistant should provide clear next steps and follow-up information",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "+1 (555) 987-6543",
+        "$1,299.99",
+        "#FRAUD-2025-08-23-004"
       ]
     }
   },
@@ -1721,56 +2235,53 @@
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant efficiently authenticated Alex Morgan."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15558675309"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_001",
-        "555-123-7890",
-        "verified"
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
               "params": {
                 "phone_number": "555-123-7890"
               }
-            },
+            }
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 0.4,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "customer_verify_1",
+          "allowed_tools": [
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_001"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 0.6,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
         }
+      ],
+      "nl_assertions": [
+        "The assistant should provide clear, simple instructions for Alex to follow during authentication",
+        "The assistant should verify Alex's identity thoroughly before proceeding",
+        "The assistant should explain the purpose of each authentication step simply",
+        "The assistant should be patient and willing to repeat instructions if needed"
+      ],
+      "communicate_info": [
       ]
     }
   },
@@ -1804,62 +2315,82 @@
         "user_data": {
           "phone_number": "+15551234567",
           "customer_id": "cust_101",
-          "authenticated": false
+          "authenticated": false,
+          "primary_account_id": "acc_001"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant authenticated Maria Santos and provided a clear account overview."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15558675309"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_details_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_101",
-        "+15551234567",
-        "verified"
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
               "params": {
                 "phone_number": "+15551234567"
               }
-            },
+            }
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_101"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 0.3,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 0.0
+          }
+        },
+        {
+          "action_id": "account_overview_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 0.4,
+          "scoring_rules": {
+            "parameter_accuracy": 0.8,
+            "tool_usage": 0.2
+          }
         }
+      ],
+      "nl_assertions": [
+        "The assistant should guide Maria through the authentication process with clear, simple instructions",
+        "The assistant should verify Maria's identity thoroughly before proceeding",
+        "The assistant should provide a clear and organized account overview after successful authentication",
+        "The assistant should offer to explain account details in simple terms if Maria gets distracted",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
+      "communicate_info": [
+        "+1 (555) 123-4567",
+        "$2,345.67"
       ]
     }
   },
@@ -1895,53 +2426,16 @@
           "phone_number": "+15558675309",
           "customer_id": "cust_202",
           "authenticated": false,
-          "primary_card_id": "card_001"
+          "primary_account_id": "acc_202",
+          "primary_card_id": "card_202"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided comprehensive service to Jordan Smith from login through fraud protection."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15558675309"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "trans_check_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -1955,24 +2449,64 @@
                 "customer_id": "cust_202"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "trans_check_1",
           "allowed_tools": [
             {
-              "function_name": "get_accounts",
+              "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_202"
+                "account_id": "acc_202"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "fraud_response_1",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_202"
+              }
+            }
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided comprehensive service to Jordan Smith from login through fraud protection.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_202",
-        "acc_202",
-        "$3250.5"
+        "+15558675309",
+        "$3,250.50",
+        "card_202",
+        "\u2022\u2022\u2022\u20224567"
       ]
     }
   },
@@ -2005,42 +2539,17 @@
         "user_data": {
           "phone_number": "+15551230987",
           "customer_id": "cust_303",
-          "authenticated": false
+          "authenticated": false,
+          "primary_account_id": "acc_303",
+          "primary_card_id": "card_303"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant professionally authenticated Taylor Johnson."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551230987"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2054,24 +2563,25 @@
                 "customer_id": "cust_303"
               }
             }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_303"
-              }
-            }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant professionally authenticated Taylor Johnson."
+      ],
       "communicate_info": [
-        "cust_303",
-        "acc_303",
-        "$1850.25"
+        "+15551230987",
+        "$1,850.25",
+        "card_303",
+        "\u2022\u2022\u2022\u20223456"
       ]
     }
   },
@@ -2105,53 +2615,17 @@
         "user_data": {
           "phone_number": "+15551234590",
           "customer_id": "cust_401",
-          "authenticated": false
+          "authenticated": false,
+          "primary_account_id": "acc_401",
+          "primary_card_id": "card_401"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant smoothly authenticated Casey Williams and provided account overview."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551230987"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_details_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_info_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_303"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2165,24 +2639,51 @@
                 "customer_id": "cust_401"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "account_info_1",
           "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_401"
+              }
+            },
             {
               "function_name": "get_accounts",
               "params": {
                 "customer_id": "cust_401"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant smoothly authenticated Casey Williams and provided account overview.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_401",
-        "acc_401",
-        "$5420.75"
+        "$5,420.75",
+        "$25,000.00",
+        "card_401",
+        "\u2022\u2022\u2022\u20222345"
       ]
     }
   },
@@ -2218,68 +2719,16 @@
           "phone_number": "+15559876543",
           "customer_id": "cust_505",
           "authenticated": false,
-          "primary_card_id": "card_001"
+          "primary_account_id": "acc_505",
+          "primary_card_id": "card_505"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided full-service help to Riley Brown from authentication through fraud protection."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551230987"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "trans_review_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_file_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_303",
-            "transaction_id": "tx_001",
-            "reason": "suspicious"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2293,24 +2742,63 @@
                 "customer_id": "cust_505"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "trans_review_1",
           "allowed_tools": [
             {
-              "function_name": "get_accounts",
+              "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_505"
+                "account_id": "acc_505"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "fraud_file_1",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_505"
+              }
+            }
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided full-service help to Riley Brown from authentication through fraud protection.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_505",
-        "acc_505",
-        "$15750.4"
+        "$15,750.40",
+        "card_505",
+        "\u2022\u2022\u2022\u20229876"
       ]
     }
   },
@@ -2343,42 +2831,17 @@
         "user_data": {
           "phone_number": "555-123-7890",
           "customer_id": "cust_001",
-          "authenticated": false
+          "authenticated": false,
+          "primary_account_id": "acc_001",
+          "primary_card_id": "card_001"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant efficiently authenticated Alex Morgan."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551234590"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2392,24 +2855,24 @@
                 "customer_id": "cust_001"
               }
             }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_001"
-              }
-            }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant efficiently authenticated Alex Morgan."
+      ],
       "communicate_info": [
-        "cust_001",
-        "acc_001",
-        "$1423.75"
+        "$1,423.75",
+        "card_001",
+        "\u2022\u2022\u2022\u20226789"
       ]
     }
   },
@@ -2443,53 +2906,17 @@
         "user_data": {
           "phone_number": "+15551234567",
           "customer_id": "cust_101",
-          "authenticated": false
+          "authenticated": false,
+          "primary_account_id": "acc_101",
+          "primary_card_id": "card_101"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided seamless authentication and account overview to Maria Santos."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551234590"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_details_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_overview_1",
-          "requestor": "assistant",
-          "name": "get_accounts",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2503,24 +2930,50 @@
                 "customer_id": "cust_101"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "account_overview_1",
           "allowed_tools": [
             {
               "function_name": "get_accounts",
               "params": {
                 "customer_id": "cust_101"
               }
+            },
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_101"
+              }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided seamless authentication and account overview to Maria Santos.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_101",
-        "acc_101",
-        "$45230.18"
+        "$45,230.18",
+        "card_101",
+        "\u2022\u2022\u2022\u20225678"
       ]
     }
   },
@@ -2556,68 +3009,16 @@
           "phone_number": "+15558675309",
           "customer_id": "cust_202",
           "authenticated": false,
-          "primary_card_id": "card_001"
+          "primary_account_id": "acc_202",
+          "primary_card_id": "card_202"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided complete assistance to Jordan Smith through all service levels."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15551234590"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "trans_check_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_response_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_401",
-            "transaction_id": "tx_001",
-            "reason": "fraudulent"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2631,24 +3032,63 @@
                 "customer_id": "cust_202"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "trans_check_1",
           "allowed_tools": [
             {
-              "function_name": "get_accounts",
+              "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_202"
+                "account_id": "acc_202"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "fraud_response_1",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_202"
+              }
+            }
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided complete assistance to Jordan Smith through all service levels.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_202",
-        "acc_202",
-        "$3250.5"
+        "$3,250.50",
+        "card_202",
+        "\u2022\u2022\u2022\u20224567"
       ]
     }
   },
@@ -2681,42 +3121,17 @@
         "user_data": {
           "phone_number": "+15551230987",
           "customer_id": "cust_303",
-          "authenticated": false
+          "authenticated": false,
+          "primary_account_id": "acc_303",
+          "primary_card_id": "card_303"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant patiently helped Taylor Johnson with authentication."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15559876543"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2730,24 +3145,24 @@
                 "customer_id": "cust_303"
               }
             }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_303"
-              }
-            }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant patiently helped Taylor Johnson with authentication."
+      ],
       "communicate_info": [
-        "cust_303",
-        "acc_303",
-        "$1850.25"
+        "$1,850.25",
+        "card_303",
+        "\u2022\u2022\u2022\u20223456"
       ]
     }
   },
@@ -2781,53 +3196,17 @@
         "user_data": {
           "phone_number": "+15551234590",
           "customer_id": "cust_401",
-          "authenticated": false
+          "authenticated": false,
+          "primary_account_id": "acc_401",
+          "primary_card_id": "card_401"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided supportive authentication and overview service to Casey Williams."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15559876543"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_details_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_info_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_505"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2841,24 +3220,50 @@
                 "customer_id": "cust_401"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "account_info_1",
           "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_401"
+              }
+            },
             {
               "function_name": "get_accounts",
               "params": {
                 "customer_id": "cust_401"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided supportive authentication and overview service to Casey Williams.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_401",
-        "acc_401",
-        "$5420.75"
+        "$5,420.75",
+        "card_401",
+        "\u2022\u2022\u2022\u20222345"
       ]
     }
   },
@@ -2894,68 +3299,16 @@
           "phone_number": "+15559876543",
           "customer_id": "cust_505",
           "authenticated": false,
-          "primary_card_id": "card_001"
+          "primary_account_id": "acc_505",
+          "primary_card_id": "card_505"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided thorough, patient help to Riley Brown through complex authentication and fraud issues."
-      ],
-      "actions": [
-        {
-          "action_id": "auth_phone_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_phone",
-          "arguments": {
-            "phone_number": "+15559876543"
-          },
-          "compare_args": [
-            "phone_number"
-          ]
-        },
-        {
-          "action_id": "customer_verify_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "trans_review_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_secure_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_505",
-            "transaction_id": "tx_001",
-            "reason": "unauthorized"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "auth_phone",
           "allowed_tools": [
             {
               "function_name": "get_customer_by_phone",
@@ -2969,24 +3322,63 @@
                 "customer_id": "cust_505"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "phone_number"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         },
         {
-          "action_id": "review_account_info",
+          "action_id": "trans_review_1",
           "allowed_tools": [
             {
-              "function_name": "get_accounts",
+              "function_name": "get_transactions",
               "params": {
-                "customer_id": "cust_505"
+                "account_id": "acc_505"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "fraud_secure_1",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_505"
+              }
+            }
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided thorough, patient help to Riley Brown through complex authentication and fraud issues.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_505",
-        "acc_505",
-        "$15750.4"
+        "$15,750.40",
+        "card_505",
+        "\u2022\u2022\u2022\u20229876"
       ]
     }
   },
@@ -3018,74 +3410,65 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "555-123-7890",
-          "customer_id": "cust_001",
-          "primary_account_id": "acc_001"
+          "customer_id": "cust_001"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Alex Morgan."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_info_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_101"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "555-123-7890"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_001"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_001"
+                "phone_number": "555-123-7890"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_info_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Alex Morgan."
+      ],
       "communicate_info": [
-        "cust_001",
-        "acc_001",
-        "$1423.75"
+        "$1,423.75",
+        "card_001",
+        "\u2022\u2022\u2022\u20226789"
       ]
     }
   },
@@ -3118,85 +3501,84 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "+15551234567",
-          "customer_id": "cust_101",
-          "primary_account_id": "acc_001"
+          "customer_id": "cust_101"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Maria Santos."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_202"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "account_overview_1",
-          "requestor": "assistant",
-          "name": "get_accounts",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551234567"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_101"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_101"
+                "phone_number": "+15551234567"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_details_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_101"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "statements_view_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_statements",
+              "params": {
+                "account_id": "acc_101"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Maria Santos.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_101",
-        "acc_101",
-        "$45230.18"
+        "$45,230.18",
+        "stmt_101"
       ]
     }
   },
@@ -3230,101 +3612,104 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "+15558675309",
-          "customer_id": "cust_202",
-          "primary_account_id": "acc_001",
-          "primary_card_id": "card_001"
+          "customer_id": "cust_202"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Jordan Smith."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_303"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "trans_history_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_report_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_303",
-            "transaction_id": "tx_001",
-            "reason": "suspicious"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15558675309"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_202"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_202"
+                "phone_number": "+15558675309"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_details_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_202"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "trans_history_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {
+                "account_id": "acc_202"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "fraud_secure_1",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_202"
+              }
+            }
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Jordan Smith.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_202",
-        "acc_202",
-        "$3250.5"
+        "$3,250.50",
+        "card_202",
+        "\u2022\u2022\u2022\u20224567"
       ]
     }
   },
@@ -3356,74 +3741,65 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "+15551230987",
-          "customer_id": "cust_303",
-          "primary_account_id": "acc_001"
+          "customer_id": "cust_303"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Taylor Johnson."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_info_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_401"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551230987"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_303"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_303"
+                "phone_number": "+15551230987"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_info_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_303"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Taylor Johnson."
+      ],
       "communicate_info": [
-        "cust_303",
-        "acc_303",
-        "$1850.25"
+        "$1,850.25",
+        "card_303",
+        "\u2022\u2022\u2022\u20223456"
       ]
     }
   },
@@ -3456,85 +3832,85 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "+15551234590",
-          "customer_id": "cust_401",
-          "primary_account_id": "acc_001"
+          "customer_id": "cust_401"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Casey Williams."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_505"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "account_overview_1",
-          "requestor": "assistant",
-          "name": "get_accounts",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551234590"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_401"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_401"
+                "phone_number": "+15551234590"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_details_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_401"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "statements_view_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_statements",
+              "params": {
+                "account_id": "acc_401"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Casey Williams.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_401",
-        "acc_401",
-        "$5420.75"
+        "$5,420.75",
+        "card_401",
+        "\u2022\u2022\u2022\u20222345"
       ]
     }
   },
@@ -3568,101 +3944,104 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "+15559876543",
-          "customer_id": "cust_505",
-          "primary_account_id": "acc_001",
-          "primary_card_id": "card_001"
+          "customer_id": "cust_505"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Riley Brown."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_001"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_001"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "trans_review_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_001"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_secure_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_001",
-            "transaction_id": "tx_001",
-            "reason": "fraudulent"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15559876543"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_505"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_505"
+                "phone_number": "+15559876543"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_details_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_505"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "trans_review_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {
+                "account_id": "acc_505"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "fraud_secure_1",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_505"
+              }
+            }
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Riley Brown.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_505",
-        "acc_505",
-        "$15750.4"
+        "$15,750.40",
+        "card_505",
+        "\u2022\u2022\u2022\u20229876"
       ]
     }
   },
@@ -3694,74 +4073,65 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "555-123-7890",
-          "customer_id": "cust_001",
-          "primary_account_id": "acc_001"
+          "customer_id": "cust_001"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Alex Morgan."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_balance_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_101"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "555-123-7890"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_001"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_001"
+                "phone_number": "555-123-7890"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_balance_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_001"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Alex Morgan."
+      ],
       "communicate_info": [
-        "cust_001",
-        "acc_001",
-        "$1423.75"
+        "$1,423.75",
+        "card_001",
+        "\u2022\u2022\u2022\u20226789"
       ]
     }
   },
@@ -3794,85 +4164,84 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "+15551234567",
-          "customer_id": "cust_101",
-          "primary_account_id": "acc_001"
+          "customer_id": "cust_101"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Maria Santos."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_202"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "account_summary_1",
-          "requestor": "assistant",
-          "name": "get_accounts",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551234567"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_101"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_101"
+                "phone_number": "+15551234567"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_details_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_101"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_summary_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_statements",
+              "params": {
+                "account_id": "acc_101"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Maria Santos.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_101",
-        "acc_101",
-        "$45230.18"
+        "$45,230.18",
+        "stmt_101"
       ]
     }
   },
@@ -3906,101 +4275,104 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "+15558675309",
-          "customer_id": "cust_202",
-          "primary_account_id": "acc_001",
-          "primary_card_id": "card_001"
+          "customer_id": "cust_202"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful service to Jordan Smith."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_303"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "trans_analysis_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_response_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_303",
-            "transaction_id": "tx_001",
-            "reason": "unauthorized"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
       "action_sets": [
         {
-          "action_id": "verify_identity",
+          "action_id": "customer_details",
           "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15558675309"
-              }
-            },
             {
               "function_name": "get_customer_by_id",
               "params": {
                 "customer_id": "cust_202"
               }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
+            },
             {
-              "function_name": "get_accounts",
+              "function_name": "get_customer_by_phone",
               "params": {
-                "customer_id": "cust_202"
+                "phone_number": "+15558675309"
               }
             }
-          ]
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_details_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_202"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "trans_analysis_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_transactions",
+              "params": {
+                "account_id": "acc_202"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "fraud_response_1",
+          "allowed_tools": [
+            {
+              "function_name": "lock_card",
+              "params": {
+                "card_id": "card_202"
+              }
+            }
+          ],
+          "required_parameters": [
+            "card_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
         }
       ],
+      "nl_assertions": [
+        "The assistant provided helpful service to Jordan Smith.",
+        "Agent did not transfer the customer to a human agent when the goal changed"
+      ],
       "communicate_info": [
-        "cust_202",
-        "acc_202",
-        "$3250.5"
+        "$3,250.50",
+        "card_202",
+        "\u2022\u2022\u2022\u20224567"
       ]
     }
   },
@@ -4032,1244 +4404,65 @@
         "agent_data": null,
         "user_data": {
           "phone_number": "+15551230987",
-          "customer_id": "cust_303",
-          "primary_account_id": "acc_001"
+          "customer_id": "cust_303"
         }
       },
       "message_history": []
     },
     "evaluation_criteria": {
+      "action_sets": [
+        {
+          "action_id": "customer_details",
+          "allowed_tools": [
+            {
+              "function_name": "get_customer_by_id",
+              "params": {
+                "customer_id": "cust_303"
+              }
+            },
+            {
+              "function_name": "get_customer_by_phone",
+              "params": {
+                "phone_number": "+15551230987"
+              }
+            }
+          ],
+          "required_parameters": [
+            "customer_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        },
+        {
+          "action_id": "account_info_1",
+          "allowed_tools": [
+            {
+              "function_name": "get_account",
+              "params": {
+                "account_id": "acc_303"
+              }
+            }
+          ],
+          "required_parameters": [
+            "account_id"
+          ],
+          "max_score": 1.0,
+          "scoring_rules": {
+            "parameter_accuracy": 1.0,
+            "tool_usage": 1.0
+          }
+        }
+      ],
       "nl_assertions": [
         "The assistant provided helpful service to Taylor Johnson."
       ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_info_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_401"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551230987"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_303"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_303"
-              }
-            }
-          ]
-        }
-      ],
       "communicate_info": [
-        "cust_303",
-        "acc_303",
-        "$1850.25"
-      ]
-    }
-  },
-  {
-    "id": "41_banking_account_medium_2_soft_001_systematic",
-    "description": {
-      "purpose": "Account Overview soft shift - MEDIUM_2 persona information flow",
-      "relevant_policies": "Account Overview policies and procedures.",
-      "notes": "2-goal soft shift with curious learner, asks questions, enthusiastic user."
-    },
-    "user_scenario": {
-      "persona": "MEDIUM_2",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Check account information - soft pattern",
-        "known_info": "You are Casey Williams with phone number +15551234590, date of birth 1982-03-09, and email user.004@example.com.",
-        "unknown_info": "Specifics about account status and balances",
-        "task_instructions": "Check account balances, then request recent statements."
-      },
-      "goal_shifts": {
-        "required_shifts": 1,
-        "goals": [
-          "account_info",
-          "statements"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "+15551234590",
-          "customer_id": "cust_401",
-          "primary_account_id": "acc_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided comprehensive account information and statements to Casey Williams."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_accounts",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_info_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_401"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551234590"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_401"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_401"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_401",
-        "acc_401",
-        "$5420.75"
-      ]
-    }
-  },
-  {
-    "id": "42_banking_account_medium_2_hard_001_systematic",
-    "description": {
-      "purpose": "Account Overview hard shift - MEDIUM_2 persona security escalation",
-      "relevant_policies": "Account Overview policies and procedures.",
-      "notes": "3-goal hard shift with curious learner, asks questions, enthusiastic user."
-    },
-    "user_scenario": {
-      "persona": "MEDIUM_2",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Check account information - hard pattern",
-        "known_info": "You are Riley Brown with phone number +15559876543, date of birth 1989-10-21, and email user.005@example.com.",
-        "unknown_info": "Specifics about account status and balances",
-        "task_instructions": "Check account info, then review transactions, then file dispute for suspicious charge."
-      },
-      "goal_shifts": {
-        "required_shifts": 2,
-        "goals": [
-          "account_info",
-          "transactions",
-          "dispute"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "+15559876543",
-          "customer_id": "cust_505",
-          "primary_account_id": "acc_001",
-          "primary_card_id": "card_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful account service to Riley Brown."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_505"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "trans_check_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_file_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_505",
-            "transaction_id": "tx_001",
-            "reason": "suspicious"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15559876543"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_505"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_505"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_505",
-        "acc_505",
-        "$15750.4"
-      ]
-    }
-  },
-  {
-    "id": "43_banking_account_hard_1_single_001_systematic",
-    "description": {
-      "purpose": "Account Overview only - HARD_1 persona baseline test",
-      "relevant_policies": "Account Overview policies and procedures.",
-      "notes": "No goal shift - tests core competency with suspicious, questioning, demands proof user."
-    },
-    "user_scenario": {
-      "persona": "HARD_1",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Check account information - single pattern",
-        "known_info": "You are Alex Morgan with phone number 555-123-7890, date of birth 1980-04-15, and email alex.morgan@email.com.",
-        "unknown_info": "Specifics about account status and balances",
-        "task_instructions": "Check your account balances and status."
-      },
-      "goal_shifts": {
-        "required_shifts": 0,
-        "goals": [
-          "account_info"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "555-123-7890",
-          "customer_id": "cust_001",
-          "primary_account_id": "acc_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided clear account information to Alex Morgan."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_001"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_balance_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_001"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "555-123-7890"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_001"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_001"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_001",
-        "acc_001",
-        "$1423.75"
-      ]
-    }
-  },
-  {
-    "id": "44_banking_account_hard_1_soft_001_systematic",
-    "description": {
-      "purpose": "Account Overview soft shift - HARD_1 persona information flow",
-      "relevant_policies": "Account Overview policies and procedures.",
-      "notes": "2-goal soft shift with suspicious, questioning, demands proof user."
-    },
-    "user_scenario": {
-      "persona": "HARD_1",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Check account information - soft pattern",
-        "known_info": "You are Maria Santos with phone number +15551234567, date of birth 1986-02-11, and email user.001@example.com.",
-        "unknown_info": "Specifics about account status and balances",
-        "task_instructions": "Check account balances, then request recent statements."
-      },
-      "goal_shifts": {
-        "required_shifts": 1,
-        "goals": [
-          "account_info",
-          "statements"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "+15551234567",
-          "customer_id": "cust_101",
-          "primary_account_id": "acc_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided comprehensive account information and statements to Maria Santos."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_101"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "account_summary_1",
-          "requestor": "assistant",
-          "name": "get_accounts",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551234567"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_101"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_101"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_101",
-        "acc_101",
-        "$45230.18"
-      ]
-    }
-  },
-  {
-    "id": "45_banking_account_hard_1_hard_001_systematic",
-    "description": {
-      "purpose": "Account Overview hard shift - HARD_1 persona security escalation",
-      "relevant_policies": "Account Overview policies and procedures.",
-      "notes": "3-goal hard shift with suspicious, questioning, demands proof user."
-    },
-    "user_scenario": {
-      "persona": "HARD_1",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Check account information - hard pattern",
-        "known_info": "You are Jordan Smith with phone number +15558675309, date of birth 1994-09-02, and email user.002@example.com.",
-        "unknown_info": "Specifics about account status and balances",
-        "task_instructions": "Check account info, then review transactions, then file dispute for suspicious charge."
-      },
-      "goal_shifts": {
-        "required_shifts": 2,
-        "goals": [
-          "account_info",
-          "transactions",
-          "dispute"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "+15558675309",
-          "customer_id": "cust_202",
-          "primary_account_id": "acc_001",
-          "primary_card_id": "card_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful account service to Jordan Smith."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "account_details_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_202"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        },
-        {
-          "action_id": "trans_review_1",
-          "requestor": "assistant",
-          "name": "get_transactions",
-          "arguments": {
-            "customer_id": "cust_202"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "fraud_response_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_202",
-            "transaction_id": "tx_001",
-            "reason": "fraudulent"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15558675309"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_202"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_202"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_202",
-        "acc_202",
-        "$3250.5"
-      ]
-    }
-  },
-  {
-    "id": "46_banking_billpay_easy_1_single_001_systematic",
-    "description": {
-      "purpose": "Bill Pay only - EASY_1 persona baseline test",
-      "relevant_policies": "Bill Pay policies and procedures.",
-      "notes": "No goal shift - tests core competency with polite, detail-oriented, step-by-step user."
-    },
-    "user_scenario": {
-      "persona": "EASY_1",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Make bill payment - single pattern",
-        "known_info": "You are Taylor Johnson with phone number +15551230987, date of birth 1991-05-06, and email user.003@example.com.",
-        "unknown_info": "Specifics about payment processing",
-        "task_instructions": "Complete your bill payment."
-      },
-      "goal_shifts": {
-        "required_shifts": 0,
-        "goals": [
-          "payments"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "+15551230987",
-          "customer_id": "cust_303",
-          "primary_account_id": "acc_001",
-          "payment_request_id": "req_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful account service to Taylor Johnson."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_303"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "payment_create_1",
-          "requestor": "assistant",
-          "name": "create_payment_request",
-          "arguments": {
-            "customer_id": "cust_303",
-            "from_account_id": "acc_303",
-            "to_payee_id": "payee_001",
-            "amount": 150.0
-          },
-          "compare_args": [
-            "customer_id",
-            "from_account_id",
-            "to_payee_id",
-            "amount"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551230987"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_303"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_303"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_303",
-        "acc_303",
-        "$1850.25"
-      ]
-    }
-  },
-  {
-    "id": "47_banking_billpay_easy_1_soft_001_systematic",
-    "description": {
-      "purpose": "Bill Pay soft shift - EASY_1 persona information flow",
-      "relevant_policies": "Bill Pay policies and procedures.",
-      "notes": "2-goal soft shift with polite, detail-oriented, step-by-step user."
-    },
-    "user_scenario": {
-      "persona": "EASY_1",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Make bill payment - soft pattern",
-        "known_info": "You are Casey Williams with phone number +15551234590, date of birth 1982-03-09, and email user.004@example.com.",
-        "unknown_info": "Specifics about payment processing",
-        "task_instructions": "Complete payment, then check account status."
-      },
-      "goal_shifts": {
-        "required_shifts": 1,
-        "goals": [
-          "payments",
-          "account_info"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "+15551234590",
-          "customer_id": "cust_401",
-          "primary_account_id": "acc_001",
-          "payment_request_id": "req_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful account service to Casey Williams."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_401"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "payment_create_1",
-          "requestor": "assistant",
-          "name": "create_payment_request",
-          "arguments": {
-            "customer_id": "cust_401",
-            "from_account_id": "acc_401",
-            "to_payee_id": "payee_001",
-            "amount": 200.0
-          },
-          "compare_args": [
-            "customer_id",
-            "from_account_id",
-            "to_payee_id",
-            "amount"
-          ]
-        },
-        {
-          "action_id": "payment_auth_1",
-          "requestor": "assistant",
-          "name": "authorize_payment_request",
-          "arguments": {
-            "request_id": "req_001"
-          },
-          "compare_args": [
-            "request_id"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551234590"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_401"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_401"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_401",
-        "acc_401",
-        "$5420.75"
-      ]
-    }
-  },
-  {
-    "id": "48_banking_billpay_easy_1_hard_001_systematic",
-    "description": {
-      "purpose": "Bill Pay hard shift - EASY_1 persona security escalation",
-      "relevant_policies": "Bill Pay policies and procedures.",
-      "notes": "3-goal hard shift with polite, detail-oriented, step-by-step user."
-    },
-    "user_scenario": {
-      "persona": "EASY_1",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Make bill payment - hard pattern",
-        "known_info": "You are Riley Brown with phone number +15559876543, date of birth 1989-10-21, and email user.005@example.com.",
-        "unknown_info": "Specifics about payment processing",
-        "task_instructions": "Try payment, then when security concerns arise, secure account and card."
-      },
-      "goal_shifts": {
-        "required_shifts": 2,
-        "goals": [
-          "payments",
-          "fraud_response",
-          "cards"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "+15559876543",
-          "customer_id": "cust_505",
-          "primary_account_id": "acc_001",
-          "primary_card_id": "card_001",
-          "payment_request_id": "req_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful account service to Riley Brown."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_505"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "payment_create_1",
-          "requestor": "assistant",
-          "name": "create_payment_request",
-          "arguments": {
-            "customer_id": "cust_505",
-            "from_account_id": "acc_505",
-            "to_payee_id": "payee_001",
-            "amount": 300.0
-          },
-          "compare_args": [
-            "customer_id",
-            "from_account_id",
-            "to_payee_id",
-            "amount"
-          ]
-        },
-        {
-          "action_id": "payment_auth_1",
-          "requestor": "assistant",
-          "name": "authorize_payment_request",
-          "arguments": {
-            "request_id": "req_001"
-          },
-          "compare_args": [
-            "request_id"
-          ]
-        },
-        {
-          "action_id": "fraud_secure_1",
-          "requestor": "assistant",
-          "name": "file_dispute",
-          "arguments": {
-            "customer_id": "cust_505",
-            "transaction_id": "tx_001",
-            "reason": "unauthorized"
-          },
-          "compare_args": [
-            "customer_id",
-            "transaction_id",
-            "reason"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15559876543"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_505"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_505"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_505",
-        "acc_505",
-        "$15750.4"
-      ]
-    }
-  },
-  {
-    "id": "49_banking_billpay_easy_2_single_001_systematic",
-    "description": {
-      "purpose": "Bill Pay only - EASY_2 persona baseline test",
-      "relevant_policies": "Bill Pay policies and procedures.",
-      "notes": "No goal shift - tests core competency with easily distracted, casual, confused user."
-    },
-    "user_scenario": {
-      "persona": "EASY_2",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Make bill payment - single pattern",
-        "known_info": "You are Alex Morgan with phone number 555-123-7890, date of birth 1980-04-15, and email alex.morgan@email.com.",
-        "unknown_info": "Specifics about payment processing",
-        "task_instructions": "Complete your bill payment."
-      },
-      "goal_shifts": {
-        "required_shifts": 0,
-        "goals": [
-          "payments"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "555-123-7890",
-          "customer_id": "cust_001",
-          "primary_account_id": "acc_001",
-          "payment_request_id": "req_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful account service to Alex Morgan."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_001"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "payment_check_1",
-          "requestor": "assistant",
-          "name": "check_payment_request",
-          "arguments": {
-            "request_id": "req_001"
-          },
-          "compare_args": [
-            "request_id"
-          ]
-        },
-        {
-          "action_id": "payment_make_1",
-          "requestor": "assistant",
-          "name": "make_payment",
-          "arguments": {
-            "request_id": "req_001"
-          },
-          "compare_args": [
-            "request_id"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "555-123-7890"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_001"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_001"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_001",
-        "acc_001",
-        "$1423.75"
-      ]
-    }
-  },
-  {
-    "id": "50_banking_billpay_easy_2_soft_001_systematic",
-    "description": {
-      "purpose": "Bill Pay soft shift - EASY_2 persona information flow",
-      "relevant_policies": "Bill Pay policies and procedures.",
-      "notes": "2-goal soft shift with easily distracted, casual, confused user."
-    },
-    "user_scenario": {
-      "persona": "EASY_2",
-      "instructions": {
-        "domain": "banking",
-        "reason_for_call": "Make bill payment - soft pattern",
-        "known_info": "You are Maria Santos with phone number +15551234567, date of birth 1986-02-11, and email user.001@example.com.",
-        "unknown_info": "Specifics about payment processing",
-        "task_instructions": "Complete payment, then check account status."
-      },
-      "goal_shifts": {
-        "required_shifts": 1,
-        "goals": [
-          "payments",
-          "account_info"
-        ]
-      }
-    },
-    "initial_state": {
-      "initialization_data": {
-        "agent_data": null,
-        "user_data": {
-          "phone_number": "+15551234567",
-          "customer_id": "cust_101",
-          "primary_account_id": "acc_001",
-          "payment_request_id": "req_001"
-        }
-      },
-      "message_history": []
-    },
-    "evaluation_criteria": {
-      "nl_assertions": [
-        "The assistant provided helpful account service to Maria Santos."
-      ],
-      "actions": [
-        {
-          "action_id": "customer_lookup_1",
-          "requestor": "assistant",
-          "name": "get_customer_by_id",
-          "arguments": {
-            "customer_id": "cust_101"
-          },
-          "compare_args": [
-            "customer_id"
-          ]
-        },
-        {
-          "action_id": "payment_check_1",
-          "requestor": "assistant",
-          "name": "check_payment_request",
-          "arguments": {
-            "request_id": "req_001"
-          },
-          "compare_args": [
-            "request_id"
-          ]
-        },
-        {
-          "action_id": "payment_make_1",
-          "requestor": "assistant",
-          "name": "make_payment",
-          "arguments": {
-            "request_id": "req_001"
-          },
-          "compare_args": [
-            "request_id"
-          ]
-        },
-        {
-          "action_id": "account_verify_1",
-          "requestor": "assistant",
-          "name": "get_account",
-          "arguments": {
-            "account_id": "acc_101"
-          },
-          "compare_args": [
-            "account_id"
-          ]
-        }
-      ],
-      "action_sets": [
-        {
-          "action_id": "verify_identity",
-          "allowed_tools": [
-            {
-              "function_name": "get_customer_by_phone",
-              "params": {
-                "phone_number": "+15551234567"
-              }
-            },
-            {
-              "function_name": "get_customer_by_id",
-              "params": {
-                "customer_id": "cust_101"
-              }
-            }
-          ]
-        },
-        {
-          "action_id": "review_account_info",
-          "allowed_tools": [
-            {
-              "function_name": "get_accounts",
-              "params": {
-                "customer_id": "cust_101"
-              }
-            }
-          ]
-        }
-      ],
-      "communicate_info": [
-        "cust_101",
-        "acc_101",
-        "$45230.18"
+        "$1,850.25",
+        "card_303",
+        "\u2022\u2022\u2022\u20223456"
       ]
     }
   }

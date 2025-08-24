@@ -75,19 +75,19 @@ class BankingTools(ToolKitBase):
         for c in self.db.customers:
             if c.customer_id == customer_id:
                 return c
-        raise ValueError(f"Customer {customer_id} not found")
+        raise ValueError(f"Customer {customer_id} not found. Have you tried asking the customer for their id?")
 
     def _get_customer_by_phone_exact(self, phone: str) -> Customer:
         for c in self.db.customers:
             if c.phone_number == phone:
                 return c
-        raise ValueError(f"Customer with phone {phone} not found")
+        raise ValueError(f"Customer with phone {phone} not found. Have you tried asking the customer for their phone?")
 
     def _get_account(self, account_id: str) -> Account:
         for a in self.db.accounts:
             if a.account_id == account_id:
                 return a
-        raise ValueError(f"Account {account_id} not found")
+        raise ValueError(f"Account {account_id} not found. Have you tried asking the customer for their account id?")
 
     def _get_card(self, card_id: str) -> Card:
         for card in self.db.cards:

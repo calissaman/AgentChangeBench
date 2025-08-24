@@ -759,7 +759,7 @@ class ConsoleDisplay:
             content.append(f"\n    📊 Average Score: {metrics.action_avg_score:.2%}")
             if hasattr(metrics, "action_tool_correctness"):
                 content.append(
-                    f"\n    ✅ Tool Correctness: {metrics.action_tool_correctness:.2%}"
+                    f"\n    ✅ Tool Correctness: {metrics.action_tool_correctness}"
                 )
             if hasattr(metrics, "action_param_correctness"):
                 content.append(
