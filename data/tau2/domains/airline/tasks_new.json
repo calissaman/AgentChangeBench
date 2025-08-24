@@ -53,17 +53,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "SFO",
-                "destination": "LAX",
-                "date": "2024-06-15"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "SFO",
-                "destination": "LAX",
-                "date": "2024-06-15"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -75,24 +75,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "james_williams_1287",
-                "origin": "SFO",
-                "destination": "LAX",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-06-15"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_james_williams_1287"
+                  {
+                    "payment_id": "card_james_williams_1287",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -108,12 +112,9 @@
         "Agent provided clear pricing information before completing the booking"
       ],
       "communicate_info": [
-        "James",
-        "Williams",
         "silver",
-        "james.williams@example.com",
-        "HAT163",
-        "20:00:00"
+        "James",
+        "Williams"
       ]
     }
   },
@@ -171,17 +172,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "JFK",
-                "destination": "MIA",
-                "date": "2024-07-20"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "JFK",
-                "destination": "MIA",
-                "date": "2024-07-20"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -193,24 +194,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "sarah_johnson_3456",
-                "origin": "JFK",
-                "destination": "MIA",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-07-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_sarah_johnson_3456"
+                  {
+                    "payment_id": "card_sarah_johnson_3456",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -227,12 +232,9 @@
         "Agent addressed family travel considerations appropriately"
       ],
       "communicate_info": [
-        "Sarah",
-        "Johnson",
         "gold",
-        "sarah.johnson@example.com",
-        "HAT163",
-        "20:00:00"
+        "Sarah",
+        "Johnson"
       ]
     }
   },
@@ -290,17 +292,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "ORD",
-                "destination": "ATL",
-                "date": "2024-05-10"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "ORD",
-                "destination": "ATL",
-                "date": "2024-05-10"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -312,24 +314,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "michael_brown_7821",
-                "origin": "ORD",
-                "destination": "ATL",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-05-10"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_michael_brown_7821"
+                  {
+                    "payment_id": "card_michael_brown_7821",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -346,12 +352,9 @@
         "Agent handled the request efficiently and professionally"
       ],
       "communicate_info": [
-        "Michael",
-        "Brown",
         "gold",
-        "michael.brown@example.com",
-        "HAT163",
-        "20:00:00"
+        "Michael",
+        "Brown"
       ]
     }
   },
@@ -409,17 +412,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "LAX",
-                "destination": "SEA",
-                "date": "2024-06-25"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "LAX",
-                "destination": "SEA",
-                "date": "2024-06-25"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -431,24 +434,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "emily_davis_2134",
-                "origin": "LAX",
-                "destination": "SEA",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-06-25"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_emily_davis_2134"
+                  {
+                    "payment_id": "card_emily_davis_2134",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -467,10 +474,7 @@
       "communicate_info": [
         "Emily",
         "Davis",
-        "regular",
-        "emily.davis@example.com",
-        "HAT163",
-        "20:00:00"
+        "emily.davis@example.com"
       ]
     }
   },
@@ -528,17 +532,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "BOS",
-                "destination": "DEN",
-                "date": "2024-08-05"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "BOS",
-                "destination": "DEN",
-                "date": "2024-08-05"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -550,24 +554,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "david_miller_9876",
-                "origin": "BOS",
-                "destination": "DEN",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-08-05"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_david_miller_9876"
+                  {
+                    "payment_id": "card_david_miller_9876",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -584,12 +592,9 @@
         "Agent provided cost-effective options and clear pricing"
       ],
       "communicate_info": [
-        "David",
-        "Miller",
         "silver",
-        "david.miller@example.com",
-        "HAT163",
-        "20:00:00"
+        "David",
+        "Miller"
       ]
     }
   },
@@ -661,12 +666,9 @@
         "Agent offered to help with any changes or questions about the reservation"
       ],
       "communicate_info": [
-        "Lisa",
-        "Wilson",
+        "HAT101",
         "gold",
-        "lisa.wilson@example.com",
-        "RES006",
-        "SEA"
+        "Lisa"
       ]
     }
   },
@@ -739,12 +741,9 @@
         "Agent addressed family travel considerations appropriately"
       ],
       "communicate_info": [
-        "Robert",
-        "Moore",
+        "HAT115",
         "silver",
-        "robert.moore@example.com",
-        "RES007",
-        "ORD"
+        "Robert"
       ]
     }
   },
@@ -817,12 +816,9 @@
         "Agent handled the request efficiently and professionally"
       ],
       "communicate_info": [
-        "Amanda",
-        "Taylor",
+        "HAT088",
         "gold",
-        "amanda.taylor@example.com",
-        "RES008",
-        "DFW"
+        "Amanda"
       ]
     }
   },
@@ -895,12 +891,9 @@
         "Agent provided patient, step-by-step guidance to reassure the customer"
       ],
       "communicate_info": [
+        "HAT144",
         "Christopher",
-        "Anderson",
-        "regular",
-        "christopher.anderson@example.com",
-        "RES009",
-        "PHX"
+        "Anderson"
       ]
     }
   },
@@ -973,12 +966,9 @@
         "Agent provided cost-effective options and clear pricing"
       ],
       "communicate_info": [
-        "Jessica",
-        "Thomas",
+        "HAT167",
         "silver",
-        "jessica.thomas@example.com",
-        "RES010",
-        "MIA"
+        "Jessica"
       ]
     }
   },
@@ -1044,7 +1034,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES011"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1055,33 +1045,26 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "LAX",
-                "destination": "MIA",
-                "date": "2024-07-20"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "LAX",
-                "destination": "MIA",
-                "date": "2024-07-20"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW293EL",
         "User011",
         "Test",
-        "NEW825",
-        "LAX",
-        "MIA",
-        "2024-07-15",
-        "economy",
-        "round_trip",
-        "$556"
+        "easy_1_user_011@test.com"
       ]
     }
   },
@@ -1147,7 +1130,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES012"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1158,32 +1141,26 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "SEA",
-                "destination": "LAX",
-                "date": "2024-06-27"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "SEA",
-                "destination": "LAX",
-                "date": "2024-06-27"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW226ME",
         "User012",
         "Test",
-        "NEW619",
-        "SEA",
-        "LAX",
-        "economy",
-        "round_trip",
-        "$790"
+        "easy_2_user_012@test.com"
       ]
     }
   },
@@ -1249,7 +1226,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES013"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1260,32 +1237,26 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "ATL",
-                "destination": "DFW",
-                "date": "2024-08-17"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "ATL",
-                "destination": "DFW",
-                "date": "2024-08-17"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW811PE",
+        "silver",
         "User013",
-        "Test",
-        "NEW432",
-        "ATL",
-        "DFW",
-        "economy",
-        "round_trip",
-        "$649"
+        "Test"
       ]
     }
   },
@@ -1351,7 +1322,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES014"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1362,32 +1333,26 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "BOS",
-                "destination": "MIA",
-                "date": "2024-09-12"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "BOS",
-                "destination": "MIA",
-                "date": "2024-09-12"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW358YL",
+        "gold",
         "User014",
-        "Test",
-        "NEW992",
-        "BOS",
-        "MIA",
-        "economy",
-        "round_trip",
-        "$818"
+        "Test"
       ]
     }
   },
@@ -1453,7 +1418,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES015"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1464,32 +1429,26 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "ORD",
-                "destination": "DFW",
-                "date": "2024-10-19"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "ORD",
-                "destination": "DFW",
-                "date": "2024-10-19"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW254BT",
+        "silver",
         "User015",
-        "Test",
-        "NEW263",
-        "ORD",
-        "DFW",
-        "economy",
-        "round_trip",
-        "$351"
+        "Test"
       ]
     }
   },
@@ -1555,7 +1514,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES016"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1566,22 +1525,16 @@
             {
               "function_name": "cancel_reservation",
               "params": {
-                "reservation_id": "RES016"
+                "reservation_id": "4WQ150"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW764JV",
         "User016",
         "Test",
-        "NEW770",
-        "JFK",
-        "ATL",
-        "economy",
-        "round_trip",
-        "$784"
+        "easy_1_user_016@test.com"
       ]
     }
   },
@@ -1647,7 +1600,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES017"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1658,22 +1611,16 @@
             {
               "function_name": "cancel_reservation",
               "params": {
-                "reservation_id": "RES017"
+                "reservation_id": "4WQ150"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW237HH",
         "User017",
         "Test",
-        "NEW916",
-        "JFK",
-        "SEA",
-        "economy",
-        "round_trip",
-        "$678"
+        "easy_2_user_017@test.com"
       ]
     }
   },
@@ -1739,7 +1686,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES018"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1750,22 +1697,16 @@
             {
               "function_name": "cancel_reservation",
               "params": {
-                "reservation_id": "RES018"
+                "reservation_id": "4WQ150"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW840CJ",
+        "silver",
         "User018",
-        "Test",
-        "NEW576",
-        "SEA",
-        "BOS",
-        "economy",
-        "round_trip",
-        "$874"
+        "Test"
       ]
     }
   },
@@ -1831,7 +1772,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES019"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1842,22 +1783,16 @@
             {
               "function_name": "cancel_reservation",
               "params": {
-                "reservation_id": "RES019"
+                "reservation_id": "4WQ150"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW955AV",
+        "gold",
         "User019",
-        "Test",
-        "NEW784",
-        "JFK",
-        "BOS",
-        "economy",
-        "round_trip",
-        "$383"
+        "Test"
       ]
     }
   },
@@ -1923,7 +1858,7 @@
             {
               "function_name": "get_reservation_details",
               "params": {
-                "reservation_id": "RES020"
+                "reservation_id": "4WQ150"
               }
             }
           ]
@@ -1934,22 +1869,16 @@
             {
               "function_name": "cancel_reservation",
               "params": {
-                "reservation_id": "RES020"
+                "reservation_id": "4WQ150"
               }
             }
           ]
         }
       ],
       "communicate_info": [
-        "NEW633TW",
+        "silver",
         "User020",
-        "Test",
-        "NEW894",
-        "JFK",
-        "MIA",
-        "economy",
-        "round_trip",
-        "$497"
+        "Test"
       ]
     }
   },
@@ -2036,12 +1965,9 @@
         "Agent confirmed baggage details and total costs before processing"
       ],
       "communicate_info": [
-        "Maria",
-        "Gonzalez",
+        "HAT159",
         "silver",
-        "maria.gonzalez@example.com",
-        "RES021",
-        "ATL"
+        "Maria"
       ]
     }
   },
@@ -2129,12 +2055,9 @@
         "Agent addressed family travel considerations appropriately"
       ],
       "communicate_info": [
-        "Kevin",
-        "Smith",
+        "HAT177",
         "gold",
-        "kevin.smith@example.com",
-        "RES022",
-        "SAN"
+        "Kevin"
       ]
     }
   },
@@ -2222,12 +2145,9 @@
         "Agent handled the request efficiently and professionally"
       ],
       "communicate_info": [
-        "Rachel",
-        "Brown",
+        "HAT192",
         "gold",
-        "rachel.brown@example.com",
-        "RES023",
-        "CLT"
+        "Rachel"
       ]
     }
   },
@@ -2315,12 +2235,9 @@
         "Agent provided patient, step-by-step guidance to reassure the customer"
       ],
       "communicate_info": [
+        "HAT203",
         "Thomas",
-        "Lee",
-        "regular",
-        "thomas.lee@example.com",
-        "RES024",
-        "BNA"
+        "Lee"
       ]
     }
   },
@@ -2335,15 +2252,16 @@
       "persona": "MEDIUM_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Optimize baggage costs and options",
+        "reason_for_call": "Optimize baggage costs and options then modification",
         "known_info": "You are a budget-conscious traveler with user ID stephanie_davis_3576. You need to add checked bags. ",
         "unknown_info": "Specific baggage procedures and policies",
         "task_instructions": "Contact customer service to handle your baggage need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "baggage_services"
+          "reservation_lookup",
+          "modification"
         ]
       }
     },
@@ -2399,6 +2317,46 @@
               }
             }
           ]
+        },
+        {
+          "action_id": "search_new_flights",
+          "allowed_tools": [
+            {
+              "function_name": "search_direct_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
+              }
+            },
+            {
+              "function_name": "search_onestop_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
+              }
+            }
+          ]
+        },
+        {
+          "action_id": "update_reservation",
+          "allowed_tools": [
+            {
+              "function_name": "update_reservation_flights",
+              "params": {
+                "reservation_id": "RES025",
+                "payment_id": "card_stephanie_davis_3576",
+                "cabin": "economy",
+                "flights": [
+                  {
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
@@ -2408,12 +2366,9 @@
         "Agent provided cost-effective options and clear pricing"
       ],
       "communicate_info": [
-        "Stephanie",
-        "Davis",
+        "HAT218",
         "silver",
-        "stephanie.davis@example.com",
-        "RES025",
-        "MCI"
+        "Stephanie"
       ]
     }
   },
@@ -2428,15 +2383,16 @@
       "persona": "EASY_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Resolve payment decline with help - specifically $150 card declined during booking attempt",
+        "reason_for_call": "Resolve payment decline with help - specifically $150 card declined during booking attempt then booking",
         "known_info": "You are a helpful traveler with user ID daniel_martinez_7201. You're experiencing payment issues. ",
         "unknown_info": "Specific payment procedures and policies",
         "task_instructions": "Contact customer service to handle your payment need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "payment_support"
+          "payment_support",
+          "booking"
         ]
       }
     },
@@ -2485,12 +2441,9 @@
         "Agent provided appropriate compensation or resolution for the payment problem"
       ],
       "communicate_info": [
-        "Daniel",
-        "Martinez",
         "gold",
-        "daniel.martinez@example.com",
-        "certificate_3221322",
-        "$100"
+        "$3221322",
+        "Daniel"
       ]
     }
   },
@@ -2505,15 +2458,16 @@
       "persona": "EASY_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Handle family trip payment coordination - specifically $75 family trip payment coordination - need to split costs",
+        "reason_for_call": "Handle family trip payment coordination - specifically $75 family trip payment coordination - need to split costs then booking",
         "known_info": "You are a family-oriented traveler with user ID ashley_wilson_5483. You're experiencing payment issues. ",
         "unknown_info": "Specific payment procedures and policies",
         "task_instructions": "Contact customer service to handle your payment need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "payment_support"
+          "payment_support",
+          "booking"
         ]
       }
     },
@@ -2563,12 +2517,9 @@
         "Agent addressed family travel considerations appropriately"
       ],
       "communicate_info": [
-        "Ashley",
-        "Wilson",
         "silver",
-        "ashley.wilson@example.com",
-        "certificate_3221322",
-        "$100"
+        "$3221322",
+        "Ashley"
       ]
     }
   },
@@ -2583,15 +2534,16 @@
       "persona": "MEDIUM_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Business payment processing issues - specifically $200 business payment processing - corporate card issue",
+        "reason_for_call": "Business payment processing issues - specifically $200 business payment processing - corporate card issue then booking",
         "known_info": "You are a business traveler with user ID joshua_taylor_9167. You're experiencing payment issues. ",
         "unknown_info": "Specific payment procedures and policies",
         "task_instructions": "Contact customer service to handle your payment need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "payment_support"
+          "payment_support",
+          "booking"
         ]
       }
     },
@@ -2641,12 +2593,9 @@
         "Agent handled the request efficiently and professionally"
       ],
       "communicate_info": [
-        "Joshua",
-        "Taylor",
         "gold",
-        "joshua.taylor@example.com",
-        "certificate_3221322",
-        "$100"
+        "$3221322",
+        "Joshua"
       ]
     }
   },
@@ -2661,15 +2610,16 @@
       "persona": "HARD_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Payment problem causing flight anxiety - specifically $100 payment problem causing booking delay anxiety",
+        "reason_for_call": "Payment problem causing flight anxiety - specifically $100 payment problem causing booking delay anxiety then booking",
         "known_info": "You are a anxious traveler with user ID nicole_anderson_1924. You're experiencing payment issues. ",
         "unknown_info": "Specific payment procedures and policies",
         "task_instructions": "Contact customer service to handle your payment need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "payment_support"
+          "payment_support",
+          "booking"
         ]
       }
     },
@@ -2719,12 +2669,9 @@
         "Agent provided patient, step-by-step guidance to reassure the customer"
       ],
       "communicate_info": [
+        "$3221322",
         "Nicole",
-        "Anderson",
-        "regular",
-        "nicole.anderson@example.com",
-        "certificate_3221322",
-        "$100"
+        "Anderson"
       ]
     }
   },
@@ -2739,15 +2686,16 @@
       "persona": "MEDIUM_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Payment fee disputes and optimization - specifically $125 disputing unexpected fees on previous booking",
+        "reason_for_call": "Payment fee disputes and optimization - specifically $125 disputing unexpected fees on previous booking then booking",
         "known_info": "You are a budget-conscious traveler with user ID andrew_thomas_6748. You're experiencing payment issues. ",
         "unknown_info": "Specific payment procedures and policies",
         "task_instructions": "Contact customer service to handle your payment need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "payment_support"
+          "payment_support",
+          "booking"
         ]
       }
     },
@@ -2797,12 +2745,9 @@
         "Agent provided cost-effective options and clear pricing"
       ],
       "communicate_info": [
-        "Andrew",
-        "Thomas",
         "silver",
-        "andrew.thomas@example.com",
-        "certificate_3221322",
-        "$100"
+        "$3221322",
+        "Andrew"
       ]
     }
   },
@@ -2817,15 +2762,16 @@
       "persona": "EASY_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "General flight inquiry with patience",
+        "reason_for_call": "General flight inquiry with patience then booking",
         "known_info": "You are a helpful traveler with user ID patricia_rodriguez_5932. ",
         "unknown_info": "Specific support procedures and policies",
         "task_instructions": "Contact customer service to handle your support need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "customer_support"
+          "customer_support",
+          "booking"
         ]
       }
     },
@@ -2862,6 +2808,17 @@
               "params": {}
             }
           ]
+        },
+        {
+          "action_id": "provide_general_support",
+          "allowed_tools": [
+            {
+              "function_name": "get_user_details",
+              "params": {
+                "user_id": "patricia_rodriguez_5932"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
@@ -2870,12 +2827,9 @@
         "Agent addressed the customer's questions thoroughly"
       ],
       "communicate_info": [
-        "Patricia",
-        "Rodriguez",
         "silver",
-        "patricia.rodriguez@example.com",
-        "SFO",
-        "San Francisco"
+        "Patricia",
+        "Rodriguez"
       ]
     }
   },
@@ -2890,15 +2844,16 @@
       "persona": "EASY_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Family travel questions and policies",
+        "reason_for_call": "Family travel questions and policies then booking",
         "known_info": "You are a family-oriented traveler with user ID bryan_martinez_8247. ",
         "unknown_info": "Specific support procedures and policies",
         "task_instructions": "Contact customer service to handle your support need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "customer_support"
+          "customer_support",
+          "booking"
         ]
       }
     },
@@ -2935,6 +2890,17 @@
               "params": {}
             }
           ]
+        },
+        {
+          "action_id": "provide_general_support",
+          "allowed_tools": [
+            {
+              "function_name": "get_user_details",
+              "params": {
+                "user_id": "bryan_martinez_8247"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
@@ -2944,12 +2910,9 @@
         "Agent addressed family travel considerations appropriately"
       ],
       "communicate_info": [
-        "Bryan",
-        "Martinez",
         "gold",
-        "bryan.martinez@example.com",
-        "SFO",
-        "San Francisco"
+        "Bryan",
+        "Martinez"
       ]
     }
   },
@@ -2964,15 +2927,16 @@
       "persona": "MEDIUM_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Business travel policy clarification",
+        "reason_for_call": "Business travel policy clarification then booking",
         "known_info": "You are a business traveler with user ID jennifer_johnson_1683. ",
         "unknown_info": "Specific support procedures and policies",
         "task_instructions": "Contact customer service to handle your support need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "customer_support"
+          "customer_support",
+          "booking"
         ]
       }
     },
@@ -3009,6 +2973,17 @@
               "params": {}
             }
           ]
+        },
+        {
+          "action_id": "provide_general_support",
+          "allowed_tools": [
+            {
+              "function_name": "get_user_details",
+              "params": {
+                "user_id": "jennifer_johnson_1683"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
@@ -3018,12 +2993,9 @@
         "Agent handled the request efficiently and professionally"
       ],
       "communicate_info": [
-        "Jennifer",
-        "Johnson",
         "gold",
-        "jennifer.johnson@example.com",
-        "SFO",
-        "San Francisco"
+        "Jennifer",
+        "Johnson"
       ]
     }
   },
@@ -3038,15 +3010,16 @@
       "persona": "HARD_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Flight anxiety and reassurance needs",
+        "reason_for_call": "Flight anxiety and reassurance needs then booking",
         "known_info": "You are a anxious traveler with user ID anthony_williams_7419. ",
         "unknown_info": "Specific support procedures and policies",
         "task_instructions": "Contact customer service to handle your support need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "customer_support"
+          "customer_support",
+          "booking"
         ]
       }
     },
@@ -3083,6 +3056,17 @@
               "params": {}
             }
           ]
+        },
+        {
+          "action_id": "provide_general_support",
+          "allowed_tools": [
+            {
+              "function_name": "get_user_details",
+              "params": {
+                "user_id": "anthony_williams_7419"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
@@ -3094,10 +3078,7 @@
       "communicate_info": [
         "Anthony",
         "Williams",
-        "regular",
-        "anthony.williams@example.com",
-        "SFO",
-        "San Francisco"
+        "anthony.williams@example.com"
       ]
     }
   },
@@ -3112,15 +3093,16 @@
       "persona": "MEDIUM_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Cost-related questions and comparisons",
+        "reason_for_call": "Cost-related questions and comparisons then booking",
         "known_info": "You are a budget-conscious traveler with user ID karen_brown_3054. ",
         "unknown_info": "Specific support procedures and policies",
         "task_instructions": "Contact customer service to handle your support need. Follow your persona characteristics throughout the interaction."
       },
       "goal_shifts": {
-        "required_shifts": 0,
+        "required_shifts": 1,
         "goals": [
-          "customer_support"
+          "customer_support",
+          "booking"
         ]
       }
     },
@@ -3157,6 +3139,17 @@
               "params": {}
             }
           ]
+        },
+        {
+          "action_id": "provide_general_support",
+          "allowed_tools": [
+            {
+              "function_name": "get_user_details",
+              "params": {
+                "user_id": "karen_brown_3054"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
@@ -3166,12 +3159,9 @@
         "Agent provided cost-effective options and clear pricing"
       ],
       "communicate_info": [
-        "Karen",
-        "Brown",
         "silver",
-        "karen.brown@example.com",
-        "SFO",
-        "San Francisco"
+        "Karen",
+        "Brown"
       ]
     }
   },
@@ -3186,16 +3176,17 @@
       "persona": "EASY_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Book flight then add baggage with guidance - specifically from Dallas to Phoenix on 2024-06-18",
+        "reason_for_call": "Book flight then add baggage with guidance - specifically from Dallas to Phoenix on 2024-06-18 then baggage services then modification",
         "known_info": "You are a helpful traveler with user ID matthew_davis_6785. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific booking and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "booking",
-          "baggage_services"
+          "baggage_services",
+          "modification"
         ]
       }
     },
@@ -3231,17 +3222,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "DFW",
-                "destination": "PHX",
-                "date": "2024-06-18"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "DFW",
-                "destination": "PHX",
-                "date": "2024-06-18"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3253,24 +3244,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "matthew_davis_6785",
-                "origin": "DFW",
-                "destination": "PHX",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-06-18"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_matthew_davis_6785"
+                  {
+                    "payment_id": "card_matthew_davis_6785",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -3286,9 +3281,30 @@
               "function_name": "update_reservation_baggages",
               "params": {
                 "payment_id": "card_matthew_davis_6785",
-                "reservation_id": "HATHAT",
+                "reservation_id": "4WQ150",
                 "total_baggages": 2,
                 "nonfree_baggages": 1
+              }
+            }
+          ]
+        },
+        {
+          "action_id": "search_new_flights",
+          "allowed_tools": [
+            {
+              "function_name": "search_direct_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
+              }
+            },
+            {
+              "function_name": "search_onestop_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3298,18 +3314,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before proceeding with booking",
-        "Agent collected all necessary booking information from the customer",
-        "Agent provided clear pricing information before completing the booking",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing"
+        "Agent collected all necessary booking information from the customer"
       ],
       "communicate_info": [
-        "Matthew",
-        "Davis",
         "silver",
-        "matthew.davis@example.com",
-        "HAT163",
-        "20:00:00"
+        "Matthew",
+        "Davis"
       ]
     }
   },
@@ -3324,16 +3334,17 @@
       "persona": "EASY_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Book family trip then arrange baggage for everyone - specifically from Miami to Chicago on 2024-07-12",
+        "reason_for_call": "Book family trip then arrange baggage for everyone - specifically from Miami to Chicago on 2024-07-12 then baggage services then modification",
         "known_info": "You are a family-oriented traveler with user ID michelle_garcia_9128. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific booking and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "booking",
-          "baggage_services"
+          "baggage_services",
+          "modification"
         ]
       }
     },
@@ -3369,17 +3380,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "MIA",
-                "destination": "ORD",
-                "date": "2024-07-12"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "MIA",
-                "destination": "ORD",
-                "date": "2024-07-12"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3391,24 +3402,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "michelle_garcia_9128",
-                "origin": "MIA",
-                "destination": "ORD",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-07-12"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_michelle_garcia_9128"
+                  {
+                    "payment_id": "card_michelle_garcia_9128",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -3424,9 +3439,30 @@
               "function_name": "update_reservation_baggages",
               "params": {
                 "payment_id": "card_michelle_garcia_9128",
-                "reservation_id": "HATHAT",
+                "reservation_id": "4WQ150",
                 "total_baggages": 2,
                 "nonfree_baggages": 1
+              }
+            }
+          ]
+        },
+        {
+          "action_id": "search_new_flights",
+          "allowed_tools": [
+            {
+              "function_name": "search_direct_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
+              }
+            },
+            {
+              "function_name": "search_onestop_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3436,19 +3472,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before proceeding with booking",
-        "Agent collected all necessary booking information from the customer",
-        "Agent provided clear pricing information before completing the booking",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing",
-        "Agent addressed family travel considerations appropriately"
+        "Agent collected all necessary booking information from the customer"
       ],
       "communicate_info": [
-        "Michelle",
-        "Garcia",
         "gold",
-        "michelle.garcia@example.com",
-        "HAT163",
-        "20:00:00"
+        "Michelle",
+        "Garcia"
       ]
     }
   },
@@ -3463,16 +3492,17 @@
       "persona": "MEDIUM_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Book business flight then efficiently add baggage - specifically from Atlanta to Los Angeles on 2024-05-22",
+        "reason_for_call": "Book business flight then efficiently add baggage - specifically from Atlanta to Los Angeles on 2024-05-22 then baggage services then modification",
         "known_info": "You are a business traveler with user ID richard_miller_4372. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific booking and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "booking",
-          "baggage_services"
+          "baggage_services",
+          "modification"
         ]
       }
     },
@@ -3508,17 +3538,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "ATL",
-                "destination": "LAX",
-                "date": "2024-05-22"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "ATL",
-                "destination": "LAX",
-                "date": "2024-05-22"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3530,24 +3560,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "richard_miller_4372",
-                "origin": "ATL",
-                "destination": "LAX",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-05-22"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_richard_miller_4372"
+                  {
+                    "payment_id": "card_richard_miller_4372",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -3563,9 +3597,30 @@
               "function_name": "update_reservation_baggages",
               "params": {
                 "payment_id": "card_richard_miller_4372",
-                "reservation_id": "HATHAT",
+                "reservation_id": "4WQ150",
                 "total_baggages": 2,
                 "nonfree_baggages": 1
+              }
+            }
+          ]
+        },
+        {
+          "action_id": "search_new_flights",
+          "allowed_tools": [
+            {
+              "function_name": "search_direct_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
+              }
+            },
+            {
+              "function_name": "search_onestop_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3575,19 +3630,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before proceeding with booking",
-        "Agent collected all necessary booking information from the customer",
-        "Agent provided clear pricing information before completing the booking",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing",
-        "Agent handled the request efficiently and professionally"
+        "Agent collected all necessary booking information from the customer"
       ],
       "communicate_info": [
-        "Richard",
-        "Miller",
         "gold",
-        "richard.miller@example.com",
-        "HAT163",
-        "20:00:00"
+        "Richard",
+        "Miller"
       ]
     }
   },
@@ -3602,16 +3650,17 @@
       "persona": "HARD_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Book flight then nervously ask about baggage rules - specifically from Seattle to New York on 2024-06-30",
+        "reason_for_call": "Book flight then nervously ask about baggage rules - specifically from Seattle to New York on 2024-06-30 then baggage services then modification",
         "known_info": "You are a anxious traveler with user ID deborah_wilson_7856. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific booking and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "booking",
-          "baggage_services"
+          "baggage_services",
+          "modification"
         ]
       }
     },
@@ -3647,17 +3696,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "SEA",
-                "destination": "JFK",
-                "date": "2024-06-30"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "SEA",
-                "destination": "JFK",
-                "date": "2024-06-30"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3669,24 +3718,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "deborah_wilson_7856",
-                "origin": "SEA",
-                "destination": "JFK",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-06-30"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_deborah_wilson_7856"
+                  {
+                    "payment_id": "card_deborah_wilson_7856",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -3702,9 +3755,30 @@
               "function_name": "update_reservation_baggages",
               "params": {
                 "payment_id": "card_deborah_wilson_7856",
-                "reservation_id": "HATHAT",
+                "reservation_id": "4WQ150",
                 "total_baggages": 2,
                 "nonfree_baggages": 1
+              }
+            }
+          ]
+        },
+        {
+          "action_id": "search_new_flights",
+          "allowed_tools": [
+            {
+              "function_name": "search_direct_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
+              }
+            },
+            {
+              "function_name": "search_onestop_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3714,19 +3788,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before proceeding with booking",
-        "Agent collected all necessary booking information from the customer",
-        "Agent provided clear pricing information before completing the booking",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing",
-        "Agent provided patient, step-by-step guidance to reassure the customer"
+        "Agent collected all necessary booking information from the customer"
       ],
       "communicate_info": [
         "Deborah",
         "Wilson",
-        "regular",
-        "deborah.wilson@example.com",
-        "HAT163",
-        "20:00:00"
+        "deborah.wilson@example.com"
       ]
     }
   },
@@ -3741,16 +3808,17 @@
       "persona": "MEDIUM_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Book budget flight then optimize baggage costs - specifically from Denver to San Francisco on 2024-08-15",
+        "reason_for_call": "Book budget flight then optimize baggage costs - specifically from Denver to San Francisco on 2024-08-15 then baggage services then modification",
         "known_info": "You are a budget-conscious traveler with user ID william_moore_2541. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific booking and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "booking",
-          "baggage_services"
+          "baggage_services",
+          "modification"
         ]
       }
     },
@@ -3786,17 +3854,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "DEN",
-                "destination": "SFO",
-                "date": "2024-08-15"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "DEN",
-                "destination": "SFO",
-                "date": "2024-08-15"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3808,24 +3876,28 @@
               "function_name": "book_reservation",
               "params": {
                 "user_id": "william_moore_2541",
-                "origin": "DEN",
-                "destination": "SFO",
+                "origin": "PHL",
+                "destination": "LGA",
                 "flight_type": "one_way",
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT123",
-                    "date": "2024-08-15"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ],
                 "passengers": [
                   {
                     "first_name": "Customer",
-                    "last_name": "Name"
+                    "last_name": "Name",
+                    "dob": "1990-01-01"
                   }
                 ],
                 "payment_methods": [
-                  "card_william_moore_2541"
+                  {
+                    "payment_id": "card_william_moore_2541",
+                    "amount": 122
+                  }
                 ],
                 "total_baggages": 1,
                 "nonfree_baggages": 0,
@@ -3841,9 +3913,30 @@
               "function_name": "update_reservation_baggages",
               "params": {
                 "payment_id": "card_william_moore_2541",
-                "reservation_id": "HATHAT",
+                "reservation_id": "4WQ150",
                 "total_baggages": 2,
                 "nonfree_baggages": 1
+              }
+            }
+          ]
+        },
+        {
+          "action_id": "search_new_flights",
+          "allowed_tools": [
+            {
+              "function_name": "search_direct_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
+              }
+            },
+            {
+              "function_name": "search_onestop_flight",
+              "params": {
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3853,19 +3946,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before proceeding with booking",
-        "Agent collected all necessary booking information from the customer",
-        "Agent provided clear pricing information before completing the booking",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing",
-        "Agent provided cost-effective options and clear pricing"
+        "Agent collected all necessary booking information from the customer"
       ],
       "communicate_info": [
-        "William",
-        "Moore",
         "silver",
-        "william.moore@example.com",
-        "HAT163",
-        "20:00:00"
+        "William",
+        "Moore"
       ]
     }
   },
@@ -3880,16 +3966,17 @@
       "persona": "EASY_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Check reservation then change flight dates",
+        "reason_for_call": "Check reservation then change flight dates then modification then baggage services",
         "known_info": "You are a helpful traveler with user ID thomas_anderson_6471. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific reservation_lookup and modification procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "reservation_lookup",
-          "modification"
+          "modification",
+          "baggage_services"
         ]
       }
     },
@@ -3937,17 +4024,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "SFO",
-                "destination": "LAX",
-                "date": "2024-07-01"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "SFO",
-                "destination": "LAX",
-                "date": "2024-07-01"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -3963,8 +4050,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -3976,17 +4063,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before accessing reservation details",
-        "Agent provided complete reservation information to the customer",
-        "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them"
+        "Agent provided complete reservation information to the customer"
       ],
       "communicate_info": [
-        "Thomas",
-        "Anderson",
-        "silver",
-        "thomas.anderson@example.com",
+        "RES_TA6471",
         "HAT163",
-        "20:00:00"
+        "silver"
       ]
     }
   },
@@ -4001,16 +4083,17 @@
       "persona": "EASY_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Review family booking then modify passenger info",
+        "reason_for_call": "Review family booking then modify passenger info then modification then baggage services",
         "known_info": "You are a family-oriented traveler with user ID sandra_thompson_3892. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific reservation_lookup and modification procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "reservation_lookup",
-          "modification"
+          "modification",
+          "baggage_services"
         ]
       }
     },
@@ -4058,17 +4141,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "LAX",
-                "destination": "JFK",
-                "date": "2024-07-02"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "LAX",
-                "destination": "JFK",
-                "date": "2024-07-02"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -4084,8 +4167,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -4097,18 +4180,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before accessing reservation details",
-        "Agent provided complete reservation information to the customer",
-        "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent addressed family travel considerations appropriately"
+        "Agent provided complete reservation information to the customer"
       ],
       "communicate_info": [
-        "Sandra",
-        "Thompson",
-        "gold",
-        "sandra.thompson@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_ST3892",
+        "HAT245",
+        "gold"
       ]
     }
   },
@@ -4123,16 +4200,17 @@
       "persona": "MEDIUM_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Check business reservation then reschedule efficiently",
+        "reason_for_call": "Check business reservation then reschedule efficiently then modification then baggage services",
         "known_info": "You are a business traveler with user ID robert_jackson_9205. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific reservation_lookup and modification procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "reservation_lookup",
-          "modification"
+          "modification",
+          "baggage_services"
         ]
       }
     },
@@ -4180,17 +4258,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "ORD",
-                "destination": "MIA",
-                "date": "2024-07-03"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "ORD",
-                "destination": "MIA",
-                "date": "2024-07-03"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -4206,8 +4284,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -4219,18 +4297,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before accessing reservation details",
-        "Agent provided complete reservation information to the customer",
-        "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent handled the request efficiently and professionally"
+        "Agent provided complete reservation information to the customer"
       ],
       "communicate_info": [
-        "Robert",
-        "Jackson",
-        "gold",
-        "robert.jackson@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_RJ9205",
+        "HAT412",
+        "gold"
       ]
     }
   },
@@ -4245,16 +4317,17 @@
       "persona": "HARD_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Find reservation then nervously request changes",
+        "reason_for_call": "Find reservation then nervously request changes then modification then baggage services",
         "known_info": "You are a anxious traveler with user ID maria_white_5748. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific reservation_lookup and modification procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "reservation_lookup",
-          "modification"
+          "modification",
+          "baggage_services"
         ]
       }
     },
@@ -4302,17 +4375,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "ATL",
-                "destination": "SEA",
-                "date": "2024-07-04"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "ATL",
-                "destination": "SEA",
-                "date": "2024-07-04"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -4328,8 +4401,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -4341,18 +4414,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before accessing reservation details",
-        "Agent provided complete reservation information to the customer",
-        "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent provided patient, step-by-step guidance to reassure the customer"
+        "Agent provided complete reservation information to the customer"
       ],
       "communicate_info": [
-        "Maria",
-        "White",
-        "regular",
-        "maria.white@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_MW5748",
+        "HAT789",
+        "Maria"
       ]
     }
   },
@@ -4367,16 +4434,17 @@
       "persona": "MEDIUM_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Review booking then find cheaper modification options",
+        "reason_for_call": "Review booking then find cheaper modification options then modification then baggage services",
         "known_info": "You are a budget-conscious traveler with user ID david_harris_2136. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific reservation_lookup and modification procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "reservation_lookup",
-          "modification"
+          "modification",
+          "baggage_services"
         ]
       }
     },
@@ -4424,17 +4492,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "DEN",
-                "destination": "BOS",
-                "date": "2024-07-05"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "DEN",
-                "destination": "BOS",
-                "date": "2024-07-05"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -4450,8 +4518,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -4463,18 +4531,12 @@
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent verified customer identity before accessing reservation details",
-        "Agent provided complete reservation information to the customer",
-        "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent provided cost-effective options and clear pricing"
+        "Agent provided complete reservation information to the customer"
       ],
       "communicate_info": [
-        "David",
-        "Harris",
-        "silver",
-        "david.harris@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_DH2136",
+        "HAT556",
+        "silver"
       ]
     }
   },
@@ -4489,16 +4551,17 @@
       "persona": "EASY_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Change flight dates then add checked bags",
+        "reason_for_call": "Change flight dates then add checked bags then baggage services then cancellation",
         "known_info": "You are a helpful traveler with user ID lisa_martin_8674. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific modification and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "modification",
-          "baggage_services"
+          "baggage_services",
+          "cancellation"
         ]
       }
     },
@@ -4547,17 +4610,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "PHX",
-                "destination": "ORD",
-                "date": "2024-07-06"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "PHX",
-                "destination": "ORD",
-                "date": "2024-07-06"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -4573,8 +4636,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -4594,23 +4657,29 @@
               }
             }
           ]
+        },
+        {
+          "action_id": "cancel_reservation",
+          "allowed_tools": [
+            {
+              "function_name": "cancel_reservation",
+              "params": {
+                "reservation_id": "RES_LM8674"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing"
+        "Agent confirmed the customer understood the changes before implementing them"
       ],
       "communicate_info": [
-        "Lisa",
-        "Martin",
-        "silver",
-        "lisa.martin@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_LM8674",
+        "HAT321",
+        "silver"
       ]
     }
   },
@@ -4625,16 +4694,17 @@
       "persona": "EASY_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Modify family trip then adjust baggage allowances",
+        "reason_for_call": "Modify family trip then adjust baggage allowances then baggage services then cancellation",
         "known_info": "You are a family-oriented traveler with user ID christopher_clark_4239. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific modification and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "modification",
-          "baggage_services"
+          "baggage_services",
+          "cancellation"
         ]
       }
     },
@@ -4683,17 +4753,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "MIA",
-                "destination": "DFW",
-                "date": "2024-07-07"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "MIA",
-                "destination": "DFW",
-                "date": "2024-07-07"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -4709,8 +4779,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -4730,24 +4800,29 @@
               }
             }
           ]
+        },
+        {
+          "action_id": "cancel_reservation",
+          "allowed_tools": [
+            {
+              "function_name": "cancel_reservation",
+              "params": {
+                "reservation_id": "RES_CC4239"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing",
-        "Agent addressed family travel considerations appropriately"
+        "Agent confirmed the customer understood the changes before implementing them"
       ],
       "communicate_info": [
-        "Christopher",
-        "Clark",
-        "gold",
-        "christopher.clark@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_CC4239",
+        "HAT667",
+        "gold"
       ]
     }
   },
@@ -4762,16 +4837,17 @@
       "persona": "MEDIUM_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Reschedule business flight then add baggage efficiently",
+        "reason_for_call": "Reschedule business flight then add baggage efficiently then baggage services then cancellation",
         "known_info": "You are a business traveler with user ID nancy_lewis_7952. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific modification and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "modification",
-          "baggage_services"
+          "baggage_services",
+          "cancellation"
         ]
       }
     },
@@ -4820,17 +4896,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "SEA",
-                "destination": "ATL",
-                "date": "2024-07-08"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "SEA",
-                "destination": "ATL",
-                "date": "2024-07-08"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -4846,8 +4922,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -4867,24 +4943,29 @@
               }
             }
           ]
+        },
+        {
+          "action_id": "cancel_reservation",
+          "allowed_tools": [
+            {
+              "function_name": "cancel_reservation",
+              "params": {
+                "reservation_id": "RES_NL7952"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing",
-        "Agent handled the request efficiently and professionally"
+        "Agent confirmed the customer understood the changes before implementing them"
       ],
       "communicate_info": [
-        "Nancy",
-        "Lewis",
-        "gold",
-        "nancy.lewis@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_NL7952",
+        "HAT834",
+        "gold"
       ]
     }
   },
@@ -4899,16 +4980,17 @@
       "persona": "HARD_1",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Change flight nervously then ask about baggage rules",
+        "reason_for_call": "Change flight nervously then ask about baggage rules then baggage services then cancellation",
         "known_info": "You are a anxious traveler with user ID kevin_walker_1583. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific modification and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "modification",
-          "baggage_services"
+          "baggage_services",
+          "cancellation"
         ]
       }
     },
@@ -4957,17 +5039,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "BOS",
-                "destination": "LAX",
-                "date": "2024-07-09"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "BOS",
-                "destination": "LAX",
-                "date": "2024-07-09"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -4983,8 +5065,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -5004,24 +5086,29 @@
               }
             }
           ]
+        },
+        {
+          "action_id": "cancel_reservation",
+          "allowed_tools": [
+            {
+              "function_name": "cancel_reservation",
+              "params": {
+                "reservation_id": "RES_KW1583"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent clearly explained baggage fees and policies to the customer",
-        "Agent confirmed baggage details and total costs before processing",
-        "Agent provided patient, step-by-step guidance to reassure the customer"
+        "Agent confirmed the customer understood the changes before implementing them"
       ],
       "communicate_info": [
-        "Kevin",
-        "Walker",
-        "regular",
-        "kevin.walker@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_KW1583",
+        "HAT945",
+        "cancelled"
       ]
     }
   },
@@ -5036,16 +5123,17 @@
       "persona": "MEDIUM_2",
       "instructions": {
         "domain": "airline",
-        "reason_for_call": "Reschedule cheaply then optimize baggage costs",
+        "reason_for_call": "Reschedule cheaply then optimize baggage costs then baggage services then cancellation",
         "known_info": "You are a budget-conscious traveler with user ID helen_hall_6027. You have two related travel needs that you'll discuss in sequence.",
         "unknown_info": "Specific modification and baggage_services procedures and policies",
         "task_instructions": "Contact customer service to handle your travel needs. You have multiple needs that will come up during the conversation. Maintain your persona characteristics throughout."
       },
       "goal_shifts": {
-        "required_shifts": 1,
+        "required_shifts": 2,
         "goals": [
           "modification",
-          "baggage_services"
+          "baggage_services",
+          "cancellation"
         ]
       }
     },
@@ -5094,17 +5182,17 @@
             {
               "function_name": "search_direct_flight",
               "params": {
-                "origin": "DFW",
-                "destination": "SFO",
-                "date": "2024-07-10"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             },
             {
               "function_name": "search_onestop_flight",
               "params": {
-                "origin": "DFW",
-                "destination": "SFO",
-                "date": "2024-07-10"
+                "origin": "PHL",
+                "destination": "LGA",
+                "date": "2024-05-16"
               }
             }
           ]
@@ -5120,8 +5208,8 @@
                 "cabin": "economy",
                 "flights": [
                   {
-                    "flight_number": "HAT456",
-                    "date": "2024-06-20"
+                    "flight_number": "HAT001",
+                    "date": "2024-05-16"
                   }
                 ]
               }
@@ -5141,22 +5229,29 @@
               }
             }
           ]
+        },
+        {
+          "action_id": "cancel_reservation",
+          "allowed_tools": [
+            {
+              "function_name": "cancel_reservation",
+              "params": {
+                "reservation_id": "RES_HH6027"
+              }
+            }
+          ]
         }
       ],
       "nl_assertions": [
         "Agent did not transfer the customer to a human agent when the goal changed",
         "Agent handled the goal transition smoothly and effectively",
         "Agent clearly explained any fees or charges for modifications",
-        "Agent confirmed the customer understood the changes before implementing them",
-        "Agent confirmed baggage details and total costs before processing"
+        "Agent confirmed the customer understood the changes before implementing them"
       ],
       "communicate_info": [
-        "Helen",
-        "Hall",
-        "silver",
-        "helen.hall@example.com",
-        "HAT163",
-        "20:00:00"
+        "RES_HH6027",
+        "HAT128",
+        "silver"
       ]
     }
   }
